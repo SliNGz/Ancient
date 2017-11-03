@@ -1,0 +1,387 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin
+/intermediateDir:obj
+/platform:Windows
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin effect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:effect.fx
+
+#begin model/block/blueberries_bush.vox
+/copy:model/block/blueberries_bush.vox
+
+#begin model/block/blueberries_bush_snow.vox
+/copy:model/block/blueberries_bush_snow.vox
+
+#begin model/block/campfire.vox
+/copy:model/block/campfire.vox
+
+#begin model/block/flowers.vox
+/copy:model/block/flowers.vox
+
+#begin model/block/lantern.vox
+/copy:model/block/lantern.vox
+
+#begin model/block/lantern_glass.vox
+/copy:model/block/lantern_glass.vox
+
+#begin model/block/tall_grass.vox
+/copy:model/block/tall_grass.vox
+
+#begin model/block/tall_grass_snow.vox
+/copy:model/block/tall_grass_snow.vox
+
+#begin model/entity/passive/slime.vox
+/copy:model/entity/passive/slime.vox
+
+#begin model/entity/passive/tortoise.vox
+/copy:model/entity/passive/tortoise.vox
+
+#begin model/entity/player/eyes/female/eyes_female_0.vox
+/copy:model/entity/player/eyes/female/eyes_female_0.vox
+
+#begin model/entity/player/eyes/female/eyes_female_0_pupils.vox
+/copy:model/entity/player/eyes/female/eyes_female_0_pupils.vox
+
+#begin model/entity/player/eyes/female/eyes_female_1.vox
+/copy:model/entity/player/eyes/female/eyes_female_1.vox
+
+#begin model/entity/player/eyes/female/eyes_female_1_pupils.vox
+/copy:model/entity/player/eyes/female/eyes_female_1_pupils.vox
+
+#begin model/entity/player/eyes/eyes_0.vox
+/copy:model/entity/player/eyes/eyes_0.vox
+
+#begin model/entity/player/eyes/eyes_0_pupils.vox
+/copy:model/entity/player/eyes/eyes_0_pupils.vox
+
+#begin model/entity/player/eyes/eyes_1.vox
+/copy:model/entity/player/eyes/eyes_1.vox
+
+#begin model/entity/player/eyes/eyes_1_pupils.vox
+/copy:model/entity/player/eyes/eyes_1_pupils.vox
+
+#begin model/entity/player/eyes/eyes_2.vox
+/copy:model/entity/player/eyes/eyes_2.vox
+
+#begin model/entity/player/eyes/eyes_3.vox
+/copy:model/entity/player/eyes/eyes_3.vox
+
+#begin model/entity/player/eyes/eyes_3_pupils.vox
+/copy:model/entity/player/eyes/eyes_3_pupils.vox
+
+#begin model/entity/player/eyes/eyes_4.vox
+/copy:model/entity/player/eyes/eyes_4.vox
+
+#begin model/entity/player/eyes/eyes_4_pupils.vox
+/copy:model/entity/player/eyes/eyes_4_pupils.vox
+
+#begin model/entity/player/eyes/eyes_5.vox
+/copy:model/entity/player/eyes/eyes_5.vox
+
+#begin model/entity/player/eyes/eyes_5_pupils.vox
+/copy:model/entity/player/eyes/eyes_5_pupils.vox
+
+#begin model/entity/player/hair/hair_0.vox
+/copy:model/entity/player/hair/hair_0.vox
+
+#begin model/entity/player/hair/hair_1.vox
+/copy:model/entity/player/hair/hair_1.vox
+
+#begin model/entity/player/races/elf.vox
+/copy:model/entity/player/races/elf.vox
+
+#begin model/entity/player/races/human.vox
+/copy:model/entity/player/races/human.vox
+
+#begin model/entity/world/berkin.vox
+/copy:model/entity/world/berkin.vox
+
+#begin model/item/bow/wooden_bow.vox
+/copy:model/item/bow/wooden_bow.vox
+
+#begin model/item/pet/food/blueberries.vox
+/copy:model/item/pet/food/blueberries.vox
+
+#begin model/item/pet/food/carrot.vox
+/copy:model/item/pet/food/carrot.vox
+
+#begin model/item/staff/staff.vox
+/copy:model/item/staff/staff.vox
+
+#begin model/item/sword/sword.vox
+/copy:model/item/sword/sword.vox
+
+#begin model/item/sword/sword2.vox
+/copy:model/item/sword/sword2.vox
+
+#begin model/skill/thief/flash_jump.vox
+/copy:model/skill/thief/flash_jump.vox
+
+#begin sound/character/jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/character/jump.wav
+
+#begin sound/character/level_up.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/character/level_up.wav
+
+#begin sound/gui/cancel.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/gui/cancel.wav
+
+#begin sound/gui/select.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/gui/select.wav
+
+#begin sound/item/pickup_item.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/item/pickup_item.wav
+
+#begin sound/skill/thief/flash_jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/skill/thief/flash_jump.wav
+
+#begin texture/gui/component/button/button.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/component/button/button.png
+
+#begin texture/gui/component/button/button2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/component/button/button2.png
+
+#begin texture/gui/component/cursor.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/component/cursor.png
+
+#begin texture/gui/inventory/inventory_slots.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/inventory/inventory_slots.png
+
+#begin texture/gui/inventory/inventory_window.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/inventory/inventory_window.png
+
+#begin texture/gui/player/bar_frame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/player/bar_frame.png
+
+#begin texture/gui/player/exp_bar.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/player/exp_bar.png
+
+#begin texture/gui/player/health_bar.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/player/health_bar.png
+
+#begin texture/gui/player/inventory_bar.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/player/inventory_bar.png
+
+#begin texture/gui/player/mana_bar.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/player/mana_bar.png
+
+#begin texture/gui/player/use_bar.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/player/use_bar.png
+
+#begin texture/gui/crosshair.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/crosshair.png
+
+#begin texture/gui/font.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/font.png
+
+#begin model/block/tall_grass_taiga.vox
+/copy:model/block/tall_grass_taiga.vox
+
+#begin model/particle/particle_snow_0.vox
+/copy:model/particle/particle_snow_0.vox
+
+#begin model/particle/particle_snow_1.vox
+/copy:model/particle/particle_snow_1.vox
+
+#begin model/particle/particle_snow_2.vox
+/copy:model/particle/particle_snow_2.vox
+
+#begin model/particle/particle_snow_3.vox
+/copy:model/particle/particle_snow_3.vox
+
+#begin music/bgm/bgm_snow_0.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/bgm/bgm_snow_0.mp3
+
+#begin music/bgm/logo.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/bgm/logo.mp3
+
+#begin model/item/dagger/dagger.vox
+/copy:model/item/dagger/dagger.vox
+
+#begin model/item/projectile/arrow/steel_arrow.vox
+/copy:model/item/projectile/arrow/steel_arrow.vox
+
+#begin sound/world/explosion_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/world/explosion_0.wav
+
+#begin sound\item\bow\shoot_arrow_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound\item\bow\shoot_arrow_0.wav
+
+#begin sound\item\bow\shoot_arrow_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound\item\bow\shoot_arrow_1.wav
+
+#begin sound\item\bow\shoot_arrow_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound\item\bow\shoot_arrow_2.wav
+
+#begin sound\item\bow\shoot_arrow_3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound\item\bow\shoot_arrow_3.wav
+

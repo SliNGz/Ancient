@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2BEF1A57-83DF-46A3-B181-ED01644BEA04}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ancientlib</RootNamespace>
+    <AssemblyName>Ancient Library</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="game\block\BlockBlueberriesBush.cs" />
+    <Compile Include="game\block\BlockCampfire.cs" />
+    <Compile Include="game\block\BlockCloud.cs" />
+    <Compile Include="game\block\BlockFlowers.cs" />
+    <Compile Include="game\block\BlockIce.cs" />
+    <Compile Include="game\block\BlockLantern.cs" />
+    <Compile Include="game\block\BlockLightSource.cs" />
+    <Compile Include="game\block\IBlockModel.cs" />
+    <Compile Include="game\block\BlockSand.cs" />
+    <Compile Include="game\block\BlockScenery.cs" />
+    <Compile Include="game\block\BlockScenerySnow.cs" />
+    <Compile Include="game\block\BlockSnow.cs" />
+    <Compile Include="game\block\BlockTallGrass.cs" />
+    <Compile Include="game\classes\bowman\ClassBowman.cs" />
+    <Compile Include="game\classes\Classes.cs" />
+    <Compile Include="game\classes\magician\ClassMagician.cs" />
+    <Compile Include="game\classes\thief\ClassThief.cs" />
+    <Compile Include="game\classes\warrior\ClassWarrior.cs" />
+    <Compile Include="game\command\CommandHealPlayer.cs" />
+    <Compile Include="game\command\CommandToggleRain.cs" />
+    <Compile Include="game\command\ICommand.cs" />
+    <Compile Include="game\command\CommandHandler.cs" />
+    <Compile Include="game\command\CommandSpawnEntity.cs" />
+    <Compile Include="game\constants\NetConstants.cs" />
+    <Compile Include="game\entity\ai\EntityAI.cs" />
+    <Compile Include="game\entity\ai\EntityAIAttack.cs" />
+    <Compile Include="game\entity\ai\EntityAIRunAround.cs" />
+    <Compile Include="game\entity\ai\EntityAIFollowOwner.cs" />
+    <Compile Include="game\entity\ai\EntityAILookAtPlayer.cs" />
+    <Compile Include="game\entity\ai\EntityAIManager.cs" />
+    <Compile Include="game\entity\ai\EntityAIMount.cs" />
+    <Compile Include="game\entity\ai\EntityAISeemIdle.cs" />
+    <Compile Include="game\entity\ai\EntityAIWander.cs" />
+    <Compile Include="game\entity\ai\pathfinding\PathFinder.cs" />
+    <Compile Include="game\entity\ai\pathfinding\PathNode.cs" />
+    <Compile Include="game\entity\EntityBase.cs" />
+    <Compile Include="game\entity\Entities.cs" />
+    <Compile Include="game\entity\Entity.cs" />
+    <Compile Include="game\entity\EntityDeveloping.cs" />
+    <Compile Include="game\entity\EntityLiving.cs" />
+    <Compile Include="game\entity\EntityMount.cs" />
+    <Compile Include="game\entity\EntityPet.cs" />
+    <Compile Include="game\entity\npc\EntityNPC.cs" />
+    <Compile Include="game\entity\passive\EntitySlime.cs" />
+    <Compile Include="game\entity\passive\EntityTortoise.cs" />
+    <Compile Include="game\entity\player\EntityPlayer.cs" />
+    <Compile Include="game\entity\player\EntityPlayerBase.cs" />
+    <Compile Include="game\entity\player\EntityPlayerOnline.cs" />
+    <Compile Include="game\entity\projectile\EntityArrow.cs" />
+    <Compile Include="game\entity\projectile\EntityExplodingArrow.cs" />
+    <Compile Include="game\entity\projectile\EntityProjectile.cs" />
+    <Compile Include="game\entity\projectile\EntityProjectileStaff.cs" />
+    <Compile Include="game\entity\skill\EntitySkill.cs" />
+    <Compile Include="game\entity\world\EntityDrop.cs" />
+    <Compile Include="game\block\Blocks.cs" />
+    <Compile Include="game\init\Init.cs" />
+    <Compile Include="game\inventory\Inventory.cs" />
+    <Compile Include="game\item\statbased\ItemStatDependent.cs" />
+    <Compile Include="game\item\Item.cs" />
+    <Compile Include="game\item\block\ItemBlock.cs" />
+    <Compile Include="game\item\Items.cs" />
+    <Compile Include="game\item\projectile\ItemArrow.cs" />
+    <Compile Include="game\item\projectile\ItemProjectile.cs" />
+    <Compile Include="game\item\weapon\ItemBow.cs" />
+    <Compile Include="game\item\ItemStack.cs" />
+    <Compile Include="game\item\weapon\ItemDagger.cs" />
+    <Compile Include="game\item\weapon\ItemStaff.cs" />
+    <Compile Include="game\item\weapon\ItemSword.cs" />
+    <Compile Include="game\item\weapon\ItemTwoHandedDagger.cs" />
+    <Compile Include="game\item\weapon\ItemWeapon.cs" />
+    <Compile Include="game\item\weapon\ItemProjectileConsumer.cs" />
+    <Compile Include="game\item\weapon\ItemWeaponMelee.cs" />
+    <Compile Include="game\item\world\ItemCoin.cs" />
+    <Compile Include="game\classes\Class.cs" />
+    <Compile Include="game\constants\GameConstants.cs" />
+    <Compile Include="game\crash\CrashReport.cs" />
+    <Compile Include="game\network\NetConnection.cs" />
+    <Compile Include="game\network\NetServer.cs" />
+    <Compile Include="game\network\NetValidate.cs" />
+    <Compile Include="game\network\packet\client\handshake\PacketHandshake.cs" />
+    <Compile Include="game\network\packet\client\player\PacketCharacterCreation.cs" />
+    <Compile Include="game\network\packet\client\player\PacketPlayerChangeSlot.cs" />
+    <Compile Include="game\network\packet\client\player\PacketPlayerChat.cs" />
+    <Compile Include="game\network\packet\client\player\PacketPlayerInput.cs" />
+    <Compile Include="game\network\packet\client\player\PacketPlayerUseItem.cs" />
+    <Compile Include="game\network\packet\common\player\PacketPlayerPosition.cs" />
+    <Compile Include="game\network\packet\client\player\PacketPlayerRotation.cs" />
+    <Compile Include="game\network\packet\common\player\PacketPlayerRespawn.cs" />
+    <Compile Include="game\network\packet\handler\IPacketHandler.cs" />
+    <Compile Include="game\network\packet\handler\PacketHandlers.cs" />
+    <Compile Include="game\network\packet\Packet.cs" />
+    <Compile Include="game\network\packet\Packets.cs" />
+    <Compile Include="game\network\packet\server\entity\PacketDamageEntity.cs" />
+    <Compile Include="game\network\packet\server\entity\PacketDespawnEntity.cs" />
+    <Compile Include="game\network\packet\server\entity\PacketEntity.cs" />
+    <Compile Include="game\network\packet\server\entity\PacketEntityHealth.cs" />
+    <Compile Include="game\network\packet\server\entity\PacketEntityPosition.cs" />
+    <Compile Include="game\network\packet\server\entity\PacketEntityRotation.cs" />
+    <Compile Include="game\network\packet\server\entity\PacketSpawnEntity.cs" />
+    <Compile Include="game\network\packet\server\player\PacketCharacterCreationStatus.cs" />
+    <Compile Include="game\network\packet\common\status\PacketDisconnect.cs" />
+    <Compile Include="game\network\packet\server\player\PacketPlayerChangeClass.cs" />
+    <Compile Include="game\network\packet\server\player\PacketPlayerItemAction.cs" />
+    <Compile Include="game\network\packet\server\player\PacketPlayerMountPet.cs" />
+    <Compile Include="game\network\packet\server\player\PacketPlayerTamePet.cs" />
+    <Compile Include="game\network\packet\server\world\PacketCreateWorld.cs" />
+    <Compile Include="game\network\packet\server\world\PacketDestroyBlock.cs" />
+    <Compile Include="game\network\packet\server\world\PacketPlaceBlock.cs" />
+    <Compile Include="game\network\packet\server\world\PacketToggleRain.cs" />
+    <Compile Include="game\particle\Particle.cs" />
+    <Compile Include="game\particle\ParticleFlame.cs" />
+    <Compile Include="game\particle\Particles.cs" />
+    <Compile Include="game\particle\ParticleSnow.cs" />
+    <Compile Include="game\particle\ParticleVoxel.cs" />
+    <Compile Include="game\skill\magician\SkillTeleport.cs" />
+    <Compile Include="game\skill\Skill.cs" />
+    <Compile Include="game\skill\Skills.cs" />
+    <Compile Include="game\skill\thief\SkillFlashJump.cs" />
+    <Compile Include="game\stats\StatTable.cs" />
+    <Compile Include="game\utils\AttackInfo.cs" />
+    <Compile Include="game\utils\ConsoleExtensions.cs" />
+    <Compile Include="game\utils\DirectionHelper.cs" />
+    <Compile Include="game\utils\BBExtensions.cs" />
+    <Compile Include="game\utils\MagicaVoxelImporter.cs" />
+    <Compile Include="game\utils\MathUtils.cs" />
+    <Compile Include="game\utils\NetExtensions.cs" />
+    <Compile Include="game\utils\ThreadUtils.cs" />
+    <Compile Include="game\utils\Utils.cs" />
+    <Compile Include="game\world\biome\Biome.cs" />
+    <Compile Include="game\world\biome\BiomeDesert.cs" />
+    <Compile Include="game\world\biome\BiomeOcean.cs" />
+    <Compile Include="game\world\biome\BiomeTaiga.cs" />
+    <Compile Include="game\world\biome\BiomeManager.cs" />
+    <Compile Include="game\world\biome\BiomeTaigaHills.cs" />
+    <Compile Include="game\world\entity\NetEntities.cs" />
+    <Compile Include="game\world\entity\NetEntityLiving.cs" />
+    <Compile Include="game\world\entity\NetEntityPlayer.cs" />
+    <Compile Include="game\world\generator\TerrainGenerator.cs" />
+    <Compile Include="game\block\Block.cs" />
+    <Compile Include="game\block\BlockAir.cs" />
+    <Compile Include="game\block\BlockDirt.cs" />
+    <Compile Include="game\block\BlockGrass.cs" />
+    <Compile Include="game\block\BlockLeaves.cs" />
+    <Compile Include="game\block\BlockLog.cs" />
+    <Compile Include="game\block\BlockWater.cs" />
+    <Compile Include="game\block\type\BlockType.cs" />
+    <Compile Include="game\world\biome\BiomeTundra.cs" />
+    <Compile Include="game\world\chunk\BlockArray.cs" />
+    <Compile Include="game\world\chunk\Chunk.cs" />
+    <Compile Include="game\world\chunk\ChunkLoader.cs" />
+    <Compile Include="game\world\chunk\ChunkManager.cs" />
+    <Compile Include="game\world\entity\EntityList.cs" />
+    <Compile Include="game\world\entity\NetEntity.cs" />
+    <Compile Include="game\world\entity\NetEntityManager.cs" />
+    <Compile Include="game\world\entity\PlayerList.cs" />
+    <Compile Include="game\world\generator\metadata\Metadata.cs" />
+    <Compile Include="game\world\generator\noise\ImprovedNoise.cs" />
+    <Compile Include="game\world\generator\noise\Perlin.cs" />
+    <Compile Include="game\world\generator\noise\PerlinNoise.cs" />
+    <Compile Include="game\world\generator\noise\SimplexNoise.cs" />
+    <Compile Include="game\world\chunk\LightMap.cs" />
+    <Compile Include="game\world\lighting\LightingManager.cs" />
+    <Compile Include="game\world\structure\Structure.cs" />
+    <Compile Include="game\world\structure\StructureCloud.cs" />
+    <Compile Include="game\world\structure\Structures.cs" />
+    <Compile Include="game\world\structure\StructureTree.cs" />
+    <Compile Include="game\world\World.cs" />
+    <Compile Include="game\world\WorldServer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\structure\cloud\cloud_0.vox">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\structure\cloud\cloud_1.vox">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\structure\tree\tree_0.vox">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\structure\tree\tree_1.vox">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\structure\tree\tree_2.vox">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\structure\tree\tree_snow_0.vox">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\structure\tree\tree_snow_1.vox">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\structure\tree\tree_snow_2.vox">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

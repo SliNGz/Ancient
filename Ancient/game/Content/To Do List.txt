@@ -1,0 +1,45 @@
+﻿05/01/2017:
+~~~~~~~~~~~~~~~~
+
+To Do:
+Fix chunk render - rerender neighbor chunks when block is placed or removed
+Improve chunk loader - optimzation (stop working when not needed and lower amount of loops, use lock keyword, unload method)
+Change view distance (fog and farplane) to farest chunks generated
+Create Biomes
+
+Ideas:
+Biome: (no name yet)
+Terrain color - SpringGreen
+Trees color - brown trunk, purple leaves
+
+06/02/2017:
+~~~~~~~~~~~~~~~~
+Add colorizer class, in charge of returning colors of blocks (blocks color depend on type and coordinate)
+
+16/04/2017:
+~~~~~~~~~~~~~~~~
+Add base classes:
+Warrior
+Mage
+Thief
+Bowman
+
+Add stats, few ideas: Strength, Dexterity, Wisdom, Luck.
+Strength - Attack power
+Dexterity - Attack speed and movement speed
+Wisdom - Magic power
+Luck - Increases critical hit chances
+
+Dragon on pogo monster!!!
+
+18/07/2017:
+~~~~~~~~~~~~~~~~
+
+Entity health bar, turns from green to red, depends on percentage of health. √
+NPC, merchandisers for now.
+Damage stat depended, crits. √
+Monsters - Hostile entities.
+Normal inventory!
+Equipment.
+Better drops (quantity variation, randomness, chances, berkins drop variations, etc..). √
+Removing unnecessary variables in entity.
