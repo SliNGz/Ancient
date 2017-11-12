@@ -12,20 +12,6 @@ namespace ancientlib.game.utils
 {
     public static class NetExtensions
     {
-        public static void Write(this BinaryWriter writer, double x, double y, double z)
-        {
-            writer.Write(x);
-            writer.Write(y);
-            writer.Write(z);
-        }
-
-        public static void ReadPosition(this BinaryReader reader, out double x, out double y, out double z)
-        {
-            x = reader.ReadDouble();
-            y = reader.ReadDouble();
-            z = reader.ReadDouble();
-        }
-
         public static void Write(this BinaryWriter writer, int x, int y, int z)
         {
             writer.Write(x);

@@ -14,17 +14,19 @@ namespace ancientlib.game.entity.skill
 {
     public class EntitySkill : Entity
     {
-        private EntityPlayer player;
         private Skill skill;
+        private EntityPlayer player;
 
-        public EntitySkill(World world, EntityPlayer player, Skill skill) : base(world)
+        public EntitySkill(World world, Skill skill) : base(world)
         {
-            this.player = player;
-            SetPosition(player.GetPosition() + skill.GetModelOffset());
-            this.yaw = player.GetYaw();
             this.skill = skill;
-            this.lifeSpan = skill.GetLifeSpan();
+            this.player = skill.GetPlayer();
+            this.yaw = player.GetYaw();
+            this.lifeSpan = skill.GetEntityLifeSpan();
             this.gravity = 0;
+            this.interactWithBlocks = false;
+            this.interactWithEntities = false;
+            SetModelState(skill.GetModelState());
         }
 
         public override void Update(GameTime gameTime)
@@ -48,14 +50,14 @@ namespace ancientlib.game.entity.skill
             return false;
         }
 
-        public override string GetModelName()
-        {
-            return skill.GetModelName();
-        }
-
         public override Vector3 GetModelScale()
         {
             return new Vector3(0.1F, 0.1F, 0.1F);
+        }
+
+        protected override EntityModelState GetDefaultModelState()
+        {
+            return skill.GetModelState();
         }
     }
 }

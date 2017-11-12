@@ -14,6 +14,7 @@ namespace ancientlib.game.log
         private static string default_name = "crash_report";
 
         public static void CreateCrashReport(Exception exception)
+
         {
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);

@@ -43,7 +43,7 @@ namespace ancient.game.client.renderer.chunk
                     }
                 }
 
-                Thread.Sleep(TimeSpan.FromSeconds(1 / 16.0));
+                Thread.Sleep(TimeSpan.FromSeconds(1 / 128.0));
             }
         }
 
@@ -120,8 +120,6 @@ namespace ancient.game.client.renderer.chunk
             if (chunk == null)
                 return;
 
-            WorldRenderer.effect.Parameters["MultiplyColorEnabled"].SetValue(false);
-
             VoxelRenderer.DrawSolid(data, chunk.GetPosition(), Vector3.Zero, 0, 0, 0);
         }
 
@@ -129,8 +127,6 @@ namespace ancient.game.client.renderer.chunk
         {
             if (chunk == null)
                 return;
-
-            WorldRenderer.effect.Parameters["MultiplyColorEnabled"].SetValue(false);
 
             VoxelRenderer.DrawLiquid(data, chunk.GetPosition(), Vector3.Zero, 0, 0, 0);
         }

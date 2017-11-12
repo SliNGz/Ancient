@@ -18,7 +18,6 @@ namespace ancient.game.client.gui
 
         public GuiDisconnect(GuiManager guiManager, string dcMessage) : base(guiManager, null)
         {
-            this.drawWorldBehind = false;
             this.lastGui = guiManager.serverBrowser;
 
             dcText = new GuiText(dcMessage).SetOutline(1);

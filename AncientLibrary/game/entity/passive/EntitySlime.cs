@@ -15,12 +15,12 @@ namespace ancientlib.game.entity.passive
 {
     public class EntitySlime : EntityPet
     {
+        private static EntityModelState DEFAULT = new EntityModelState("slime", 0.85F, 0.85F, 0.85F);
+
         public EntitySlime(World world) : base(world)
         {
             this.maxHealth = 20;
             this.health = maxHealth;
-
-            SetDimensions(0.85F, 0.85F, 0.85F);
 
             this.expReward = 2;
 
@@ -33,6 +33,8 @@ namespace ancientlib.game.entity.passive
             this.colorMultiply = Utils.HSVToRGB(100, 1, 1);
 
             this.food = Items.blueberries;
+
+            SetModelState(DEFAULT);
         }
 
         protected override void DropItems()
@@ -42,29 +44,29 @@ namespace ancientlib.game.entity.passive
             DropItem(Items.blueberries, world.rand.Next(1, 3), 10);
         }
 
-        public override string GetModelName()
-        {
-            return "slime";
-        }
-
         public override Vector3 GetModelScale()
         {
             return new Vector3(0.05F, 0.05F, 0.05F);
         }
 
-        public override double GetBaseSpeed()
+        public override float GetBaseSpeed()
         {
-            return 3.5;
+            return 3.5F;
         }
 
-        public override double GetBaseJumpSpeed()
+        public override float GetBaseJumpSpeed()
         {
-            return 7.0;
+            return 7.0F;
         }
 
         public override bool IsHostile()
         {
             return true;
+        }
+
+        protected override EntityModelState GetDefaultModelState()
+        {
+            return DEFAULT;
         }
     }
 }

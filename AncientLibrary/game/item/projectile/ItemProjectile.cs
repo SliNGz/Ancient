@@ -1,4 +1,5 @@
 ﻿using ancientlib.game.classes;
+using ancientlib.game.entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,8 @@ namespace ancientlib.game.item.projectile
     {
         protected float speed;
 
-        // Dimensions - for the EntityProjectile creation based on item.
-        protected float width;
-        protected float height;
-        protected float length;
+        // ModelState - for the EntityProjectile creation based on item.
+        private EntityModelState modelState;
 
         protected float gravity;
 
@@ -23,9 +22,7 @@ namespace ancientlib.game.item.projectile
             this.maxItemStack = 64;
             this.speed = speed;
 
-            this.width = width;
-            this.height = height;
-            this.length = length;
+            modelState = new EntityModelState(GetModelName(), width, height, length);;
 
             this.gravity = gravity;
         }
@@ -37,19 +34,24 @@ namespace ancientlib.game.item.projectile
             return this.speed;
         }
 
+        public EntityModelState GetModelState()
+        {
+            return this.modelState;
+        }
+
         public float GetWidth()
         {
-            return this.width;
+            return this.modelState.GetWidth();
         }
 
         public float GetHeight()
         {
-            return this.height;
+            return this.modelState.GetHeight();
         }
 
         public float GetLength()
         {
-            return this.length;
+            return this.modelState.GetLength();
         }
 
         public float GetGravity()

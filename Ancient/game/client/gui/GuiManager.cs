@@ -5,6 +5,7 @@ using ancientlib.game.utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace ancient.game.client.gui
@@ -69,6 +70,9 @@ namespace ancient.game.client.gui
 
         public void Update(MouseState mouseState)
         {
+            if (!Ancient.ancient.IsActive)
+                return;
+
             this.backgroundHue += 0.025F;
             this.backgroundColor = Utils.HSVToRGB(backgroundHue, 0.35F, 1);
 
@@ -91,7 +95,8 @@ namespace ancient.game.client.gui
             else
                 Ancient.ancient.device.Clear(currentGui.GetBackgroundColor());
 
-            currentGui.Draw3D();
+            if (currentGui != ingame && currentGui != inventory)
+                currentGui.Draw3D();
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
 

@@ -1,5 +1,6 @@
 ﻿using ancient.game.entity.player;
 using ancient.game.world;
+using ancientlib.game.entity;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace ancientlib.game.item
         protected Vector3 modelScale;
         protected Vector3 modelOffset;
         protected Vector3 dropScale;
+        protected EntityModelState dropModelState;
 
         public Item(string name)
         {
@@ -38,6 +40,8 @@ namespace ancientlib.game.item
             this.modelScale = new Vector3(0.01F, 0.01F, 0.01F);
             this.modelOffset = new Vector3(0.65f, -0.3f, -1f);
             this.dropScale = new Vector3(0.025F, 0.025F, 0.025F);
+
+            this.dropModelState = new EntityModelState(GetModelName(), 0.25F, 0.25F, 0.25F);
         }
 
         public virtual void Use(EntityPlayer player)
@@ -171,6 +175,11 @@ namespace ancientlib.game.item
         public virtual int GetCooldown(EntityPlayer player)
         {
             return this.cooldown;
+        }
+
+        public EntityModelState GetDropModelState()
+        {
+            return this.dropModelState;
         }
     }
 }

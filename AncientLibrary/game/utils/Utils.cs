@@ -177,8 +177,12 @@ namespace ancientlib.game.utils
 
         public static int GetLightValueAt(World world, double x, double y, double z)
         {
-            int blocklight = world.GetBlocklight((int)x, (int)y, (int)z);
-            int sunlight = world.GetSunlight((int)x, (int)y, (int)z);
+            int x1 = (int)Math.Round(x);
+            int y1 = (int)Math.Round(y);
+            int z1 = (int)Math.Round(z);
+
+            int blocklight = world.GetBlocklight(x1, y1, z1);
+            int sunlight = world.GetSunlight(x1, y1, z1);
             int light = Math.Max(blocklight, sunlight);
 
             return light;

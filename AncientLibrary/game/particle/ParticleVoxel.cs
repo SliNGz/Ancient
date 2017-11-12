@@ -16,7 +16,7 @@ namespace ancientlib.game.particle
             this.scale = new Vector3(0.2F, 0.2F, 0.2F);
             this.color = Blocks.dirt.GetColor();
             this.startColor = color;
-            this.endColor = Color.LightGoldenrodYellow;
+            this.endColor = Color.Black;
             this.lifeSpan = 192;
         }
 

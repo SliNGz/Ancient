@@ -14,7 +14,7 @@ namespace ancient.game.client.gui
 {
     public class GuiCameraScroller : Gui
     {
-        protected float distance;
+        public float distance;
 
         protected float minDistance;
         protected float maxDistance;
@@ -44,7 +44,6 @@ namespace ancient.game.client.gui
 
         public override void Draw3D()
         {
-            Ancient.ancient.world.GetRenderer().ResetGraphics(backgroundColor);
             WorldRenderer.effect.Parameters["FogEnabled"].SetValue(false);
             WorldRenderer.effect.Parameters["View"].SetValue(camera.GetViewMatrix(Ancient.ancient.player.GetHeadYaw(), Ancient.ancient.player.GetHeadPitch()));
             WorldRenderer.effect.Parameters["Projection"].SetValue(camera.GetProjectionMatrix());

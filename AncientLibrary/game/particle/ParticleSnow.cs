@@ -13,10 +13,7 @@ namespace ancientlib.game.particle
         public ParticleSnow(World world) : base(world)
         {
             SetVelocity(new Vector3(0, -0.7F, 0));
-            //this.rotationVelocity = new Vector3(1.5F, 1.5F, 1.5F);
-            this.yawVelocity = 1.5F;
-            this.pitchVelocity = 1.5F;
-            this.rollVelocity = 1.5F;
+            SetRotationVelocity(Vector3.One * 1.5F);
             this.scale = Vector3.One * 0.025F;
             this.lifeSpan = 832;
             this.modelNum = world.rand.Next(4);

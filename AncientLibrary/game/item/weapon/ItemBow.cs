@@ -22,7 +22,7 @@ namespace ancientlib.game.item
 
         public override void Use(EntityPlayer player)
         {
-            player.GetWorld().SpawnEntity(new EntityExplodingArrow(player.GetWorld(), player, player.GetProjectileInUse(this)));
+            player.GetWorld().SpawnEntity(new EntityArrow(player.GetWorld(), player, (ItemArrow)player.GetProjectileInUse(this)));
             base.Use(player);
         }
 

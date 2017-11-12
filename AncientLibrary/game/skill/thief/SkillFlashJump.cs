@@ -8,49 +8,79 @@ using ancientlib.game.classes;
 using Microsoft.Xna.Framework;
 using ancientlib.game.entity.skill;
 using ancientlib.game.utils;
+using ancientlib.game.entity;
 
 namespace ancientlib.game.skill.thief
 {
     public class SkillFlashJump : Skill
     {
-        private float distance;
+        private static EntityModelState DEFAULT = new EntityModelState("flash_jump", 0, 0, 0);
 
         public SkillFlashJump(EntityPlayer player) : base(player)
         {
-            this.name = "Flash Jump";
-            this.manaConsume = 70;
-            this.distance = 10;
-            this.maxLevel = 10;
-            this.cooldown = Utils.TicksInSecond * 10;
-            this.lifeSpan = 384;
+            SetLevel(10);
         }
 
         public override void Activate()
         {
             base.Activate();
-            player.GetWorld().SpawnEntity(new EntitySkill(player.GetWorld(), player, this));
+            EntitySkill entity = new EntitySkill(player.GetWorld(), this);
+            entity.SetPosition(player.GetPosition() + new Vector3(0, 3, 0));
+            player.GetWorld().SpawnEntity(entity);
 
             Vector3 jumpVector = Vector3.Transform(Vector3.Forward, Matrix.CreateFromYawPitchRoll(player.GetHeadYaw(), MathHelper.ToRadians(45), 0));
             jumpVector.Normalize();
 
+            float distance = GetDistance();
             player.AddVelocity(jumpVector * new Vector3(distance, distance / 5F, distance));
         }
 
-        public override Vector3 GetModelOffset()
+        public int GetDistance()
         {
-            return new Vector3(0, 3, 0);
+            int initalDistance = 7;
+            float distanceFactor = 1.15F;
+            return (int)(initalDistance * Math.Pow(distanceFactor, level));
         }
 
-        public override string GetSoundName()
+        public override string GetActivationSound(Random rand)
         {
             return "flash_jump";
         }
 
-        public override void OnLevelUp()
+
+        public override int GetEntityLifeSpan()
         {
-            this.manaConsume = (int)(manaConsume * 0.95F);
-            this.distance = MathHelper.Lerp(10, 50, (level - 1) / (float)(maxLevel - 1));
-            this.cooldown = (int)(cooldown * 0.9F);
+            return 512;
+        }
+
+        public override EntityModelState GetModelState()
+        {
+            return DEFAULT;
+        }
+
+        public override int GetMaxLevel()
+        {
+            return 10;
+        }
+
+        public override string GetName()
+        {
+            return "Flash Jump";
+        }
+
+        protected override void UpdateCooldown()
+        {
+            int initialCooldown = 960;
+            float cooldownFactor = 0.675F;
+            this.cooldown = (int)(initialCooldown * Math.Pow(cooldownFactor, level));
+            Console.WriteLine(cooldown);
+        }
+
+        protected override void UpdateManaConsumption()
+        {
+            int initialConsumption = 70;
+            float consumptionFactor = 0.87F;
+            this.manaConsumption = (int)(initialConsumption * Math.Pow(consumptionFactor, level));
         }
     }
 }

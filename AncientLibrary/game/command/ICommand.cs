@@ -10,5 +10,7 @@ namespace ancientlib.game.command
     public interface ICommand
     {
         void Execute(EntityPlayer sender, string[] args);
+
+        int GetMinArgs();
     }
 }

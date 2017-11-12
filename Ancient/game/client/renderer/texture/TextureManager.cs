@@ -27,14 +27,16 @@ namespace ancient.game.client.renderer.texture
             LoadTexture(content, "gui/component/button/button2");
 
             LoadTexture(content, "gui/player/bar_frame");
+            LoadTexture(content, "gui/player/exp_frame");
             LoadTexture(content, "gui/player/health_bar");
             LoadTexture(content, "gui/player/mana_bar");
             LoadTexture(content, "gui/player/exp_bar");
             LoadTexture(content, "gui/player/use_bar");
-            LoadTexture(content, "gui/player/inventory_bar");
 
             LoadTexture(content, "gui/inventory/inventory_window");
             LoadTexture(content, "gui/inventory/inventory_slots");
+            LoadTexture(content, "gui/inventory/inventory_bar");
+            LoadTexture(content, "gui/inventory/selected_slot");
         }
 
         private static void LoadTexture(ContentManager content, string path)

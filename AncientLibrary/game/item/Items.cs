@@ -43,6 +43,8 @@ namespace ancientlib.game.init
 
         //Projectiles
         public static readonly ItemArrow steelArrow = new ItemArrow("Steel Arrow", 1, 80, 0.1F, 0.1F, 0.1F, World.GRAVITY);
+        public static readonly ItemArrow explosiveArrow = new ItemArrow("Explosive Arrow", 75, 100, 0.1F, 0.1F, 0.1F, World.GRAVITY);
+        public static readonly ItemArrow explosiveArrowSkill = new ItemArrow("Explosive Arrow", 0, 35, 0.1F, 0.1F, 0.1F, World.GRAVITY);
 
         //Bows
         public static readonly ItemBow woodenBow = new ItemBow("Wooden Bow", 9, 32);
@@ -83,12 +85,14 @@ namespace ancientlib.game.init
 
             //Swords
             InitializeItem(256, sword);
+            InitializeItem(257, sword2);
 
             //Bows
             InitializeItem(512, woodenBow);
 
             //Projectiles
             InitializeItem(768, steelArrow);
+            InitializeItem(769, explosiveArrow);
 
             //Tame
             InitializeItem(1024, carrot);

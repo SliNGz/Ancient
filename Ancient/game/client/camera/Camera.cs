@@ -42,10 +42,10 @@ namespace ancient.game.camera
             if (distance == 0)
                 return Matrix.CreateLookAt(Vector3.Zero, GetTargetVector(yaw, pitch), Vector3.Up);
             else
-                return Matrix.CreateLookAt(GetTargetVector(yaw, pitch) * distance, Vector3.Zero, Vector3.Up);
+                return Matrix.CreateLookAt(GetTargetVector(yaw, pitch) * -distance, Vector3.Zero, Vector3.Up);
         }
 
-        private void UpdateProjection()
+        public void UpdateProjection()
         {
             this.projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(fov), ancient.device.DisplayMode.AspectRatio, nearPlane, farPlane);
         }

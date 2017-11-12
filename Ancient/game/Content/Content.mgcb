@@ -46,9 +46,6 @@
 #begin model/entity/passive/slime.vox
 /copy:model/entity/passive/slime.vox
 
-#begin model/entity/passive/tortoise.vox
-/copy:model/entity/passive/tortoise.vox
-
 #begin model/entity/player/eyes/female/eyes_female_0.vox
 /copy:model/entity/player/eyes/female/eyes_female_0.vox
 
@@ -99,12 +96,6 @@
 
 #begin model/entity/player/hair/hair_1.vox
 /copy:model/entity/player/hair/hair_1.vox
-
-#begin model/entity/player/races/elf.vox
-/copy:model/entity/player/races/elf.vox
-
-#begin model/entity/player/races/human.vox
-/copy:model/entity/player/races/human.vox
 
 #begin model/entity/world/berkin.vox
 /copy:model/entity/world/berkin.vox
@@ -262,18 +253,6 @@
 /processorParam:TextureFormat=Color
 /build:texture/gui/player/health_bar.png
 
-#begin texture/gui/player/inventory_bar.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:texture/gui/player/inventory_bar.png
-
 #begin texture/gui/player/mana_bar.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -384,4 +363,58 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:sound\item\bow\shoot_arrow_3.wav
+
+#begin model/item/projectile/arrow/explosive_arrow.vox
+/copy:model/item/projectile/arrow/explosive_arrow.vox
+
+#begin model/entity/player/races/human/human.vox
+/copy:model/entity/player/races/human/human.vox
+
+#begin model/entity/player/races/elf/elf.vox
+/copy:model/entity/player/races/elf/elf.vox
+
+#begin model/entity/player/races/human/human_sitting.vox
+/copy:model/entity/player/races/human/human_sitting.vox
+
+#begin model/entity/passive/tortoise/tortoise.vox
+/copy:model/entity/passive/tortoise/tortoise.vox
+
+#begin model/entity/passive/tortoise/tortoise_sleeping.vox
+/copy:model/entity/passive/tortoise/tortoise_sleeping.vox
+
+#begin texture/gui/player/exp_frame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/player/exp_frame.png
+
+#begin texture/gui/inventory/selected_slot.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/inventory/selected_slot.png
+
+#begin texture/gui/inventory/inventory_bar.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/inventory/inventory_bar.png
 

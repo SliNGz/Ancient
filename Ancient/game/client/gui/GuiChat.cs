@@ -97,6 +97,9 @@ namespace ancient.game.client.gui
                 case Keys.Enter:
                     OnEnterPressed();
                     break;
+                case Keys.Tab:
+                    OnTabPressed();
+                    break;
             }
         }
 
@@ -111,6 +114,29 @@ namespace ancient.game.client.gui
                 NetClient.instance.SendPacket(new PacketPlayerChat(text.GetText()));
 
             text.SetText("");
+        }
+
+        private void OnTabPressed()
+        {
+            if (this.text.GetText().Length == 0)
+                return;
+
+            string[] args = this.text.GetText().Split(' ');
+            string text = args[args.Length - 1];
+
+            if (text.StartsWith("/"))
+            {
+                text = text.Remove(0, 1);
+
+                try
+                {
+                    text = CommandHandler.commands.First(x => x.Key.StartsWith(text)).Key;
+                    text = "/" + text;
+                    this.text.SetText(text);
+                }
+                catch(InvalidOperationException ex)
+                { }
+            }
         }
     }
 }

@@ -77,7 +77,7 @@ namespace ancient.game.renderers.voxel
                             if (x < voxels.GetLength(0) - 1)
                                 east = voxels[x + 1, y, z] == Color.Transparent;
 
-                            /* y - voxels.GetLength(1) - enitities' position is head position and not foot position.
+                            /* y - voxels.GetLength(1) - entities' position is head position and not foot position.
                              * this subtraction renders them at the proper height. */
                             CreateVoxel(new Vector3(x, y - voxels.GetLength(1), z), voxels[x, y, z], 1, down, up, north, south, west, east);
                         }

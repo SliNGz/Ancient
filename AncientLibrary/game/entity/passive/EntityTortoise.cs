@@ -12,13 +12,14 @@ namespace ancientlib.game.entity
 {
     public class EntityTortoise : EntityMount
     {
+        private static EntityModelState DEFAULT = new EntityModelState("tortoise", 1.4f, 1.1f, 1.4f);
+        private static EntityModelState SLEEPING = new EntityModelState("tortoise_sleeping", 1.4f, 0.9F, 1.4f);
+
         public EntityTortoise(World world) : base(world)
         {
             this.maxHealth = 100000;
             this.health = maxHealth;
-            this.runningSpeed = 1.25;
-
-            SetDimensions(2.8f, 2.2f, 2.8f);
+            this.runningSpeed = 1.25F;
 
             this.expReward = 3;
 
@@ -30,6 +31,7 @@ namespace ancientlib.game.entity
             this.aiManager.AddTask(new EntityAISeemIdle(this, 4));
 
             this.food = Items.carrot;
+            SetModelState(DEFAULT);
         }
 
         protected override void DropItems()
@@ -43,19 +45,24 @@ namespace ancientlib.game.entity
             return new Vector3(0, owner.GetHeight(), 0);
         }
 
-        public override string GetModelName()
+        public override float GetBaseSpeed()
         {
-            return "tortoise";
+            return 3.75F;
         }
 
-        public override double GetBaseSpeed()
+        public override float GetBaseJumpSpeed()
         {
-            return 3.75;
+            return 5.0F;
         }
 
-        public override double GetBaseJumpSpeed()
+        public override Vector3 GetModelScale()
         {
-            return 5.0;
+            return new Vector3(0.05F, 0.05F, 0.05F);
+        }
+
+        protected override EntityModelState GetDefaultModelState()
+        {
+            return DEFAULT;
         }
     }
 }

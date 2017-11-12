@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using ancient.game.utils;
 using ancientlib.game.network.packet.common.status;
 using ancient.game.client.particle;
+using ancient.game.client.renderer.entity;
 
 namespace ancient.game
 {
@@ -57,8 +58,6 @@ namespace ancient.game
 
         public KeyboardState keyState;
         public KeyboardState oldKeyState;
-
-        public bool isActive;
 
         private double elapsedTime;
         public int frameRate = 0;
@@ -110,14 +109,15 @@ namespace ancient.game
 
                 this.keyDispatcher = new KeyboardDispatcher(Window);
 
+                this.player = new EntityPlayer(null);
+
                 this.guiManager = new GuiManager();
+
+                this.inputManager = new PlayerInputManager();
 
                 effect = Content.Load<Effect>("effect");
 
                 InitializeGame();
-
-                this.player = new EntityPlayer(null);
-                this.inputManager = new PlayerInputManager();
 
                 this.netClient = new NetClient();
 
@@ -180,8 +180,6 @@ namespace ancient.game
             mouseState = Mouse.GetState();
             keyState = Keyboard.GetState();
 
-            isActive = IsActive;
-
             inputManager.Update(gameTime);
 
             netClient.Update();
@@ -220,6 +218,7 @@ namespace ancient.game
             ModelDatabase.Initialize();
             KeyBindings.Initialize();
             ClientPacketHandlers.Initialize();
+            EntityRenderers.Initialize();
         }
 
         public void ToggleFullscreen()

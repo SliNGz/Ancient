@@ -26,13 +26,13 @@ namespace ancient.game.entity
 
         protected int id;
 
-        protected double x;
-        protected double y;
-        protected double z;
+        protected float x;
+        protected float y;
+        protected float z;
 
-        protected double xVelocity;
-        protected double yVelocity;
-        protected double zVelocity;
+        protected float xVelocity;
+        protected float yVelocity;
+        protected float zVelocity;
 
         protected Vector3 movement;
 
@@ -40,9 +40,9 @@ namespace ancient.game.entity
         protected float pitch;
         protected float roll;
 
-        public float yawVelocity;
-        public float pitchVelocity;
-        public float rollVelocity;
+        protected float yawVelocity;
+        protected float pitchVelocity;
+        protected float rollVelocity;
 
         protected float yawReach;
         protected float pitchReach;
@@ -56,15 +56,15 @@ namespace ancient.game.entity
         protected BoundingBox boundingBox;
         public float gravity;
 
-        protected double deltaTime;
+        protected float deltaTime;
 
-        protected double speed;
+        protected float speed;
 
         protected bool noClip;
 
-        private double xServer;
-        private double yServer;
-        private double zServer;
+        private float xServer;
+        private float yServer;
+        private float zServer;
 
         protected bool onGround;
 
@@ -85,6 +85,8 @@ namespace ancient.game.entity
 
         protected bool interactWithBlocks; // Whether or not this entity will interact in any way with blocks.
         protected bool interactWithEntities; // Whether or not this entity will interact in any way with entities.
+
+        private EntityModelState modelState;
 
         protected Entity(World world)
         {
@@ -116,7 +118,7 @@ namespace ancient.game.entity
 
         public virtual void Update(GameTime gameTime)
         {
-            this.deltaTime = gameTime.ElapsedGameTime.TotalSeconds * 2;
+            this.deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
             ticksExisted++;
 
             if (ShouldInterpolate())
@@ -243,7 +245,7 @@ namespace ancient.game.entity
             }
         }
 
-        public void Move(double x, double y, double z)
+        public void Move(float x, float y, float z)
         {
             if (x != 0 || y != 0 || z != 0)
                 AddPosition(x * deltaTime, y * deltaTime, z * deltaTime);
@@ -271,10 +273,10 @@ namespace ancient.game.entity
 
         public Vector3 GetPosition()
         {
-            return new Vector3((float)this.x, (float)this.y, (float)this.z);
+            return new Vector3(this.x, this.y, this.z);
         }
 
-        public void SetPosition(double x, double y, double z)
+        public void SetPosition(float x, float y, float z)
         {
             this.x = x;
             this.y = y;
@@ -287,7 +289,7 @@ namespace ancient.game.entity
             SetPosition(position.X, position.Y, position.Z);
         }
 
-        public void AddPosition(double x, double y, double z)
+        public void AddPosition(float x, float y, float z)
         {
             SetPosition(this.x + x, this.y + y, this.z + z);
         }
@@ -297,42 +299,42 @@ namespace ancient.game.entity
             AddPosition(add.X, add.Y, add.Z);
         }
 
-        public void SetX(double x)
+        public void SetX(float x)
         {
             SetPosition(x, this.y, this.z);
         }
 
-        public double GetX()
+        public float GetX()
         {
             return this.x;
         }
 
-        public void SetY(double y)
+        public void SetY(float y)
         {
             SetPosition(this.x, y, this.z);
         }
 
-        public double GetY()
+        public float GetY()
         {
             return this.y;
         }
 
-        public void SetZ(double z)
+        public void SetZ(float z)
         {
             SetPosition(this.x, this.y, z);
         }
 
-        public double GetZ()
+        public float GetZ()
         {
             return this.z;
         }
 
         public Vector3 GetVelocity()
         {
-            return new Vector3((float)this.xVelocity, (float)this.yVelocity, (float)this.zVelocity);
+            return new Vector3(this.xVelocity, this.yVelocity, this.zVelocity);
         }
 
-        public void SetVelocity(double xVelocity, double yVelocity, double zVelocity)
+        public void SetVelocity(float xVelocity, float yVelocity, float zVelocity)
         {
             this.xVelocity = xVelocity;
             this.yVelocity = yVelocity;
@@ -346,7 +348,7 @@ namespace ancient.game.entity
             this.zVelocity = velocity.Z;
         }
 
-        public void AddVelocity(double xVelocity, double yVelocity, double zVelocity)
+        public void AddVelocity(float xVelocity, float yVelocity, float zVelocity)
         {
             this.xVelocity += xVelocity;
             this.yVelocity += yVelocity;
@@ -360,47 +362,47 @@ namespace ancient.game.entity
             this.zVelocity += velocity.Z;
         }
 
-        public double GetXVelocity()
+        public float GetXVelocity()
         {
             return this.xVelocity;
         }
 
-        public void SetXVelocity(double xVelocity)
+        public void SetXVelocity(float xVelocity)
         {
             this.xVelocity = xVelocity;
         }
 
-        public void AddXVelocity(double add)
+        public void AddXVelocity(float add)
         {
             this.xVelocity += add;
         }
 
-        public double GetYVelocity()
+        public float GetYVelocity()
         {
             return this.yVelocity;
         }
 
-        public void SetYVelocity(double yVelocity)
+        public void SetYVelocity(float yVelocity)
         {
             this.yVelocity = yVelocity;
         }
 
-        public void AddYVelocity(double add)
+        public void AddYVelocity(float add)
         {
             this.yVelocity += add;
         }
 
-        public double GetZVelocity()
+        public float GetZVelocity()
         {
             return this.zVelocity;
         }
 
-        public void SetZVelocity(double zVelocity)
+        public void SetZVelocity(float zVelocity)
         {
             this.zVelocity = zVelocity;
         }
 
-        public void AddZVelocity(double add)
+        public void AddZVelocity(float add)
         {
             this.zVelocity += add;
         }
@@ -514,7 +516,7 @@ namespace ancient.game.entity
             return this.speed;
         }
 
-        public void SetSpeed(double speed)
+        public void SetSpeed(float speed)
         {
             this.speed = speed;
         }
@@ -753,7 +755,7 @@ namespace ancient.game.entity
                 mount.SetNoClip(noClip);
         }
 
-        public void SetServerPosition(double x, double y, double z)
+        public void SetServerPosition(float x, float y, float z)
         {
             this.xServer = x;
             this.yServer = y;
@@ -765,37 +767,37 @@ namespace ancient.game.entity
             SetServerPosition(position.X, position.Y, position.Z);
         }
 
-        public void SetXServer(double x)
+        public void SetXServer(float x)
         {
             this.xServer = x;
         }
 
-        public double GetXServer()
+        public float GetXServer()
         {
             return this.xServer;
         }
 
-        public void SetYServer(double y)
+        public void SetYServer(float y)
         {
             this.yServer = y;
         }
 
-        public double GetYServer()
+        public float GetYServer()
         {
             return this.yServer;
         }
 
-        public void SetZServer(double z)
+        public void SetZServer(float z)
         {
             this.zServer = z;
         }
 
-        public double GetZServer()
+        public float GetZServer()
         {
             return this.zServer;
         }
 
-        public void AddServerPosition(double x, double y, double z)
+        public void AddServerPosition(float x, float y, float z)
         {
             SetServerPosition(xServer + x, yServer + y, zServer + z);
         }
@@ -858,6 +860,12 @@ namespace ancient.game.entity
 
                 if (entity != this)
                 {
+                    if (collidedEntities.ContainsKey(entity))
+                    {
+                        Console.WriteLine("WTF: " + entity);
+                        continue;
+                    }
+
                     if (boundingBox.Intersects(entity.GetBoundingBox()))
                         collidedEntities.Add(entity, entity.GetBoundingBox());
                 }
@@ -888,7 +896,7 @@ namespace ancient.game.entity
                 this.speedModifier = speedModifier;
         }
 
-        public Color GetMultiplyColor()
+        public virtual Color GetMultiplyColor()
         {
             return this.colorMultiply;
         }
@@ -958,6 +966,7 @@ namespace ancient.game.entity
             this.mount.SetRidingEntity(this);
             SetPosition(GetPosition() + this.mount.GetMountOffset());
             this.mount.SetNoClip(noClip);
+            SetModelState(GetSittingModelState());
         }
 
         public void Dismount()
@@ -967,6 +976,7 @@ namespace ancient.game.entity
                 this.mount.SetRidingEntity(null);
                 this.mount.SetNoClip(false);
                 SetPosition(GetPosition() + new Vector3(width, 0, length) + new Vector3(world.rand.Next(1, 3), 0, world.rand.Next(1, 3)));
+                SetModelState(GetDefaultModelState());
 
                 this.mount = null;
             }
@@ -977,16 +987,34 @@ namespace ancient.game.entity
             return this.mount != null;
         }
 
-        public abstract string GetModelName();
+        public EntityModelState GetModelState()
+        {
+            return this.modelState;
+        }
+
+        public void SetModelState(EntityModelState modelState)
+        {
+            this.modelState = modelState;
+
+            if (modelState != null)
+                SetDimensions(modelState.GetWidth(), modelState.GetHeight(), modelState.GetLength());
+        }
+
+        protected abstract EntityModelState GetDefaultModelState();
+
+        protected virtual EntityModelState GetSittingModelState()
+        {
+            return this.modelState;
+        }
 
         public abstract Vector3 GetModelScale();
 
-        public virtual double GetBaseSpeed()
+        public virtual float GetBaseSpeed()
         {
-            return 1.0;
+            return 1.0F;
         }
 
-        public virtual double GetSpeedAddition()
+        public virtual float GetSpeedAddition()
         {
             return 0;
         }
@@ -1023,11 +1051,6 @@ namespace ancient.game.entity
             return lookAtPlayer;
         }
 
-        public virtual bool IsAffectedByLight()
-        {
-            return true;
-        }
-
         protected virtual bool ShouldInterpolate()
         {
             return world.IsRemote() && this != world.GetMyPlayer();
@@ -1062,6 +1085,53 @@ namespace ancient.game.entity
         public bool IsRiding()
         {
             return this.mount != null;
+        }
+
+        public float GetYawVelocity()
+        {
+            return this.yawVelocity;
+        }
+
+        public void SetYawVelocity(float yawVelocity)
+        {
+            this.yawVelocity = yawVelocity;
+        }
+
+        public float GetPitchVelocity()
+        {
+            return this.pitchVelocity;
+        }
+
+        public void SetPitchVelocity(float pitchVelocity)
+        {
+            this.pitchVelocity = pitchVelocity;
+        }
+
+        public float GetRollVelocity()
+        {
+            return this.rollVelocity;
+        }
+
+        public void SetRollVelocity(float rollVelocity)
+        {
+            this.rollVelocity = rollVelocity;
+        }
+
+        public void SetRotationVelocity(float yawVelocity, float pitchVelocity, float rollVelocity)
+        {
+            this.yawVelocity = yawVelocity;
+            this.pitchVelocity = pitchVelocity;
+            this.rollVelocity = rollVelocity;
+        }
+
+        public void SetRotationVelocity(Vector3 rotationVelocity)
+        {
+            SetRotationVelocity(rotationVelocity.X, rotationVelocity.Y, rotationVelocity.Z);
+        }
+
+        public virtual string GetRenderEntity()
+        {
+            return "entity";
         }
 
         public virtual void Read(BinaryReader reader)

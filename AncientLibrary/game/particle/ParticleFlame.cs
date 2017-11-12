@@ -15,13 +15,13 @@ namespace ancientlib.game.particle
         public ParticleFlame(World world) : base(world)
         {
             SetVelocity(new Vector3(0, 0.1F, 0));
-            //this.rotationVelocity = new Vector3(1.5F, 1.5F, 0);
             this.yawVelocity = 1.5F;
             this.pitchVelocity = 1.5F;
             this.color = COLORS[world.rand.Next(COLORS.Length)];
             this.startColor = color;
             this.endColor = Color.Black;
             this.lifeSpan = 512;
+            this.interactWithBlocks = false;
         }
 
         public override string GetModelName()

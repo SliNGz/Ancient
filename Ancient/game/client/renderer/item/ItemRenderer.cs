@@ -6,6 +6,7 @@ using ancient.game.renderers.model;
 using ancient.game.renderers.voxel;
 using ancient.game.renderers.world;
 using ancientlib.game.init;
+using ancientlib.game.inventory;
 using ancientlib.game.item;
 using ancientlib.game.item.weapon;
 using ancientlib.game.utils;
@@ -33,14 +34,10 @@ namespace ancient.game.client.renderer.item
         {
             EntityPlayer player = Ancient.ancient.player;
 
-            /* instead of Vector3.Forward - renders the item relative to the camera based on the new vector.
-               lookAt.Z - how far is the object from the camera - MUST BE LARGER THAN NEARPLANE OF CAMERA - so it wont clip through the camera,
-               MUST BE SMALLER THAN PLAYER WIDTH OR LENGTH - so it wont clip through other models*/
-
-            WorldRenderer.effect.Parameters["MultiplyColorEnabled"].SetValue(true);
-
-            if (WorldRenderer.camera.distance > 0 || player.GetItemInHand() == null)
+            if (WorldRenderer.camera.distance != 0 || player.GetItemInHand() == null)
                 return;
+
+            Ancient.ancient.device.DepthStencilState = DepthStencilState.None;
 
             Item item = player.GetItemInHand().GetItem();
 
@@ -58,8 +55,6 @@ namespace ancient.game.client.renderer.item
                     Draw(item, position, player.GetHeadYaw() + player.handYaw - MathHelper.PiOver2, player.handPitch, -player.GetHeadPitch() + player.handRoll, true);
                 }
             }
-
-            WorldRenderer.effect.Parameters["MultiplyColorEnabled"].SetValue(false);
         }
 
         public static void Draw(Item item, Vector3 position, float yaw, float pitch, float roll, bool exactPosition = false)

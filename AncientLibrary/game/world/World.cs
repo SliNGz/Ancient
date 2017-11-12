@@ -489,13 +489,8 @@ namespace ancient.game.world
                                 velocity.Y += explosionSize * 3;
 
                                 voxel.SetVelocity(velocity);
-                                // voxel.SetAcceleration(Vector3.Down * GRAVITY);
-                                //voxel.SetRotationVelocity(Vector3.One * (float)rand.NextDouble() * 7F);
                                 voxel.gravity = GRAVITY;
-                                float rot = (float)rand.NextDouble() * 7F;
-                                voxel.yawVelocity = rot;
-                                voxel.pitchVelocity = rot;
-                                voxel.rollVelocity = rot;
+                                voxel.SetRotationVelocity(Vector3.One * (float)rand.NextDouble() * 7F);
                                 voxel.SetScale(Vector3.One * rand.Next(20, 100) / 100F);
                                 voxel.SetColor(block.GetColor());
                                 voxel.SetEndColor(block.GetColor());

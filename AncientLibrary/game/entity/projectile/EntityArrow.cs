@@ -13,7 +13,7 @@ namespace ancientlib.game.entity.projectile
         public EntityArrow(World world) : base(world)
         { }
 
-        public EntityArrow(World world, EntityLiving shooter, ItemProjectile projectile) : base(world, shooter, projectile)
+        public EntityArrow(World world, EntityLiving shooter, ItemArrow arrow) : base(world, shooter, arrow)
         { }
     }
 }

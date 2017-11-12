@@ -1,11 +1,14 @@
 ﻿using ancient.game.world;
+using ancient.game.world.block;
 using ancientlib.game.classes;
+using ancientlib.game.constants;
 using ancientlib.game.entity.player;
 using ancientlib.game.entity.world;
 using ancientlib.game.init;
 using ancientlib.game.inventory;
 using ancientlib.game.item;
 using ancientlib.game.item.projectile;
+using ancientlib.game.particle;
 using ancientlib.game.skill;
 using ancientlib.game.utils;
 using ancientlib.game.world.biome;
@@ -43,26 +46,30 @@ namespace ancient.game.entity.player
 
         protected bool isJumping;
 
+        private int runningTicks;
+
         public EntityPlayer(World world) : base(world)
         {
             this.name = "UnnamedPlayer";
 
             this.maxHealth = 250;
             this.health = maxHealth;
-            this.runningSpeed = 1.8;
+            this.maxMana = 250;
+            this.mana = maxMana;
+
+            this.runningSpeed = 1.8F;
 
             this.renderDistance = 8;
 
             this.noClip = false;
 
-            this.inventory = new Inventory(10, 4);
-            inventory.AddItem(new ItemStack(Items.dagger, 1));
-            inventory.AddItem(new ItemStack(Items.campfire, 64));
-            inventory.AddItem(new ItemStack(Items.staff, 1));
-            inventory.AddItem(new ItemStack(Items.sword2, 1));
-            inventory.AddItem(new ItemStack(Items.woodenBow, 1));
-            inventory.AddItem(new ItemStack(Items.steelArrow, 64));
-            inventory.AddItem(new ItemStack(Items.carrot, 64));
+            this.inventory = new Inventory(40, 10);
+            inventory.AddItem(new ItemStack(Items.dagger, 64));
+            inventory.AddItem(new ItemStack(Items.staff, 64));
+            inventory.AddItem(new ItemStack(Items.log, 64));
+            inventory.AddItem(new ItemStack(Items.sand, 64));
+            inventory.AddItem(new ItemStack(Items.woodenBow, 64));
+            inventory.AddItem(new ItemStack(Items.blueberries_bush, 64));
 
             this.handSlot = 0;
 
@@ -79,7 +86,7 @@ namespace ancient.game.entity.player
             this.handPitch = 0;
             this.handRoll = 0;
 
-            this.level = 1;
+            this.level = 255;
 
             this.handDefault = new ItemStack(Items.air);
         }
@@ -87,21 +94,47 @@ namespace ancient.game.entity.player
         public override void Update(GameTime gameTime)
         {
             SetMovement(inputVector);
+            UpdateRunningParticles();
+
             base.Update(gameTime);
-            UpdateSkills(gameTime);
+            UpdateSkills();
             UpdateItemInHand();
             UpdateItemChange();
             UpdateHandRotation();
-
             inputVector = Vector3.Zero;
         }
 
-        private void UpdateSkills(GameTime gameTime)
+        private void UpdateRunningParticles()
+        {
+            if (isRunning)
+            {
+                runningTicks++;
+
+                if (runningTicks % 16 == 0)
+                {
+                    Block block = world.GetBlock((int)x, (int)Math.Ceiling(y - height - 1), (int)z);
+
+                    if (block.IsSolid())
+                    {
+                        ParticleVoxel voxel = new ParticleVoxel(world);
+                        voxel.SetPosition(GetPosition() + new Vector3(-width / 2F + (float)world.rand.NextDouble() * width, -height, 0));
+                        voxel.SetScale(Vector3.One * world.rand.Next(7, 14) / 100F);
+                        voxel.SetVelocity(new Vector3(-movement.X * 2, 3, -movement.Z * 2));
+                        voxel.SetRotationVelocity(Vector3.One * world.rand.Next(7, 13));
+                        voxel.gravity = World.GRAVITY;
+                        voxel.SetColor(block.GetColor());
+                        world.SpawnParticle(voxel);
+                    }
+                }
+            }
+        }
+
+        private void UpdateSkills()
         {
             foreach (Skill skill in skillBar)
             {
                 if (skill != null)
-                    skill.Update(gameTime);
+                    skill.Update();
             }
         }
 
@@ -151,12 +184,12 @@ namespace ancient.game.entity.player
             }
         }
 
-        public override double GetBaseSpeed()
+        public override float GetBaseSpeed()
         {
-            return 2.2;
+            return 2.2F;
         }
 
-        public override double GetSpeedAddition()
+        public override float GetSpeedAddition()
         {
             return base.GetSpeedAddition() + this.dex / 256f;
         }
@@ -189,6 +222,11 @@ namespace ancient.game.entity.player
         public Inventory GetInventory()
         {
             return this.inventory;
+        }
+
+        public int GetHandSlot()
+        {
+            return this.handSlot;
         }
 
         public void SetHandSlot(int handSlot)

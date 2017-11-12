@@ -21,6 +21,8 @@ namespace ancientlib.game.item
             this.block = block;
             this.modelScale = block.GetItemModelScale();
             this.dropScale = modelScale * 2.5F;
+
+            this.dropModelState = new EntityModelState(GetModelName(), 0.25F, 0.25F, 0.25F);
         }
 
         public override void Use(EntityPlayer player)
@@ -94,7 +96,7 @@ namespace ancientlib.game.item
 
         public override string GetModelName()
         {
-            return block.GetModelName();
+            return block == null ? "" : block.GetModelName();
         }
     }
 }

@@ -40,7 +40,7 @@ namespace ancientlib.game.entity
         protected int manaRegen;
         protected int manaRegenInterval;
 
-        protected double jumpSpeed;
+        protected float jumpSpeed;
 
         protected float headYaw;
         protected float headPitch;
@@ -480,11 +480,6 @@ namespace ancientlib.game.entity
             return null;
         }
 
-        public override string GetModelName()
-        {
-            return null;
-        }
-
         public override Vector3 GetModelScale()
         {
             return new Vector3(0.1F, 0.1F, 0.1F);
@@ -570,9 +565,9 @@ namespace ancientlib.game.entity
             }
         }
 
-        public virtual double GetBaseJumpSpeed()
+        public virtual float GetBaseJumpSpeed()
         {
-            return 5.0;
+            return 5.0F;
         }
 
         public virtual bool IsHostile()

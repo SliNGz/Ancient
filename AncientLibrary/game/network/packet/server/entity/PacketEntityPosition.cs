@@ -6,52 +6,37 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using ancientlib.game.utils;
+using Microsoft.Xna.Framework;
 
 namespace ancientlib.game.network.packet.server.entity
 {
     public class PacketEntityPosition : PacketEntity
     {
-        private double x;
-        private double y;
-        private double z;
+        private Vector3 position;
 
         public PacketEntityPosition()
         { }
 
         public PacketEntityPosition(Entity entity) : base(entity)
         {
-            this.x = entity.GetX();
-            this.y = entity.GetY();
-            this.z = entity.GetZ();
+            this.position = entity.GetPosition();
         }
 
         public override void Read(BinaryReader reader)
         {
             base.Read(reader);
-            reader.ReadPosition(out x, out y, out z);
+            this.position = reader.ReadVector3();
         }
 
         public override void Write(BinaryWriter writer)
         {
             base.Write(writer);
-            writer.Write(x);
-            writer.Write(y);
-            writer.Write(z);
+            writer.Write(position);
         }
 
-        public double GetX()
+        public Vector3 GetPosition()
         {
-            return this.x;
-        }
-
-        public double GetY()
-        {
-            return this.y;
-        }
-
-        public double GetZ()
-        {
-            return this.z;
+            return this.position;
         }
     }
 }

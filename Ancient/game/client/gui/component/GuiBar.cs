@@ -14,23 +14,32 @@ namespace ancient.game.client.gui.component
     class GuiBar : GuiComponentText
     {
         private static Texture2D barFrame = TextureManager.GetTextureFromName("bar_frame");
+        private static Texture2D expFrame = TextureManager.GetTextureFromName("exp_frame");
 
         public event ValueChangedEventHandler ValueChanged;
 
         private int value;
         private int maxValue;
 
+        private Texture2D frame;
+
         public GuiBar(string textureName) : base(textureName)
         {
-            this.width = (int)(barFrame.Width * 0.925f);
-            this.height = barFrame.Height;
+            this.frame = barFrame;
+
+            if (textureName == "exp_bar")
+                this.frame = expFrame;
+
+            this.width = frame.Width;
+            this.height = frame.Height;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             int x = GuiUtils.GetXFromRelativeX(this.x);
             int y = GuiUtils.GetYFromRelativeY(this.y);
-            spriteBatch.Draw(barFrame, new Rectangle(x, y, width, height), Color.White);
+
+            spriteBatch.Draw(frame, new Rectangle(x, y, width, height), Color.White);
             spriteBatch.Draw(texture, new Rectangle(x + 1, y + 1, (int)Math.Ceiling((value / (float)maxValue) * width - 2), height - 2), Color.White);
 
             if (guiText != null)

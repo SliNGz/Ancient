@@ -13,21 +13,24 @@ namespace ancientlib.game.command
     {
         public void Execute(EntityPlayer sender, string[] args)
         {
-            if (args.Length != 1)
-            {
-                Console.WriteLine("Wrong usage of command");
-                return;
-            }
-
-            int id = int.Parse(args[0]);
+            int id = 0;
+            int.TryParse(args[0], out id);
 
             Entity entity = Entities.CreateEntityFromTypeID(id, sender.GetWorld());
 
             if (entity == null)
+            {
                 Console.WriteLine("No entity with id: " + id);
+                return;
+            }
 
             entity.SetPosition(sender.GetPosition());
             sender.GetWorld().SpawnEntity(entity);
+        }
+
+        public int GetMinArgs()
+        {
+            return 1;
         }
     }
 }

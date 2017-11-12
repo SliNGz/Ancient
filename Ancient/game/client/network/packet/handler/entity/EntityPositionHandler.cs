@@ -17,7 +17,7 @@ namespace ancient.game.client.network.packet.handler.entity
         {
             PacketEntityPosition entityPos = (PacketEntityPosition)packet;
 
-            entity.SetServerPosition(entityPos.GetX(), entityPos.GetY(), entityPos.GetZ());
+            entity.SetServerPosition(entityPos.GetPosition());
         }
     }
 }

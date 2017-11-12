@@ -13,5 +13,10 @@ namespace ancientlib.game.command
         {
             sender.GetWorld().SetRaining(!sender.GetWorld().IsRaining());
         }
+
+        public int GetMinArgs()
+        {
+            return 0;
+        }
     }
 }

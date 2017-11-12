@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ancientlib.game.skill.bowman;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,9 @@ namespace ancientlib.game.classes.bowman
     class ClassBowman : Class
     {
         public ClassBowman() : base("Bowman")
-        { }
+        {
+            this.skills = new Type[1];
+            this.skills[0] = typeof(SkillExplosiveArrow);
+        }
     }
 }

@@ -60,7 +60,8 @@ namespace ancient.game.client.renderer.entity
                         continue;
                 }
 
-                Draw(entity);
+                EntityRenderers.GetRenderEntityFromEntity(entity).Draw(entity);
+            //    Draw(entity);
             }
         }
 
@@ -75,12 +76,12 @@ namespace ancient.game.client.renderer.entity
             if (entity is EntityPlayerBase)
                 multiplyColor = ((EntityPlayerBase)entity).GetSkinColor();
 
-            if (applyLighting && entity.IsAffectedByLight())
+            //if (applyLighting && entity.IsAffectedByLight())
                 multiplyColor = Utils.GetColorAffectedByLight(entity.GetWorld(), multiplyColor, x, y, z);
 
             WorldRenderer.effect.Parameters["MultiplyColor"].SetValue(multiplyColor.ToVector4());
 
-            ModelData model = ModelDatabase.GetModelFromName(entity.GetModelName());
+            ModelData model = ModelDatabase.GetModelFromName(entity.GetModelState().GetModelName());
             VoxelRendererData voxelData = model.GetVoxelRendererData();
             Vector3 position = entity.GetPosition();
             Vector3 scale = entity.GetModelScale();
@@ -136,7 +137,7 @@ namespace ancient.game.client.renderer.entity
             if (applyLighting)
                 color = Utils.GetColorAffectedByLight(player.GetWorld(), color, x, y, z);
 
-            ModelData model = ModelDatabase.GetModelFromName(player.GetModelName());
+            ModelData model = ModelDatabase.GetModelFromName(player.GetModelState().GetModelName());
             int modelLength = model.GetLength();
 
             WorldRenderer.effect.Parameters["MultiplyColor"].SetValue(color.ToVector4());

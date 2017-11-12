@@ -70,7 +70,6 @@
     <Compile Include="game\client\gui\component\GuiOptionSwitch.cs" />
     <Compile Include="game\client\gui\component\GuiComponent.cs" />
     <Compile Include="game\client\gui\component\GuiComponentText.cs" />
-    <Compile Include="game\client\gui\component\GuiFPSCounter.cs" />
     <Compile Include="game\client\gui\component\GuiSlider.cs" />
     <Compile Include="game\client\gui\component\GuiText.cs" />
     <Compile Include="game\client\gui\component\GuiText3D.cs" />
@@ -142,6 +141,9 @@
     <Compile Include="game\client\network\packet\handler\world\CreateWorldHandler.cs" />
     <Compile Include="game\client\network\packet\handler\world\ToggleRainHandler.cs" />
     <Compile Include="game\client\particle\ParticleManager.cs" />
+    <Compile Include="game\client\renderer\entity\RenderEntity.cs" />
+    <Compile Include="game\client\renderer\entity\EntityRenderers.cs" />
+    <Compile Include="game\client\renderer\entity\RenderEntityPlayerBase.cs" />
     <Compile Include="game\client\renderer\model\ModelDatabase.cs" />
     <Compile Include="game\client\renderer\chunk\ChunkRenderer.cs" />
     <Compile Include="game\client\renderer\item\ItemRenderer.cs" />

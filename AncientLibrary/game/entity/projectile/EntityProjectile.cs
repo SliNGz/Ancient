@@ -26,8 +26,10 @@ namespace ancientlib.game.entity.projectile
         public EntityProjectile(World world) : base(world)
         {
             this.projectile = Items.steelArrow;
-            SetDimensions(projectile.GetWidth(), projectile.GetHeight(), projectile.GetLength());
             this.damage = Items.steelArrow.GetDamage();
+            this.lifeSpan = 2560;
+
+            SetModelState(projectile.GetModelState());
         }
 
         public EntityProjectile(World world, EntityLiving shooter, ItemProjectile projectile) : this(world)
@@ -49,6 +51,8 @@ namespace ancientlib.game.entity.projectile
 
             this.yaw = shooter.GetHeadYaw();
             this.pitch = shooter.GetHeadPitch();
+
+            SetModelState(projectile.GetModelState());
         }
 
         public override void Update(GameTime gameTime)
@@ -124,13 +128,18 @@ namespace ancientlib.game.entity.projectile
         public void SetProjectile(ItemProjectile projectile)
         {
             this.projectile = projectile;
-            SetDimensions(projectile.GetWidth(), projectile.GetHeight(), projectile.GetLength());
+            SetModelState(projectile.GetModelState());
             this.gravity = projectile.GetGravity();
         }
-
-        public override string GetModelName()
+        
+        public int GetDamage()
         {
-            return projectile.GetModelName();
+            return this.damage;
+        }
+
+        public virtual void SetDamage(int damage)
+        {
+            this.damage = damage;
         }
 
         public override Vector3 GetModelScale()
@@ -138,9 +147,14 @@ namespace ancientlib.game.entity.projectile
             return new Vector3(0.1F, 0.1F, 0.1F);
         }
 
-        public override double GetBaseSpeed()
+        public override float GetBaseSpeed()
         {
             return projectile.GetSpeed();
+        }
+
+        protected override EntityModelState GetDefaultModelState()
+        {
+            return projectile.GetModelState();
         }
 
         public override void Read(BinaryReader reader)

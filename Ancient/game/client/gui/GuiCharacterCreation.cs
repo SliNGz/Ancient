@@ -128,7 +128,7 @@ namespace ancient.game.client.gui
             WorldRenderer.effect.Parameters["FogEnabled"].SetValue(false);
             WorldRenderer.effect.Parameters["View"].SetValue(camera.GetViewMatrix(0, Ancient.ancient.player.GetHeadPitch()));
             WorldRenderer.effect.Parameters["Projection"].SetValue(camera.GetProjectionMatrix());
-            EntityRenderer.Draw(Ancient.ancient.player, false);
+            EntityRenderers.GetRenderEntityFromEntity(Ancient.ancient.player).Draw(Ancient.ancient.player);
         }
 
         protected override void UpdateCameraDistance()
@@ -187,8 +187,8 @@ namespace ancient.game.client.gui
             this.hairSwitcher.SetOptionIndex(0);
             this.eyesSwitcher.SetOptionIndex(0);
 
-            Ancient.ancient.player.SetRotation(0, 0, 0);
-            Ancient.ancient.player.SetHeadRotation(0, 0);
+            Ancient.ancient.player.SetRotation(MathHelper.Pi, 0, 0);
+            Ancient.ancient.player.SetHeadRotation(MathHelper.Pi, 0);
         }
     }
 }

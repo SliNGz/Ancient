@@ -45,6 +45,11 @@ namespace ancientlib.game.item.statbased
             return false;
         }
 
+        public Class GetClass()
+        {
+            return this._class;
+        }
+
         public ItemStatDependent SetClass(Class _class)
         {
             this._class = _class;

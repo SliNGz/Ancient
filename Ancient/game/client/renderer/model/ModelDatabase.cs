@@ -22,8 +22,9 @@ namespace ancient.game.client.renderer.model
             /*  Entity  */
 
             /*  Player  */
-            InitializeModelData("entity/player/races/human");
-            InitializeModelData("entity/player/races/elf");
+            InitializeModelData("entity/player/races/human/human");
+            InitializeModelData(CreateModelData("entity/player/races/human/human_sitting").SetOffset(new Vector3(0, 0, 4)));
+            InitializeModelData("entity/player/races/elf/elf");
 
             // Hair
             InitializeModelData("entity/player/hair/hair_0");
@@ -47,7 +48,8 @@ namespace ancient.game.client.renderer.model
 
 
             // Passive
-            InitializeModelData("entity/passive/tortoise");
+            InitializeModelData("entity/passive/tortoise/tortoise");
+            InitializeModelData("entity/passive/tortoise/tortoise_sleeping");
             InitializeModelData("entity/passive/slime");
 
             // World
@@ -62,6 +64,7 @@ namespace ancient.game.client.renderer.model
 
             // Projectile
             InitializeModelData("item/projectile/arrow/steel_arrow");
+            InitializeModelData("item/projectile/arrow/explosive_arrow");
 
             // Swords
             InitializeModelData("item/sword/sword");

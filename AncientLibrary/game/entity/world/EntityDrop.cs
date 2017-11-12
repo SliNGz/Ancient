@@ -25,7 +25,6 @@ namespace ancientlib.game.entity.world
 
         public EntityDrop(World world) : base(world)
         {
-            SetDimensions(0.25f, 0.25f, 0.25f);
             this.lifeSpan = Utils.TicksInMinute * 3;
             this.fadeInTicks = (int)(Utils.TicksInSecond * 0.2F);
             this.fadeOutTicks = Utils.TicksInSecond * 2;
@@ -33,17 +32,19 @@ namespace ancientlib.game.entity.world
             this.yawVelocity = 1.5F;
 
             this.itemStack = new ItemStack(Items.dirt, 1);
+            SetModelState(itemStack.GetItem().GetDropModelState());
         }
 
-        public EntityDrop(World world, double x, double y, double z, ItemStack itemStack) : this(world)
+        public EntityDrop(World world, float x, float y, float z, ItemStack itemStack) : this(world)
         {
             this.x = x;
             this.y = y;
             this.z = z;
             this.itemStack = itemStack;
+            SetModelState(itemStack.GetItem().GetDropModelState());
         }
 
-        public EntityDrop(World world, double x, double y, double z, Item item, int amount) : this(world, x, y, z, new ItemStack(item, amount))
+        public EntityDrop(World world, float x, float y, float z, Item item, int amount) : this(world, x, y, z, new ItemStack(item, amount))
         { }
 
         public EntityDrop(World world, Item item, int amount) : this(world, 0, 0, 0, new ItemStack(item, amount))
@@ -122,11 +123,6 @@ namespace ancientlib.game.entity.world
             return itemStack;
         }
 
-        public void SetItemStack(ItemStack itemStack)
-        {
-            this.itemStack = itemStack;
-        }
-
         public Item GetItem()
         {
             return this.itemStack.GetItem();
@@ -135,11 +131,6 @@ namespace ancientlib.game.entity.world
         public Vector3 GetAnimationPosition()
         {
             return new Vector3((float)x, (float)y + yAnim, (float)z);
-        }
-
-        public override string GetModelName()
-        {
-            return itemStack.GetItem().GetModelName();
         }
 
         public override Vector3 GetModelScale()
@@ -190,6 +181,11 @@ namespace ancientlib.game.entity.world
         {
             base.Write(writer);
             itemStack.Write(writer);
+        }
+
+        protected override EntityModelState GetDefaultModelState()
+        {
+            return this.GetModelState();
         }
     }
 }

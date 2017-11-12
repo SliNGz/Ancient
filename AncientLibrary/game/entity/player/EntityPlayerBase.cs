@@ -10,6 +10,9 @@ namespace ancientlib.game.entity.player
 {
     public abstract class EntityPlayerBase : EntityDeveloping
     {
+        private static EntityModelState DEFAULT = new EntityModelState("human", 0.65F, 1.5F, 0.65F);
+        private static EntityModelState SITTING = new EntityModelState("human_sitting", 0.65F, 1.26F, 0.65F);
+
         protected Color skinColor;
 
         protected byte hairID;
@@ -22,8 +25,6 @@ namespace ancientlib.game.entity.player
 
         public EntityPlayerBase(World world) : base(world)
         {
-            SetDimensions(0.65F, 1.5F, 0.65F);
-
             this.skinColor = new Color(255, 218, 182);
 
             this.hairID = 0;
@@ -33,16 +34,13 @@ namespace ancientlib.game.entity.player
             this.eyesColor = Color.DarkRed;
 
             this.interactWithEntities = false;
+
+            SetModelState(DEFAULT);
         }
 
         public override Vector3 GetEyePosition()
         {
             return this.GetPosition() + GetEyesOffset() * GetModelScale() * Vector3.UnitY;
-        }
-
-        public override string GetModelName()
-        {
-            return "human";
         }
 
         public Color GetSkinColor()
@@ -120,14 +118,14 @@ namespace ancientlib.game.entity.player
             return false;
         }
 
-        public override double GetBaseSpeed()
+        public override float GetBaseSpeed()
         {
-            return 2.2;
+            return 2.2F;
         }
 
-        public override double GetBaseJumpSpeed()
+        public override float GetBaseJumpSpeed()
         {
-            return 5.0;
+            return 5.0F;
         }
 
         public override bool IsAlive()
@@ -146,6 +144,26 @@ namespace ancientlib.game.entity.player
         public BoundingBox GetDropBoundingBox()
         {
             return this.dropBoundingBox;
+        }
+
+        public override Color GetMultiplyColor()
+        {
+            return new Color(skinColor.ToVector4() * colorMultiply.ToVector4());
+        }
+
+        protected override EntityModelState GetDefaultModelState()
+        {
+            return DEFAULT;
+        }
+
+        protected override EntityModelState GetSittingModelState()
+        {
+            return SITTING;
+        }
+
+        public override string GetRenderEntity()
+        {
+            return "playerBase";
         }
     }
 }

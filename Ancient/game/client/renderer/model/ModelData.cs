@@ -46,7 +46,11 @@ namespace ancient.game.renderers.model
         }
 
         public ModelData(Block block) : this(block.GetModelName(), new Color[,,] { { { block.GetColor() } } })
-        { }
+        {
+            this.width = 1;
+            this.height = 1;
+            this.length = 1;
+        }
 
         public string GetName()
         {

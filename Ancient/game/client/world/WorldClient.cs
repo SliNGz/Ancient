@@ -102,7 +102,12 @@ namespace ancient.game.client.world
             {
                 //if (temp > 0 && temp < 30)
                 ParticleSnow snow = new ParticleSnow(world);
-                snow.SetPosition(ancient.player.GetPosition() + new Vector3(x, rand.Next(1, 7), z));
+                Vector3 position = ancient.player.GetPosition();
+
+                if (ancient.guiManager.GetCurrentGui() == ancient.guiManager.map)
+                    position += WorldRenderer.camera.GetTargetVector(ancient.player.GetHeadYaw(), ancient.player.GetHeadPitch()) * ancient.guiManager.map.distance;
+
+                snow.SetPosition(position + new Vector3(x, rand.Next(1, 7), z));
                 snow.SetScale(Vector3.One * rand.Next(10, 25) / 1000F);
                 SpawnParticle(snow);
                 /*else if (temp <= 0)

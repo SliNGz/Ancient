@@ -43,3 +43,17 @@ Normal inventory!
 Equipment.
 Better drops (quantity variation, randomness, chances, berkins drop variations, etc..). √
 Removing unnecessary variables in entity.
+
+03/11/2017:
+~~~~~~~~~~~~~~~
+
+Entity animation states (Walking, Standing, Sitting) - each state comes with specific bounding box dimensions.
+Change EntityExplosion's constructor.
+Telekinesis skill for magician - takes the block beneath the player and throws multiple blocks of the same kind, player hovering above ground.
+Making mounts grow (scale, animation, maybe different model) when they level up (could also make a mount mountable only at a certain level).
+Head rotation.
+
+05/11/2017:
+~~~~~~~~~~~~~~
+Biome Idea:
+Flat biome, clouds are the surface, jetpack shop, clouds connected with bridges, each cloud has it's house, inns, houses.. BGM - yair's "orbis" music.

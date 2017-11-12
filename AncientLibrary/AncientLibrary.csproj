@@ -60,7 +60,9 @@
     <Compile Include="game\classes\magician\ClassMagician.cs" />
     <Compile Include="game\classes\thief\ClassThief.cs" />
     <Compile Include="game\classes\warrior\ClassWarrior.cs" />
-    <Compile Include="game\command\CommandHealPlayer.cs" />
+    <Compile Include="game\command\CommandExp.cs" />
+    <Compile Include="game\command\CommandChangeValue.cs" />
+    <Compile Include="game\command\CommandHealth.cs" />
     <Compile Include="game\command\CommandToggleRain.cs" />
     <Compile Include="game\command\ICommand.cs" />
     <Compile Include="game\command\CommandHandler.cs" />
@@ -77,11 +79,11 @@
     <Compile Include="game\entity\ai\EntityAIWander.cs" />
     <Compile Include="game\entity\ai\pathfinding\PathFinder.cs" />
     <Compile Include="game\entity\ai\pathfinding\PathNode.cs" />
-    <Compile Include="game\entity\EntityBase.cs" />
     <Compile Include="game\entity\Entities.cs" />
     <Compile Include="game\entity\Entity.cs" />
     <Compile Include="game\entity\EntityDeveloping.cs" />
     <Compile Include="game\entity\EntityLiving.cs" />
+    <Compile Include="game\entity\EntityModelState.cs" />
     <Compile Include="game\entity\EntityMount.cs" />
     <Compile Include="game\entity\EntityPet.cs" />
     <Compile Include="game\entity\npc\EntityNPC.cs" />
@@ -91,12 +93,13 @@
     <Compile Include="game\entity\player\EntityPlayerBase.cs" />
     <Compile Include="game\entity\player\EntityPlayerOnline.cs" />
     <Compile Include="game\entity\projectile\EntityArrow.cs" />
-    <Compile Include="game\entity\projectile\EntityExplodingArrow.cs" />
+    <Compile Include="game\entity\projectile\EntityExplosiveArrow.cs" />
     <Compile Include="game\entity\projectile\EntityProjectile.cs" />
     <Compile Include="game\entity\projectile\EntityProjectileStaff.cs" />
     <Compile Include="game\entity\skill\EntitySkill.cs" />
     <Compile Include="game\entity\world\EntityDrop.cs" />
     <Compile Include="game\block\Blocks.cs" />
+    <Compile Include="game\entity\world\EntityExplosion.cs" />
     <Compile Include="game\init\Init.cs" />
     <Compile Include="game\inventory\Inventory.cs" />
     <Compile Include="game\item\statbased\ItemStatDependent.cs" />
@@ -156,6 +159,7 @@
     <Compile Include="game\particle\Particles.cs" />
     <Compile Include="game\particle\ParticleSnow.cs" />
     <Compile Include="game\particle\ParticleVoxel.cs" />
+    <Compile Include="game\skill\bowman\SkillExplosiveArrow.cs" />
     <Compile Include="game\skill\magician\SkillTeleport.cs" />
     <Compile Include="game\skill\Skill.cs" />
     <Compile Include="game\skill\Skills.cs" />

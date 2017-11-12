@@ -19,7 +19,7 @@ namespace ancientlib.game.entity
         protected int exp;
 
         protected bool isRunning;
-        protected double runningSpeed;
+        protected float runningSpeed;
 
         public EntityDeveloping(World world) : base(world)
         {
@@ -120,7 +120,7 @@ namespace ancientlib.game.entity
             this.isRunning = isRunning;
         }
 
-        public override double GetSpeedAddition()
+        public override float GetSpeedAddition()
         {
             return base.GetSpeedAddition() + (isRunning ? runningSpeed : 0);
         }

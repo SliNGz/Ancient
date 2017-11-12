@@ -14,8 +14,9 @@ namespace ancientlib.game.command
         public static void Initialize()
         {
             commands.Add("spawn", new CommandSpawnEntity());
-            commands.Add("heal", new CommandHealPlayer());
+            commands.Add("health", new CommandHealth());
             commands.Add("togglerain", new CommandToggleRain());
+            commands.Add("exp", new CommandExp());
         }
 
         public static ICommand GetCommandFromName(string commandString)
@@ -34,16 +35,19 @@ namespace ancientlib.game.command
 
             if (command == null)
             {
-                Console.WriteLine("Command '"+ commandName + "' not found.");
+                Console.WriteLine("Command '" + commandName + "' not found.");
                 return;
             }
 
-            string[] argsWithoutName = new string[args.Length - 1];
+            string[] commandArgs = new string[args.Length - 1];
 
             for (int i = 1; i < args.Length; i++)
-                argsWithoutName[i - 1] = args[i];
+                commandArgs[i - 1] = args[i];
 
-            command.Execute(sender, argsWithoutName);
+            if (command.GetMinArgs() <= commandArgs.Length)
+                command.Execute(sender, commandArgs);
+            else
+                Console.WriteLine("Too few arguments");
         }
     }
 }

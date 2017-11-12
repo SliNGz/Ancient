@@ -15,6 +15,7 @@ using ancient.game.renderers.world;
 using ancient.game.client.renderer.item;
 using ancient.game.entity.player;
 using ancient.game.utils;
+using ancient.game.camera;
 
 namespace ancient.game.client.gui
 {
@@ -23,13 +24,17 @@ namespace ancient.game.client.gui
         private EntityPlayer player;
         private Inventory inventory;
 
-        private GuiTexture window;
-        private GuiTexture slots;
+        private Camera camera;
+        private RenderTarget2D renderTarget;
 
         private float yaw;
 
         public GuiInventory(GuiManager guiManager) : base(guiManager, "inventory")
-        { }
+        {
+            this.player = Ancient.ancient.player;
+            this.inventory = player.GetInventory();
+            this.camera = new Camera(70, 0.01F, 100);
+        }
 
         public override void Initialize()
         {
@@ -37,19 +42,8 @@ namespace ancient.game.client.gui
 
             this.lastGui = guiManager.ingame;
 
-            this.window = new GuiTexture("inventory_window");
-            this.window.SetWidth(window.GetWidth());
-            this.window.SetHeight(window.GetHeight());
-            this.window.SetX(0.8F);
-            this.window.SetY(0.1F);
-            //   this.components.Add(window);
-
-            this.slots = new GuiTexture("inventory_slots");
-            this.slots.SetWidth(slots.GetWidth());
-            this.slots.SetHeight(slots.GetHeight());
-            this.slots.SetX(window.GetX() + GuiUtils.GetRelativeXFromX(6));
-            this.slots.SetY(window.GetY() + GuiUtils.GetRelativeYFromY(12));
-            //    this.components.Add(slots);
+            this.renderTarget = new RenderTarget2D(Ancient.ancient.device, Ancient.ancient.GraphicsDevice.Viewport.Width, Ancient.ancient.GraphicsDevice.Viewport.Height,
+                false, SurfaceFormat.Color, DepthFormat.Depth24);
         }
 
         public override void Update(MouseState mouseState)
@@ -58,18 +52,16 @@ namespace ancient.game.client.gui
             yaw += (float)Ancient.ancient.gameTime.ElapsedGameTime.TotalSeconds * 2.5F;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw3D()
         {
-            base.Draw(spriteBatch);
-            spriteBatch.End();
+            base.Draw3D();
 
-            Ancient.ancient.device.RasterizerState = Ancient.ancient.world.GetRenderer().rs;
-            Ancient.ancient.device.BlendState = BlendState.Opaque;
-            Ancient.ancient.device.DepthStencilState = DepthStencilState.Default;
+            Ancient.ancient.device.SetRenderTarget(renderTarget);
+            Ancient.ancient.world.GetRenderer().ResetGraphics(Color.Transparent);
 
-            this.player = Ancient.ancient.player;
-            this.inventory = player.GetInventory();
-
+            WorldRenderer.effect.Parameters["FogEnabled"].SetValue(false);
+            WorldRenderer.effect.Parameters["View"].SetValue(camera.GetViewMatrix(0, 0));
+            WorldRenderer.effect.Parameters["Projection"].SetValue(camera.GetProjectionMatrix());
             ItemStack[] items = inventory.GetItems();
 
             for (int i = 0; i < items.Length; i++)
@@ -77,24 +69,21 @@ namespace ancient.game.client.gui
                 if (items[i] == null)
                     continue;
 
-                int x = GuiUtils.GetXFromRelativeX(slots.GetX()) + (i % inventory.GetLineSize()) * 34 + 5;
-                int y = GuiUtils.GetYFromRelativeY(slots.GetY()) + (i / inventory.GetLineSize()) * 34 + 5;
+                float y = (int)((-i / inventory.GetLineSize()) / 2F);
+                float x = (i % inventory.GetLineSize()) * 0.5F;
+                float xOffset = inventory.GetLineSize() * 0.5F / 2.5F;
 
-                Vector2 screenPosition = new Vector2(x, y);
-
-                Vector3 lookAt = Vector3.Transform(new Vector3(i / 32F - 0.1F, 0, -0.1f), Matrix.CreateFromYawPitchRoll(player.GetHeadYaw(), player.GetHeadPitch(), 0));
-                Vector3 position = lookAt;
-
-                // ItemRenderer.Draw(items[i].GetItem(), position, 0, -player.GetHeadYaw(), player.GetHeadPitch() + yaw, true);
                 Item item = items[i].GetItem();
-                Vector3 vertical = Vector3.Transform(Vector3.Forward, Matrix.CreateFromYawPitchRoll(player.GetHeadYaw(), player.GetHeadPitch() + MathHelper.PiOver2, 0));
-                //  RenderUtils.DrawLine(player.GetPosition(), player.GetPosition() + player.GetLookAt(), Color.Yellow);
-                //  RenderUtils.DrawLine(player.GetPosition(), player.GetPosition() + vertical, Color.Purple);
-
-                ItemRenderer.Draw(item, lookAt, player.GetHeadYaw(), player.GetHeadPitch(), 0, item.GetModelScale().X * 0.1F, item.GetModelScale().Y * 0.1F, item.GetModelScale().Z * 0.1F, true);
+                ItemRenderer.Draw(item, new Vector3(x - xOffset, y, -2F), yaw, 0, 0, item.GetModelScale().X, item.GetModelScale().Y, item.GetModelScale().Z, true);
             }
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointWrap, null, null, null, null); // Drawing cursor.
+            Ancient.ancient.device.SetRenderTarget(null);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            spriteBatch.Draw(renderTarget, new Vector2(0, 0), Color.White);
         }
     }
 }

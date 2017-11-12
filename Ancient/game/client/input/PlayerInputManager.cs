@@ -38,7 +38,7 @@ namespace ancient.game.input
 
         public void Update(GameTime gameTime)
         {
-            if (Ancient.ancient.isActive)
+            if (Ancient.ancient.IsActive)
             {
                 UpdateMouseInput(gameTime);
                 UpdateKeyboardInput();

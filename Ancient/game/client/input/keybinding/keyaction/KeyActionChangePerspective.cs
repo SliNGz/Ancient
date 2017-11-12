@@ -20,6 +20,8 @@ namespace ancient.game.client.input.keybinding.keyaction
 
             if (camera.GetDistance() == 0)
                 camera.SetDistance(5F);
+            else if (camera.GetDistance() > 0)
+                camera.SetDistance(-5F);
             else
                 camera.SetDistance(0);
         }

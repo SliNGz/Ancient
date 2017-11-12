@@ -38,13 +38,15 @@ namespace ancient.game.client.gui
         public override void Update(MouseState mouseState)
         {
             base.Update(mouseState);
-            Ancient.ancient.player.SetHeadPitch(MathHelper.Clamp(Ancient.ancient.player.GetHeadPitch(), -MathHelper.PiOver2, 0));
+            this.backgroundColor = Ancient.ancient.world.skyColor;
+            Ancient.ancient.player.SetHeadPitch(MathHelper.Clamp(Ancient.ancient.player.GetHeadPitch(), 0, MathHelper.PiOver2));
         }
 
         public override void Draw3D()
         {
             base.Draw3D();
-            EntityRenderer.Draw(Ancient.ancient.player);
+            EntityRenderers.GetRenderEntityFromEntity(Ancient.ancient.player).Draw(Ancient.ancient.player);
+            Ancient.ancient.world.GetRenderer().particleRenderer.Draw();
             DrawMap();
         }
 

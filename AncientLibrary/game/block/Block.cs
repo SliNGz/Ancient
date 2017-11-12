@@ -202,7 +202,7 @@ namespace ancient.game.world.block
             amount = MathHelper.Clamp(amount, 0, item.GetMaxItemStack());
 
             EntityDrop drop = new EntityDrop(world, x, y, z, item, amount);
-            drop.SetPosition(x + 0.5, y + 0.5, z + 0.5);
+            drop.SetPosition(x + 0.5F, y + 0.5F, z + 0.5F);
             drop.SetXVelocity(world.rand.NextDouble() * world.rand.Next(2) == 0 ? -1 : 1);
             drop.SetYVelocity(3);
             drop.SetZVelocity(world.rand.NextDouble() * world.rand.Next(2) == 0 ? -1 : 1);

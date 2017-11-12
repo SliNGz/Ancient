@@ -13,6 +13,8 @@ namespace ancientlib.game.entity.projectile
 {
     class EntityProjectileStaff : EntityProjectile
     {
+        private static EntityModelState DEFAULT = new EntityModelState("voxel", 0.25F, 0.25F, 0.25F);
+
         public EntityProjectileStaff(World world) : base(world)
         { }
 
@@ -20,10 +22,10 @@ namespace ancientlib.game.entity.projectile
         {
             SetVelocity(Vector3.Zero);
 
-            SetDimensions(0.25F, 0.25F, 0.25F);
             this.gravity = 0;
 
             this.lifeSpan = Utils.TicksInSecond * 7;
+            SetModelState(DEFAULT);
         }
 
         public override void Update(GameTime gameTime)
@@ -34,14 +36,9 @@ namespace ancientlib.game.entity.projectile
             this.colorMultiply = Utils.HSVToRGB(hue, 1, 1);
         }
 
-        public override double GetBaseSpeed()
+        public override float GetBaseSpeed()
         {
             return 15;
-        }
-
-        public override string GetModelName()
-        {
-            return "voxel";
         }
 
         public override void Read(BinaryReader reader)
@@ -49,6 +46,11 @@ namespace ancientlib.game.entity.projectile
             base.Read(reader);
             this.gravity = 0;
             SetVelocity(Vector3.Zero);
+        }
+
+        protected override EntityModelState GetDefaultModelState()
+        {
+            return DEFAULT;
         }
     }
 }

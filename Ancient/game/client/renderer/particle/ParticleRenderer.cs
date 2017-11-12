@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ancient.game.client.renderer.particle
 {
-    class ParticleRenderer
+    public class ParticleRenderer
     {
         private WorldClient world;
 
@@ -35,13 +35,12 @@ namespace ancient.game.client.renderer.particle
 
                 ModelData model = ModelDatabase.GetModelFromName(particle.GetModelName());
                 Vector3 size = new Vector3(model.GetWidth(), model.GetHeight(), model.GetLength());
-                Vector3 rotation = new Vector3(particle.GetYaw(), particle.GetPitch(), particle.GetRoll() + 0);//particle.GetRotation();
                 Vector3 scale = particle.GetScale();
 
                 Vector3 rotationCenter = new Vector3(size.X / -2F, size.Y / 2F, size.Z / -2F);
 
                 WorldRenderer.effect.Parameters["MultiplyColor"].SetValue(particle.GetColor().ToVector4());
-                VoxelRenderer.Draw(model.GetVoxelRendererData(), particle.GetPosition(), rotationCenter, rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z);
+                VoxelRenderer.Draw(model.GetVoxelRendererData(), particle.GetPosition(), rotationCenter, particle.GetYaw(), particle.GetPitch(), particle.GetRoll(), scale.X, scale.Y, scale.Z);
             }
 
             WorldRenderer.effect.Parameters["MultiplyColorEnabled"].SetValue(false);

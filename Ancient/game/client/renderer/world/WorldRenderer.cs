@@ -33,7 +33,7 @@ namespace ancient.game.renderers.world
         private ChunkRenderer chunkRenderer;
         private EntityRenderer entityRenderer;
         private ItemRenderer itemRenderer;
-        private ParticleRenderer particleRenderer;
+        public ParticleRenderer particleRenderer;
 
         public static Effect effect;
 
@@ -62,6 +62,9 @@ namespace ancient.game.renderers.world
             if (!Ancient.ancient.guiManager.GetCurrentGui().ShouldDrawWorldBehind())
                 return;
 
+            Ancient.ancient.guiManager.ingame.Draw3D();
+            Ancient.ancient.guiManager.inventory.Draw3D();
+
             ResetGraphics(world.GetSkyColor());
 
             SetupMatrices();
@@ -72,12 +75,12 @@ namespace ancient.game.renderers.world
 
             entityRenderer.Draw();
             particleRenderer.Draw();
-            itemRenderer.Draw();
 
             SetupMatrices();
             SetupFog();
 
             chunkRenderer.DrawLiquid();
+            itemRenderer.Draw();
 
             if (drawChunksBoundingBox)
             {
