@@ -13,14 +13,14 @@ namespace ancientlib.game.block
 {
     public class BlockFlowers : BlockScenery, IBlockModel
     {
-        public BlockFlowers() : base("Flowers")
+        public BlockFlowers() : base("Flowers", BlockType.grass)
         {
             this.dimensions = new Vector3(1, 0.25F, 1);
         }
 
-        public override Vector3 GetItemModelScale()
+        public override Vector4 GetShaderTechnique(World world, int x, int y, int z)
         {
-            return base.GetItemModelScale() / 8F;
+            return new Vector4(0, 0, 0, 2);
         }
     }
 }

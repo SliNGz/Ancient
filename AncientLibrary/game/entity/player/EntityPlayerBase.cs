@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ancient.game.world;
+using ancientlib.game.entity.model;
 using Microsoft.Xna.Framework;
+using ancient.game.entity.player;
 
 namespace ancientlib.game.entity.player
 {
     public abstract class EntityPlayerBase : EntityDeveloping
     {
-        private static EntityModelState DEFAULT = new EntityModelState("human", 0.65F, 1.5F, 0.65F);
-        private static EntityModelState SITTING = new EntityModelState("human_sitting", 0.65F, 1.26F, 0.65F);
-
         protected Color skinColor;
 
         protected byte hairID;
@@ -22,6 +21,10 @@ namespace ancientlib.game.entity.player
         protected Color eyesColor;
 
         protected BoundingBox dropBoundingBox;
+
+        public Vector3 inputVector;
+
+        public float handPitch;
 
         public EntityPlayerBase(World world) : base(world)
         {
@@ -35,7 +38,33 @@ namespace ancientlib.game.entity.player
 
             this.interactWithEntities = false;
 
-            SetModelState(DEFAULT);
+            this.hairID = 1;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            SetMovement(inputVector);
+            UpdateAnimation();
+            base.Update(gameTime);
+            inputVector = Vector3.Zero;
+        }
+
+        private void UpdateAnimation()
+        {
+            float num = inputVector.Z;
+            float speed = this.speed;
+
+            Vector2 position = new Vector2(x, z);
+            Vector2 serverPosition = new Vector2(xServer, zServer);
+            float distance = Vector2.Distance(position, serverPosition);
+
+            if (world.IsRemote() && distance > 0.05F && this != world.GetMyPlayer())
+            {
+                num = -1;
+                speed = GetBaseSpeed();
+            }
+
+            this.handPitch = (float)Math.Sin(ticksExisted / 32F * speed) * num;
         }
 
         public override Vector3 GetEyePosition()
@@ -120,7 +149,7 @@ namespace ancientlib.game.entity.player
 
         public override float GetBaseSpeed()
         {
-            return 2.2F;
+            return 0.02F;
         }
 
         public override float GetBaseJumpSpeed()
@@ -151,19 +180,14 @@ namespace ancientlib.game.entity.player
             return new Color(skinColor.ToVector4() * colorMultiply.ToVector4());
         }
 
-        protected override EntityModelState GetDefaultModelState()
+        public override string GetRendererName()
         {
-            return DEFAULT;
+            return "player_base";
         }
 
-        protected override EntityModelState GetSittingModelState()
+        public override EntityModelCollection GetModelCollection()
         {
-            return SITTING;
-        }
-
-        public override string GetRenderEntity()
-        {
-            return "playerBase";
+            return EntityModelCollection.human;
         }
     }
 }

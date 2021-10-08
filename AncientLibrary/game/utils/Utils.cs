@@ -30,52 +30,44 @@ namespace ancientlib.game.utils
 
         public delegate object ObjectActivator();
 
-        public static BoundingBox GetBlockBoundingBox(int x, int y, int z)
-        {
-            Vector3 min = new Vector3(x, y, z);
-            Vector3 max = min + Vector3.One;
-
-            return new BoundingBox(min, max);
-        }
-
         public static Vector3 GetChunkPositionFromPosition(Vector3 position)
         {
             return new Vector3((int)Math.Floor(position.X / 16f), (int)Math.Floor(position.Y / 16f), (int)Math.Floor(position.Z / 16f));
         }
 
-        public static BoundingBox GetBlockDownFace(int x, int y, int z)
+        public static BoundingBox GetBlockDownFace(World world, int x, int y, int z)
         {
-            BoundingBox boundingBox = GetBlockBoundingBox(x, y, z);
+            BoundingBox boundingBox = world.GetBlockBoundingBox(x, y, z);
             return new BoundingBox(boundingBox.GetCorners()[3], boundingBox.GetCorners()[6]);
         }
 
-        public static BoundingBox GetBlockUpFace(int x, int y, int z)
+        public static BoundingBox GetBlockUpFace(World world, int x, int y, int z)
         {
-            BoundingBox boundingBox = GetBlockBoundingBox(x, y, z);
+            BoundingBox boundingBox = world.GetBlockBoundingBox(x, y, z);
             return new BoundingBox(boundingBox.GetCorners()[0], boundingBox.GetCorners()[5]);
         }
 
-        public static BoundingBox GetBlockNorthFace(int x, int y, int z)
+        public static BoundingBox GetBlockNorthFace(World world, int x, int y, int z)
         {
-            BoundingBox boundingBox = GetBlockBoundingBox(x, y, z);
+            BoundingBox boundingBox = world.GetBlockBoundingBox(x, y, z);
             return new BoundingBox(boundingBox.GetCorners()[4], boundingBox.GetCorners()[6]);
         }
 
-        public static BoundingBox GetBlockSouthFace(int x, int y, int z)
+        public static BoundingBox GetBlockSouthFace(World world, int x, int y, int z)
         {
-            BoundingBox boundingBox = GetBlockBoundingBox(x, y, z);
+            BoundingBox boundingBox = world.GetBlockBoundingBox(x, y, z);
             return new BoundingBox(boundingBox.GetCorners()[0], boundingBox.GetCorners()[2]);
         }
 
-        public static BoundingBox GetBlockWestFace(int x, int y, int z)
+        public static BoundingBox GetBlockWestFace(World world, int x, int y, int z)
         {
-            BoundingBox boundingBox = GetBlockBoundingBox(x, y, z);
+            BoundingBox boundingBox = world.GetBlockBoundingBox(x, y, z);
             return new BoundingBox(boundingBox.GetCorners()[7], boundingBox.GetCorners()[0]);
         }
 
-        public static BoundingBox GetBlockEastFace(int x, int y, int z)
+        public static BoundingBox GetBlockEastFace(World world, int x, int y, int z)
         {
-            BoundingBox boundingBox = GetBlockBoundingBox(x, y, z);
+            BoundingBox boundingBox = world.GetBlockBoundingBox(x, y, z);
             return new BoundingBox(boundingBox.GetCorners()[6], boundingBox.GetCorners()[1]);
         }
 

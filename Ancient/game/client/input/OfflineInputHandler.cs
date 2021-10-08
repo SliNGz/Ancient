@@ -21,7 +21,7 @@ namespace ancient.game.client.input
 
         public void OnLeftButtonHeld()
         {
-            if (player.GetItemInHand() != null && player.GetItemInHand().GetItem() is ItemWeapon)
+            if (player.GetItemInHand().GetItem().CanBeSpammed())
                 player.UseItemInHand();
         }
 
@@ -31,7 +31,9 @@ namespace ancient.game.client.input
         }
 
         public void OnLeftButtonReleased()
-        { }
+        {
+            player.OnUseItemInHandFinish();
+        }
 
         public void OnRightButtonHeld()
         { }
@@ -45,6 +47,8 @@ namespace ancient.game.client.input
         }
 
         public void OnRightButtonReleased()
-        { }
+        {
+            player.OnUseRightItemInHandFinish();
+        }
     }
 }

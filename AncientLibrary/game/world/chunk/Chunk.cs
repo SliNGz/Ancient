@@ -8,6 +8,8 @@ using ancientlib.game.init;
 using ancientlib.game.world;
 using ancientlib.game.network;
 using ancientlib.game.network.packet.server.world;
+using ancientlib.game.world.lighting;
+using ancientlib.game.block;
 
 namespace ancient.game.world.chunk
 {
@@ -25,9 +27,9 @@ namespace ancient.game.world.chunk
 
         public bool isLoaded = false;
 
-        private Queue<short> lightQueue;
-
         public Random rand;
+
+        private Queue<LightNode> sunlightQueue;
 
         public Chunk(World world, int x, int y, int z)
         {
@@ -40,9 +42,10 @@ namespace ancient.game.world.chunk
             this.blocks = new BlockArray(this);
 
             this.lightMap = new LightMap(this);
-            this.lightQueue = new Queue<short>();
 
             this.rand = new Random(16 * 16 * x + 16 * y + z);
+
+            this.sunlightQueue = new Queue<LightNode>();
 
             Generate();
         }
@@ -56,107 +59,75 @@ namespace ancient.game.world.chunk
 
         public void Load()
         {
-            SetupLighting();
+            //    SetupLighting();
             isLoaded = true;
+
+      /*      for (int x = 0; x < 4096; x++)
+            {
+                lightMap.SetSunlight(x, 15);
+            }*/
         }
 
         private void SetupLighting()
         {
-            for (int i = 0; i < 4096; i++)
-                lightMap.SetSunlight(i, world.GetSunlight());
+            Vector3 index = GetIndex();
+            Chunk topChunk = world.GetChunk((int)index.X, (int)index.Y + 1, (int)index.Z);
 
-            /*Vector3 index = GetIndex();
-            Chunk upChunk = world.GetChunk((int)index.X, (int)index.Y + 1, (int)index.Z);
-
-            if (upChunk != null)
+            for (int x = 0; x < 16; x++)
             {
-                if ((BiomeGenerator.GetHeightAt(this.x, this.z) / 16) * 16 == this.y)
+                for (int z = 0; z < 16; z++)
                 {
-                    for (int x = 0; x < 16; x++)
-                    {
-                        for (int z = 0; z < 16; z++)
-                        {
-                            lightQueue.Enqueue(GetPackedValue(x, 15, z, world.GetSunlight()));
-                        }
-                    }
-                }
-                else
-                {
-                    for (int x = 0; x < 16; x++)
-                    {
-                        for (int z = 0; z < 16; z++)
-                        {
-                            int lightValue = upChunk.GetSunlight(x, 0, z);
+                    int light = topChunk == null ? 15 : topChunk.GetSunlight(x, 0, z);
 
-                            if (lightValue > 0)
-                                lightQueue.Enqueue(GetPackedValue(x, 15, z, lightValue));
-                        }
-                    }
+                    if (light <= 0)
+                        continue;
+
+                    lightMap.SetSunlight(x, 15, z, light);
+                    sunlightQueue.Enqueue(new LightNode(x, 15, z, light));
                 }
             }
 
-            while (lightQueue.Count > 0)
+            while (sunlightQueue.Count > 0)
             {
-                short packedValue = lightQueue.Dequeue();
+                LightNode lightNode = sunlightQueue.Dequeue();
 
-                int x = 0;
-                int y = 0;
-                int z = 0;
-                int sunlight = 0;
-                GetUnpackedValue(packedValue, out x, out y, out z, out sunlight);
+                int x = lightNode.X;
+                int y = lightNode.Y;
+                int z = lightNode.Z;
+                int lightValue = lightNode.LightValue;
 
-                PropagateLight(x, y - 1, z, sunlight);
-                PropagateLight(x, y, z - 1, sunlight - 1);
-                PropagateLight(x, y, z + 1, sunlight - 1);
-                PropagateLight(x - 1, y, z, sunlight - 1);
-                PropagateLight(x + 1, y, z, sunlight - 1);
-            }*/
-        }
-
-        private void PropagateLight(int x, int y, int z, int lightValue)
-        {
-            if (InChunkBounds(x, y, z))
-            {
-                if (GetSunlight(x, y, z) < lightValue)
-                {
-                    SetSunlight(x, y, z, lightValue);
-
-                    if (!GetBlock(x, y, z).IsFullBlock())
-                        lightQueue.Enqueue(GetPackedValue(x, y, z, lightValue));
-                }
+                PropagteLight(x, y - 1, z, lightValue);
+                PropagteLight(x, y, z - 1, lightValue - 1);
+                PropagteLight(x, y, z + 1, lightValue - 1);
+                PropagteLight(x - 1, y, z, lightValue - 1);
+                PropagteLight(x + 1, y, z, lightValue - 1);
             }
         }
 
-        private short GetPackedValue(int x, int y, int z, int lightValue)
+        private void PropagteLight(int x, int y, int z, int lightValue, bool fromNeighborChunk = false)
         {
-            short packedValue = 0;
+            if (!InChunkBounds(x, y, z))
+            {
+                int x1 = ((this.x + x) % 16 + 16) % 16;
+                int y1 = ((this.y + y) % 16 + 16) % 16;
+                int z1 = ((this.z + z) % 16 + 16) % 16;
 
-            packedValue |= (short)x;
-            packedValue <<= 4;
+                world.GetChunkFromBlock(this.x + x, this.y + y, this.z + z).PropagteLight(x1, y1, z1, lightValue, true);
+                return;
+            }
 
-            packedValue |= (short)y;
-            packedValue <<= 4;
+            if (lightValue > 0 && lightMap.GetSunlight(x, y, z) < lightValue)
+            {
+                lightMap.SetSunlight(x, y, z, lightValue);
 
-            packedValue |= (short)z;
-            packedValue <<= 4;
+                if (!fromNeighborChunk)
+                {
+                    Block block = blocks.GetBlock(x, y, z);
 
-            packedValue |= (short)lightValue;
-
-            return packedValue;
-        }
-
-        private void GetUnpackedValue(short packedValue, out int x, out int y, out int z, out int lightValue)
-        {
-            lightValue = packedValue & 0xF;
-            packedValue >>= 4;
-
-            z = packedValue & 0xF;
-            packedValue >>= 4;
-
-            y = packedValue & 0xF;
-            packedValue >>= 4;
-
-            x = packedValue & 0xF;
+                    if (!block.IsOpaque() || !block.IsFullBlock())
+                        sunlightQueue.Enqueue(new LightNode(x, y, z, lightValue));
+                }
+            }
         }
 
         public void Update()
@@ -222,9 +193,7 @@ namespace ancient.game.world.chunk
                 if (!world.IsRemote())
                     block.OnPlace(world, this.x + x, this.y + y, this.z + z);
 
-                if (world is WorldServer)
-                    ((WorldServer)world).BroadcastPacket(new PacketPlaceBlock(block, this.x + x, this.y + y, this.z + z));
-                else
+                if (!(world is WorldServer))
                 {
                     if (world.GetChunkLoader() != null)
                     {
@@ -252,12 +221,16 @@ namespace ancient.game.world.chunk
 
                     Tuple<int, int, int, Block>[] neighbors = world.GetNeighborsOfBlock(this.x + x, this.y + y, this.z + z);
                     for (int i = 0; i < 6; i++)
-                        neighbors[i].Item4.OnNeighborDestroyed(world, neighbors[i].Item1, neighbors[i].Item2, neighbors[i].Item3, block);
+                    {
+                        if (neighbors[i].Item4 != null)
+                            neighbors[i].Item4.OnNeighborDestroyed(world, neighbors[i].Item1, neighbors[i].Item2, neighbors[i].Item3, block);
+                    }
+
+                    if (world is WorldServer)
+                        ((WorldServer)world).BroadcastPacket(new PacketDestroyBlock(this.x + x, this.y + y, this.z + z));
                 }
 
-                if (world is WorldServer)
-                    ((WorldServer)world).BroadcastPacket(new PacketDestroyBlock(this.x + x, this.y + y, this.z + z));
-                else
+                if (!(world is WorldServer))
                 {
                     if (world.GetChunkLoader() != null)
                     {
@@ -368,7 +341,7 @@ namespace ancient.game.world.chunk
 
             this.lightMap.SetBlocklight(x, y, z, blocklight);
 
-            world.GetChunkLoader().AddToReloadSet(GetIndex());
+            //       world.GetChunkLoader().AddToReloadSet(GetIndex());
         }
 
         public LightMap GetLightMap()

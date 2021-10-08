@@ -22,9 +22,19 @@ namespace ancientserver.game.network.packet.handler.player
             UseAction useAction = itemPacket.GetUseAction();
 
             if (useAction >= UseAction.PRESS_LEFT && useAction <= UseAction.HOLD_LEFT)
+            {
                 player.useLeft = useAction;
+
+                if (useAction == UseAction.RELEASE_LEFT)
+                    player.OnUseItemInHandFinish();
+            }
             else
+            {
                 player.useRight = useAction;
+
+                if (useAction == UseAction.RELEASE_RIGHT)
+                    player.OnUseRightItemInHandFinish();
+            }
         }
     }
 }

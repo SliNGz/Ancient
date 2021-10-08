@@ -34,20 +34,18 @@ Dragon on pogo monster!!!
 
 18/07/2017:
 ~~~~~~~~~~~~~~~~
-
 Entity health bar, turns from green to red, depends on percentage of health. √
 NPC, merchandisers for now.
 Damage stat depended, crits. √
 Monsters - Hostile entities.
-Normal inventory!
+Normal inventory! √
 Equipment.
 Better drops (quantity variation, randomness, chances, berkins drop variations, etc..). √
 Removing unnecessary variables in entity.
 
 03/11/2017:
 ~~~~~~~~~~~~~~~
-
-Entity animation states (Walking, Standing, Sitting) - each state comes with specific bounding box dimensions.
+Entity animation states (Walking, Standing, Sitting) - each state comes with specific bounding box dimensions. √
 Change EntityExplosion's constructor.
 Telekinesis skill for magician - takes the block beneath the player and throws multiple blocks of the same kind, player hovering above ground.
 Making mounts grow (scale, animation, maybe different model) when they level up (could also make a mount mountable only at a certain level).
@@ -57,3 +55,35 @@ Head rotation.
 ~~~~~~~~~~~~~~
 Biome Idea:
 Flat biome, clouds are the surface, jetpack shop, clouds connected with bridges, each cloud has it's house, inns, houses.. BGM - yair's "orbis" music.
+
+18/11/2017:
+~~~~~~~~~~~~~
+Inventory - divided to equip, use, blocks, special, etc.. http://sketchtoy.com/68409708
+
+14/12/2017:
+~~~~~~~~~~~~~
+Structures with no block id, uses BlockVoxel - just color, no drop.
+Player can climb freely on blocks which are 1 block higher than foot position. √
+Wind. √ (+ Waves √)
+
+26/12/2017
+~~~~~~~~~~~~
+Japanese temple structures, "Japan" biome.
+Mayan temple, Jungle biome https://d1u5p3l4wpay3k.cloudfront.net/terraria_gamepedia/7/7e/BiomeBannerJungle.png?version=929d9587a715f62bad1da5e85f85ee14.
+
+04/01/2018:
+~~~~~~~~~~~~
+Tidy up WorldRenderer.
+Change Camera class..
+Bloom
+Aurora
+Water Reflections
+Lightings (Change sky color frequently).
+
+31/01/2018
+~~~~~~~~~~~~
+Block breaking time..
+Tools
+Inventory amount
+Fall effect of leaves √
+Snow under ground fix..

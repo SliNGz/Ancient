@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
-using ancient.game.camera;
 using ancient.game.renderers.world;
 using Microsoft.Xna.Framework.Input;
 using ancient.game.entity.player;
@@ -12,6 +11,8 @@ using ancient.game.client.renderer.entity;
 using Microsoft.Xna.Framework;
 using ancient.game.input;
 using ancient.game.renderers.voxel;
+using ancient.game.client.camera;
+using ancient.game.client.renderer.model;
 
 namespace ancient.game.client.gui
 {
@@ -26,6 +27,8 @@ namespace ancient.game.client.gui
             this.backgroundColor = Color.BurlyWood;
 
             this.isCursorVisible = false;
+
+            camera.SetPitch(MathHelper.PiOver4);
         }
 
         public override void Initialize()
@@ -38,15 +41,25 @@ namespace ancient.game.client.gui
         public override void Update(MouseState mouseState)
         {
             base.Update(mouseState);
+
             this.backgroundColor = Ancient.ancient.world.skyColor;
-            Ancient.ancient.player.SetHeadPitch(MathHelper.Clamp(Ancient.ancient.player.GetHeadPitch(), 0, MathHelper.PiOver2));
+
+            camera.SetYaw(Ancient.ancient.player.GetHeadYaw());
+            //camera.SetPitch(MathHelper.Clamp(Ancient.ancient.player.GetHeadPitch(), 0, MathHelper.PiOver2));
         }
 
         public override void Draw3D()
         {
             base.Draw3D();
-            EntityRenderers.GetRenderEntityFromEntity(Ancient.ancient.player).Draw(Ancient.ancient.player);
+            WorldRenderer.currentEffect.Parameters["FogEnabled"].SetValue(false);
+            WorldRenderer.currentEffect.Parameters["View"].SetValue(camera.GetViewMatrix());
+            WorldRenderer.currentEffect.Parameters["Projection"].SetValue(camera.GetProjectionMatrix());
+            Ancient.ancient.world.GetRenderer().Technique = 0;
+            WorldRenderer.currentEffect.Parameters["ShadowsEnabled"].SetValue(false);
+            WorldRenderer.currentEffect.Parameters["MultiplyColorEnabled"].SetValue(true);
+            EntityRenderers.renderPlayer.Draw(Ancient.ancient.player);
             Ancient.ancient.world.GetRenderer().particleRenderer.Draw();
+            WorldRenderer.currentEffect.Parameters["MultiplyColorEnabled"].SetValue(false);
             DrawMap();
         }
 

@@ -1,5 +1,4 @@
-﻿using ancient.game.camera;
-using ancient.game.input;
+﻿using ancient.game.input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -9,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using ancient.game.renderers.world;
+using ancient.game.client.camera;
 
 namespace ancient.game.client.gui
 {
@@ -21,7 +21,7 @@ namespace ancient.game.client.gui
 
         protected float scrollValue;
 
-        protected Camera camera;
+        protected CameraFOV camera;
 
         public GuiCameraScroller(GuiManager guiManager, string name, float minDistance, float maxDistance, float scrollValue) : base(guiManager, name)
         {
@@ -32,7 +32,7 @@ namespace ancient.game.client.gui
 
             this.drawWorldBehind = false;
 
-            this.camera = new Camera(70, 0.1f, 1000);
+            this.camera = new CameraFOV(70, 0.1f, 1000);
             camera.SetDistance(distance);
         }
 
@@ -40,13 +40,14 @@ namespace ancient.game.client.gui
         {
             base.Update(mouseState);
             UpdateCameraDistance();
+            camera.Update();
         }
 
         public override void Draw3D()
         {
-            WorldRenderer.effect.Parameters["FogEnabled"].SetValue(false);
-            WorldRenderer.effect.Parameters["View"].SetValue(camera.GetViewMatrix(Ancient.ancient.player.GetHeadYaw(), Ancient.ancient.player.GetHeadPitch()));
-            WorldRenderer.effect.Parameters["Projection"].SetValue(camera.GetProjectionMatrix());
+            WorldRenderer.currentEffect.Parameters["FogEnabled"].SetValue(false);
+            WorldRenderer.currentEffect.Parameters["View"].SetValue(camera.GetViewMatrix());
+            WorldRenderer.currentEffect.Parameters["Projection"].SetValue(camera.GetProjectionMatrix());
         }
 
         protected virtual void UpdateCameraDistance()

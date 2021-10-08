@@ -1,5 +1,7 @@
 ﻿using ancient.game.entity;
 using ancient.game.entity.player;
+using ancient.game.world;
+using ancientlib.game.entity.monster;
 using ancientlib.game.entity.npc;
 using ancientlib.game.entity.passive;
 using ancientlib.game.entity.projectile;
@@ -15,42 +17,60 @@ namespace ancientlib.game.entity
 {
     public class Entities
     {
-        private static readonly Dictionary<int, Type> entities = new Dictionary<int, Type>();
+        private static readonly Dictionary<IDName, Type> entities = new Dictionary<IDName, Type>();
 
         public static void Initialize()
         {
-            entities.Add(0, typeof(EntityPlayer));
-
-            entities.Add(1, typeof(EntityTortoise));
-            entities.Add(2, typeof(EntitySlime));
-            entities.Add(3, typeof(EntityNPC));
-
-            entities.Add(4, typeof(EntityDrop));
-            entities.Add(5, typeof(EntityArrow));
-            entities.Add(6, typeof(EntityProjectileStaff));
+            InitializeEntity(0, "player", typeof(EntityPlayer));
+            InitializeEntity(1, "tortoise", typeof(EntityTortoise));
+            InitializeEntity(2, "slime", typeof(EntitySlime));
+            InitializeEntity(3, "npc", typeof(EntityNPC));
+            InitializeEntity(4, "drop", typeof(EntityDrop));
+            InitializeEntity(5, "arrow", typeof(EntityArrow));
+            InitializeEntity(6, "staff_projectile", typeof(EntityProjectileStaff));
+            InitializeEntity(7, "explosion", typeof(EntityExplosion));
+            InitializeEntity(8, "nymu", typeof(EntityNymu));
+            InitializeEntity(9, "portal", typeof(EntityPortal));
+            InitializeEntity(10, "bee", typeof(EntityBee));
         }
 
-        public static Entity CreateEntityFromTypeID(int typeID, params object[] paramArray)
+        public static void InitializeEntity(int id, string name, Type type)
         {
-            Type type = null;
+            entities.Add(new IDName(id, name), type);
+        }
 
-            if (entities.TryGetValue(typeID, out type))
-                return (Entity)Activator.CreateInstance(type, paramArray);
+        public static Entity CreateEntityFromTypeID(int typeID)
+        {
+            Type type = entities.FirstOrDefault(x => x.Key.id == typeID).Value;
+
+            if (type != null)
+                return (Entity)Activator.CreateInstance(type, World.world);
 
             return null;
         }
 
         public static int GetTypeIDFromEntity(Entity entity)
         {
-            return entities.FirstOrDefault(x => x.Value == entity.GetType()).Key;
+            try
+            {
+                return entities.First(x => x.Key.name == entity.GetEntityName()).Key.id;
+            }
+            catch (InvalidOperationException)
+            { }
+
+            return -1;
         }
+    }
 
-        public static Type GetTypeFromTypeID(int typeID)
+    public struct IDName
+    {
+        public int id;
+        public string name;
+
+        public IDName(int id, string name)
         {
-            Type type = null;
-            entities.TryGetValue(typeID, out type);
-
-            return type;
+            this.id = id;
+            this.name = name;
         }
     }
 }

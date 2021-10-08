@@ -2,6 +2,7 @@
 using ancient.game.world;
 using ancientlib.game.classes;
 using ancientlib.game.entity;
+using ancientlib.game.entity.model;
 using ancientlib.game.entity.skill;
 using ancientlib.game.item;
 using Microsoft.Xna.Framework;
@@ -171,7 +172,7 @@ namespace ancientlib.game.skill
 
         public abstract int GetEntityLifeSpan();
 
-        public abstract EntityModelState GetModelState();
+        public abstract EntityModelCollection GetModelCollection();
 
         public abstract string GetActivationSound(Random rand);
     }

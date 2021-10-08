@@ -37,7 +37,7 @@ namespace ancientlib.game.entity.ai
             if (world.rand.Next(20) == 0)
                 return false;
 
-            player = entity.GetNearestPlayerWithinRange(distance);
+            player = entity.GetNearestPlayer(distance);
             return player != null;
         }
 

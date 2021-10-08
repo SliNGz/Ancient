@@ -1,6 +1,8 @@
 ﻿using ancient.game.entity.player;
 using ancient.game.utils;
 using ancient.game.world;
+using ancientlib.game.constants;
+using ancientlib.game.user;
 using ancientlib.game.utils;
 using System;
 using System.Collections.Generic;
@@ -17,32 +19,34 @@ namespace ancientlib.game.network.packet.server.world
         private int xSpawn;
         private int ySpawn;
         private int zSpawn;
-        private int playerID;
+        private CharactersArray charactersArray;
 
         public PacketCreateWorld()
-        { }
+        {
+            this.charactersArray = new CharactersArray();
+        }
 
-        public PacketCreateWorld(World world, EntityPlayer player)
+        public PacketCreateWorld(World world, NetConnection netConnection)
         {
             this.seed = world.GetSeed();
             this.xSpawn = (int)world.GetSpawnPoint().X;
             this.ySpawn = (int)world.GetSpawnPoint().Y;
             this.zSpawn = (int)world.GetSpawnPoint().Z;
-            this.playerID = player.GetID();
+            this.charactersArray = netConnection.GetUser().GetCharactersArray();
         }
 
         public override void Read(BinaryReader reader)
         {
             this.seed = reader.ReadInt32();
             reader.ReadPositionInt(out xSpawn, out ySpawn, out zSpawn);
-            this.playerID = reader.ReadInt32();
+            charactersArray.Read(reader);
         }
 
         public override void Write(BinaryWriter writer)
         {
             writer.Write(seed);
             writer.Write(xSpawn, ySpawn, zSpawn);
-            writer.Write(playerID);
+            charactersArray.Write(writer);
         }
 
         public int GetSeed()
@@ -65,9 +69,9 @@ namespace ancientlib.game.network.packet.server.world
             return this.zSpawn;
         }
 
-        public int GetPlayerID()
+        public CharactersArray GetCharactersArray()
         {
-            return this.playerID;
+            return this.charactersArray;
         }
     }
 }

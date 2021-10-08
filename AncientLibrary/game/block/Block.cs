@@ -6,6 +6,7 @@ using ancientlib.game.block;
 using ancientlib.game.entity.world;
 using ancientlib.game.init;
 using ancientlib.game.item;
+using ancientlib.game.world.biome;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -56,9 +57,20 @@ namespace ancient.game.world.block
             return this.name;
         }
 
+        public Block SetName(string name)
+        {
+            this.name = name;
+            return this;
+        }
+
         public Vector3 GetDimensions()
         {
-            return dimensions;
+            return this.dimensions;
+        }
+
+        public virtual Vector3 GetRenderDimensions(World world, int x, int y, int z)
+        {
+            return this.dimensions;
         }
 
         public float GetSlipperiness()
@@ -76,9 +88,21 @@ namespace ancient.game.world.block
             return this.color;
         }
 
+        public Block SetColor(Color color)
+        {
+            this.color = color;
+            return this;
+        }
+
         public Color GetSecondaryColor()
         {
             return this.secondaryColor;
+        }
+
+        public Block SetSecondaryColor(Color secondaryColor)
+        {
+            this.secondaryColor = secondaryColor;
+            return this;
         }
 
         public virtual bool IsOpaque()
@@ -108,31 +132,11 @@ namespace ancient.game.world.block
         }
 
         public virtual void OnPlace(World world, int x, int y, int z)
-        {
-            ReloadNearbyLightSources(world, x, y, z);
-        }
+        { }
 
         public virtual void OnDestroy(World world, int x, int y, int z)
         {
-            ReloadNearbyLightSources(world, x, y, z);
             DropItems(world, x, y, z);
-        }
-
-        private void ReloadNearbyLightSources(World world, int x, int y, int z)
-        {
-            if (lightEmission == 0)
-            {
-                List<Tuple<int, int, int>> lights = new List<Tuple<int, int, int>>();
-
-                foreach (var light in world.GetLightingManager().lights)
-                {
-                    if (Vector3.Distance(new Vector3(light.Item1, light.Item2, light.Item3), new Vector3(x, y, z)) <= 15)
-                        lights.Add(light);
-                }
-
-                foreach (var light in lights)
-                    world.ReloadLightSource(light.Item1, light.Item2, light.Item3);
-            }
         }
 
         public virtual void OnTick(World world, int x, int y, int z)
@@ -166,8 +170,14 @@ namespace ancient.game.world.block
             return true;
         }
 
-        public virtual bool ShouldRenderFace(Block neighbor, int xOffset, int yOffset, int zOffset)
+        public virtual bool ShouldRenderFace(World world, int x, int y, int z, Block neighbor, int xOffset, int yOffset, int zOffset)
         {
+            if (yOffset == 1)
+            {
+                if (GetRenderDimensions(world, x, y, z).Y < 1)
+                    return true;
+            }
+
             return this.color.A > neighbor.GetColor().A || !neighbor.IsFullBlock();
         }
 
@@ -209,15 +219,18 @@ namespace ancient.game.world.block
 
             world.SpawnEntity(drop);
         }
-    }
 
-    public enum BlockFace
-    {
-        DOWN,
-        UP,
-        NORTH,
-        SOUTH,
-        WEST,
-        EAST
+        public virtual Color GetColorAt(World world, int x, int y, int z)
+        {
+            float noise = (float)(world.GetSimplexNoise().Evaluate(x / 32.0, y / 4.0, z / 32.0));
+            noise = (noise + 1) / 2;
+
+            return Color.Lerp(color, secondaryColor, noise);
+        }
+
+        public virtual Vector4 GetShaderTechnique(World world, int x, int y, int z)
+        {
+            return Vector4.Zero;
+        }
     }
 }

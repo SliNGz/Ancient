@@ -22,7 +22,42 @@ namespace ancientlib.game.world.structure
         protected int height;
         protected int length;
 
-        public Structure(string path)
+        public Structure(string path, Dictionary<Color, Block> colorToBlockList)
+        {
+            SetupStructureFromMagica(path, colorToBlockList);
+        }
+
+        /*  private void SetupStructureFromMagica(string path)
+          {
+              Color[,,] voxels = MagicaVoxelImporter.FromMagica(new BinaryReader(File.OpenRead(Structures.basePath + path + ".vox")));
+
+              this.width = voxels.GetLength(0);
+              this.height = voxels.GetLength(1);
+              this.length = voxels.GetLength(2);
+
+              blocks = new Dictionary<Tuple<int, int, int>, Block>();
+
+              for (int x = 0; x < this.width; x++)
+              {
+                  for (int y = 0; y < this.height; y++)
+                  {
+                      for (int z = 0; z < this.length; z++)
+                      {
+                          Color color = voxels[x, y, z];
+                          int id = color.R * 256 * 256 + color.G * 256 + color.B;
+                          Block block = Blocks.GetBlockFromID(id);
+
+                          if (block == null)
+                              throw new NullReferenceException("Could not find block with id: " + id);
+
+                          if (block != Blocks.air)
+                              blocks.Add(new Tuple<int, int, int>(x, y, z), block);
+                      }
+                  }
+              }
+          }*/
+
+        private void SetupStructureFromMagica(string path, Dictionary<Color, Block> colorToBlockList)
         {
             Color[,,] voxels = MagicaVoxelImporter.FromMagica(new BinaryReader(File.OpenRead(Structures.basePath + path + ".vox")));
 
@@ -39,11 +74,16 @@ namespace ancientlib.game.world.structure
                     for (int z = 0; z < this.length; z++)
                     {
                         Color color = voxels[x, y, z];
-                        int id = color.R * 256 * 256 + color.G * 256 + color.B;
-                        Block block = Blocks.GetBlockFromID(id);
+
+                        if (color == Color.Transparent)
+                            continue;
+
+                        Block block = null;
+
+                        colorToBlockList.TryGetValue(color, out block);
 
                         if (block == null)
-                            throw new NullReferenceException("Could not find block with id: " + id);
+                            throw new NullReferenceException("Could not find matching block for the color: " + color);
 
                         if (block != Blocks.air)
                             blocks.Add(new Tuple<int, int, int>(x, y, z), block);

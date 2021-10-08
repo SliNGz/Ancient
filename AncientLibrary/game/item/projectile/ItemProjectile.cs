@@ -1,5 +1,6 @@
 ﻿using ancientlib.game.classes;
 using ancientlib.game.entity;
+using ancientlib.game.entity.model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,6 @@ namespace ancientlib.game.item.projectile
     public abstract class ItemProjectile : ItemWeapon
     {
         protected float speed;
-
-        // ModelState - for the EntityProjectile creation based on item.
-        private EntityModelState modelState;
-
         protected float gravity;
 
         public ItemProjectile(string name, Class _class, int damage, float speed, float width, float height, float length, float gravity) : base(name, _class, damage, 0)
@@ -22,9 +19,8 @@ namespace ancientlib.game.item.projectile
             this.maxItemStack = 64;
             this.speed = speed;
 
-            modelState = new EntityModelState(GetModelName(), width, height, length);;
-
             this.gravity = gravity;
+            this.modelCollection = new EntityModelCollection(GetModelName(), width, height, length);
         }
 
         public abstract Type GetWeaponType();
@@ -32,26 +28,6 @@ namespace ancientlib.game.item.projectile
         public float GetSpeed()
         {
             return this.speed;
-        }
-
-        public EntityModelState GetModelState()
-        {
-            return this.modelState;
-        }
-
-        public float GetWidth()
-        {
-            return this.modelState.GetWidth();
-        }
-
-        public float GetHeight()
-        {
-            return this.modelState.GetHeight();
-        }
-
-        public float GetLength()
-        {
-            return this.modelState.GetLength();
         }
 
         public float GetGravity()

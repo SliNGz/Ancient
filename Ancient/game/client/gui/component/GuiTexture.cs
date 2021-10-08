@@ -11,7 +11,7 @@ using ancient.game.client.renderer.texture;
 
 namespace ancient.game.client.gui.component
 {
-    class GuiTexture : GuiComponent
+    public class GuiTexture : GuiComponent
     {
         public GuiTexture(string textureName)
         {
@@ -29,7 +29,7 @@ namespace ancient.game.client.gui.component
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Rectangle(GuiUtils.GetXFromRelativeX(this.x), GuiUtils.GetYFromRelativeY(this.y), width, height), Color.White);
+            spriteBatch.Draw(texture, new Rectangle(GuiUtils.GetXFromRelativeX(this.x), GuiUtils.GetYFromRelativeY(this.y), width, height), color);
         }
 
         public override void OnClick(MouseState mouseState)

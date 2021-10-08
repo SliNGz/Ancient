@@ -20,10 +20,10 @@ namespace ancientlib.game.item
             this.renderRoll = -25;
         }
 
-        public override void Use(EntityPlayer player)
+        public override void Use(EntityPlayer player, ItemStack itemStack)
         {
-            player.GetWorld().SpawnEntity(new EntityArrow(player.GetWorld(), player, (ItemArrow)player.GetProjectileInUse(this)));
-            base.Use(player);
+            player.GetWorld().SpawnEntity(new EntityExplosiveArrow(player.GetWorld(), player, (ItemArrow)player.GetProjectileInUse(this)));
+            base.Use(player, itemStack);
         }
 
         public override string GetUseSound(World world)

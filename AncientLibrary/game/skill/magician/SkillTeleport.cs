@@ -7,6 +7,7 @@ using ancient.game.entity.player;
 using ancientlib.game.classes;
 using Microsoft.Xna.Framework;
 using ancientlib.game.entity;
+using ancientlib.game.entity.model;
 
 namespace ancientlib.game.skill.magician
 {
@@ -38,7 +39,7 @@ namespace ancientlib.game.skill.magician
             return 2048;
         }
 
-        public override EntityModelState GetModelState()
+        public override EntityModelCollection GetModelCollection()
         {
             return null;
         }

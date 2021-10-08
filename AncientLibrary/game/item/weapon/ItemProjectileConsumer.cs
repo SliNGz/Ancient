@@ -14,9 +14,9 @@ namespace ancientlib.game.item.weapon
         public ItemProjectileConsumer(string name, Class _class, int damage, int cooldown) : base(name, _class, damage, cooldown)
         { }
 
-        public override void Use(EntityPlayer player)
+        public override void Use(EntityPlayer player, ItemStack itemStack)
         {
-            base.Use(player);
+            base.Use(player, itemStack);
 
             ItemProjectile projectile = player.GetProjectileInUse(this);
             player.RemoveItem(projectile, 1);

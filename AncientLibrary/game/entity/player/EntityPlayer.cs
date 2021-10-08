@@ -7,6 +7,8 @@ using ancientlib.game.entity.world;
 using ancientlib.game.init;
 using ancientlib.game.inventory;
 using ancientlib.game.item;
+using ancientlib.game.item.equip.bottom;
+using ancientlib.game.item.equip.special;
 using ancientlib.game.item.projectile;
 using ancientlib.game.particle;
 using ancientlib.game.skill;
@@ -22,7 +24,7 @@ namespace ancient.game.entity.player
     {
         protected int renderDistance;
 
-        protected Inventory inventory;
+        protected InventoryPlayer inventory;
 
         protected int handSlot;
         protected ItemStack hand;
@@ -36,25 +38,30 @@ namespace ancient.game.entity.player
         protected Class _class;
         public Skill[] skillBar;
 
-        public Vector3 inputVector;
-        public bool updateSmoothStep;
-
         public bool usingItemInHand;
-        public float handYaw;
-        public float handPitch;
-        public float handRoll;
+        private bool animForward;
+        public float handRenderYaw;
+        public float handRenderPitch;
+        public float handRenderRoll;
 
         protected bool isJumping;
 
         private int runningTicks;
 
+        public bool usingSpecial;
+
+        public Vector3 targetBlockPos;
+        public float destroyAnimation;
+
+        private int score;
+
         public EntityPlayer(World world) : base(world)
         {
             this.name = "UnnamedPlayer";
 
-            this.maxHealth = 250;
+            this.maxHealth = 100;
             this.health = maxHealth;
-            this.maxMana = 250;
+            this.maxMana = 100;
             this.mana = maxMana;
 
             this.runningSpeed = 1.8F;
@@ -63,13 +70,15 @@ namespace ancient.game.entity.player
 
             this.noClip = false;
 
-            this.inventory = new Inventory(40, 10);
-            inventory.AddItem(new ItemStack(Items.dagger, 64));
-            inventory.AddItem(new ItemStack(Items.staff, 64));
-            inventory.AddItem(new ItemStack(Items.log, 64));
-            inventory.AddItem(new ItemStack(Items.sand, 64));
-            inventory.AddItem(new ItemStack(Items.woodenBow, 64));
-            inventory.AddItem(new ItemStack(Items.blueberries_bush, 64));
+            this.inventory = new InventoryPlayer(this, 40);
+            AddItem(new ItemStack(Items.sword2));
+            AddItem(new ItemStack(Items.staff));
+            AddItem(new ItemStack(Items.woodenBow));
+            AddItem(new ItemStack(Items.dagger));
+            AddItem(new ItemStack(Items.steelArrow, 64));
+            AddItem(new ItemStack(Items.stoneShovel));
+            AddItem(new ItemStack(Items.stoneAxe));
+            AddItem(new ItemStack(Items.stonePickaxe));
 
             this.handSlot = 0;
 
@@ -78,30 +87,35 @@ namespace ancient.game.entity.player
             this.dex = 0;
             this.luk = 0;
 
-            SetClass(Classes.bowman);
+            SetClass(Classes.warrior);
 
             this.inputVector = Vector3.Zero;
 
-            this.handYaw = 0;
-            this.handPitch = 0;
-            this.handRoll = 0;
+            this.handRenderYaw = 0;
+            this.handRenderPitch = 0;
+            this.handRenderRoll = 0;
 
-            this.level = 255;
+            this.level = 1;
 
-            this.handDefault = new ItemStack(Items.air);
+            this.handDefault = new ItemStack(Items.handDefault);
+
+            this.hairID = 1;
+        }
+
+        public EntityPlayer(World world, EntityPlayer player) : this(world)
+        {
+            CopyFrom(player);
         }
 
         public override void Update(GameTime gameTime)
         {
-            SetMovement(inputVector);
-            UpdateRunningParticles();
-
             base.Update(gameTime);
+            UpdateRunningParticles();
             UpdateSkills();
             UpdateItemInHand();
             UpdateItemChange();
-            UpdateHandRotation();
-            inputVector = Vector3.Zero;
+            UpdateHandAnimation();
+            UpdateBlockDestroyAnimation();
         }
 
         private void UpdateRunningParticles()
@@ -114,7 +128,7 @@ namespace ancient.game.entity.player
                 {
                     Block block = world.GetBlock((int)x, (int)Math.Ceiling(y - height - 1), (int)z);
 
-                    if (block.IsSolid())
+                    if (block != null && block.IsSolid())
                     {
                         ParticleVoxel voxel = new ParticleVoxel(world);
                         voxel.SetPosition(GetPosition() + new Vector3(-width / 2F + (float)world.rand.NextDouble() * width, -height, 0));
@@ -138,7 +152,7 @@ namespace ancient.game.entity.player
             }
         }
 
-        private void UpdateHandRotation()
+        private void UpdateHandAnimation()
         {
             if (hand == null)
             {
@@ -150,38 +164,73 @@ namespace ancient.game.entity.player
 
             if (usingItemInHand)
             {
-                if (handYaw != hand.GetRenderYaw())
-                    handYaw = MathHelper.Lerp(handYaw, hand.GetRenderYaw(), delta);
+                float yawReach = hand.GetBaseRenderYaw();
+                float pitchReach = hand.GetBaseRenderPitch();
+                float rollReach = hand.GetBaseRenderRoll();
 
-                if (handPitch != hand.GetRenderPitch())
-                    handPitch = MathHelper.Lerp(handPitch, hand.GetRenderPitch(), delta);
+                if (animForward)
+                {
+                    yawReach = hand.GetRenderYaw();
+                    pitchReach = hand.GetRenderPitch();
+                    rollReach = hand.GetRenderRoll();
+                }
 
-                if (handRoll != hand.GetRenderRoll())
-                    handRoll = MathHelper.Lerp(handRoll, hand.GetRenderRoll(), delta);
+                handRenderYaw = MathHelper.Lerp(handRenderYaw, yawReach, delta);
+                handRenderPitch = MathHelper.Lerp(handRenderPitch, pitchReach, delta);
+                handRenderRoll = MathHelper.Lerp(handRenderRoll, rollReach, delta);
 
-                if (Math.Abs(hand.GetRenderYaw() - handYaw) <= 0.005F)
-                    handYaw = hand.GetRenderYaw();
+                if (Math.Abs(yawReach - handRenderYaw) <= 0.005F)
+                    handRenderYaw = yawReach;
 
-                if (Math.Abs(hand.GetRenderPitch() - handPitch) <= 0.005F)
-                    handPitch = hand.GetRenderPitch();
+                if (Math.Abs(pitchReach - handRenderPitch) <= 0.005F)
+                    handRenderPitch = pitchReach;
 
-                if (Math.Abs(hand.GetRenderRoll() - handRoll) <= 0.005F)
-                    handRoll = hand.GetRenderRoll();
+                if (Math.Abs(rollReach - handRenderRoll) <= 0.005F)
+                    handRenderRoll = rollReach;
 
-                if (handYaw == hand.GetRenderYaw() && handPitch == hand.GetRenderPitch() && handRoll == hand.GetRenderRoll())
-                    usingItemInHand = false;
+                if (handRenderYaw == yawReach && handRenderPitch == pitchReach && handRenderRoll == rollReach)
+                {
+                    if (!hand.CanBeSpammed())
+                        usingItemInHand = false;
+                    else
+                        animForward = !animForward;
+                }
             }
             else
             {
-                if (handYaw != 0)
-                    handYaw = MathHelper.LerpPrecise(handYaw, 0, delta);
+                animForward = true;
 
-                if (handPitch != 0)
-                    handPitch = MathHelper.LerpPrecise(handPitch, 0, delta);
+                if (handRenderYaw != hand.GetBaseRenderYaw())
+                    handRenderYaw = MathHelper.Lerp(handRenderYaw, hand.GetBaseRenderYaw(), delta);
 
-                if (handRoll != 0)
-                    handRoll = MathHelper.LerpPrecise(handRoll, 0, delta);
+                if (handRenderPitch != hand.GetBaseRenderPitch())
+                    handRenderPitch = MathHelper.Lerp(handRenderPitch, hand.GetBaseRenderPitch(), delta);
+
+                if (handRenderRoll != hand.GetBaseRenderRoll())
+                    handRenderRoll = MathHelper.Lerp(handRenderRoll, hand.GetBaseRenderRoll(), delta);
+
+                if (Math.Abs(hand.GetBaseRenderYaw() - handRenderYaw) <= 0.005F)
+                    handRenderYaw = hand.GetBaseRenderYaw();
+
+                if (Math.Abs(hand.GetBaseRenderPitch() - handRenderPitch) <= 0.005F)
+                    handRenderPitch = hand.GetBaseRenderPitch();
+
+                if (Math.Abs(hand.GetBaseRenderRoll() - handRenderRoll) <= 0.005F)
+                    handRenderRoll = hand.GetBaseRenderRoll();
             }
+        }
+
+        private void UpdateBlockDestroyAnimation()
+        {
+            Vector3? position = GetTargetedBlockPosition();
+
+            if (position.HasValue)
+            {
+                if (targetBlockPos != position.Value)
+                    destroyAnimation = 0;
+            }
+            else
+                destroyAnimation = 0;
         }
 
         public override float GetBaseSpeed()
@@ -199,9 +248,19 @@ namespace ancient.game.entity.player
             return this.renderDistance;
         }
 
+        public void SetRenderDistance(int renderDistance)
+        {
+            this.renderDistance = renderDistance;
+        }
+
+        public void AddRenderDistance(int add)
+        {
+            SetRenderDistance(this.renderDistance + add);
+        }
+
         public virtual bool AddItem(ItemStack itemStack)
         {
-            return this.inventory.AddItem(itemStack);
+            return this.inventory.AddItemUnsafe(itemStack);
         }
 
         public bool AddItem(Item item, int amount)
@@ -211,7 +270,7 @@ namespace ancient.game.entity.player
 
         public virtual bool RemoveItem(ItemStack itemStack)
         {
-            return this.inventory.RemoveItem(itemStack);
+            return this.inventory.RemoveItemUnsafe(itemStack);
         }
 
         public bool RemoveItem(Item item, int amount)
@@ -219,7 +278,7 @@ namespace ancient.game.entity.player
             return RemoveItem(new ItemStack(item, amount));
         }
 
-        public Inventory GetInventory()
+        public InventoryPlayer GetInventory()
         {
             return this.inventory;
         }
@@ -241,7 +300,7 @@ namespace ancient.game.entity.player
 
         public ItemStack GetItemInHand()
         {
-            return this.hand;
+            return this.hand == null ? handDefault : hand;
         }
 
         public void UseItemInHand()
@@ -270,6 +329,18 @@ namespace ancient.game.entity.player
                 itemStack.UseRightClick(this);
         }
 
+        public void OnUseItemInHandFinish()
+        {
+            if (hand != null)
+                hand.OnUseFinish(this);
+        }
+
+        public void OnUseRightItemInHandFinish()
+        {
+            if (hand != null)
+                hand.OnUseRightFinish(this);
+        }
+
         public override void DestroyTargetedBlock()
         {
             base.DestroyTargetedBlock();
@@ -288,13 +359,13 @@ namespace ancient.game.entity.player
 
         public void DropItemInHand()
         {
-            if (hand != null)
+            if (!world.IsRemote() && hand != null)
             {
                 EntityDrop drop = new EntityDrop(world, x, y, z, hand.GetItem(), 1);
                 drop.AddPosition(GetLookAt() * 1.5F);
                 drop.SetVelocity(GetTotalVelocity());
                 world.SpawnEntity(drop);
-                inventory.RemoveItem(hand.GetItem(), 1);
+                RemoveItem(hand.GetItem(), 1);
             }
         }
 
@@ -314,7 +385,7 @@ namespace ancient.game.entity.player
             if (prevHand != this.hand)
             {
                 if (hand != null)
-                    this.hand.OnItemChange(this);
+                    this.hand.OnItemChange(this, prevHand);
 
                 world.OnPlayerChangeItemInHand(hand);
             }
@@ -362,9 +433,29 @@ namespace ancient.game.entity.player
             return this.str;
         }
 
+        public void SetStr(int str)
+        {
+            this.str = str;
+        }
+
+        public void AddStr(int add)
+        {
+            SetStr(str + add);
+        }
+
         public int GetWsd()
         {
             return this.wsd;
+        }
+
+        public void SetWsd(int wsd)
+        {
+            this.wsd = wsd;
+        }
+
+        public void AddWsd(int add)
+        {
+            SetWsd(wsd + add);
         }
 
         public int GetDex()
@@ -372,9 +463,29 @@ namespace ancient.game.entity.player
             return this.dex;
         }
 
+        public void SetDex(int dex)
+        {
+            this.dex = dex;
+        }
+
+        public void AddDex(int add)
+        {
+            SetDex(dex + add);
+        }
+
         public int GetLuk()
         {
             return this.luk;
+        }
+
+        public void SetLuk(int luk)
+        {
+            this.luk = luk;
+        }
+
+        public void AddLuk(int add)
+        {
+            SetLuk(luk + add);
         }
 
         public float GetCriticalHitChance()
@@ -426,7 +537,7 @@ namespace ancient.game.entity.player
 
         public Biome GetBiome()
         {
-            return BiomeManager.GetBiomeOfBlock((int)x, (int)z);
+            return BiomeManager.GetBiomeAt((int)x, (int)z);
         }
 
         public override void Respawn()
@@ -471,26 +582,113 @@ namespace ancient.game.entity.player
             return null;
         }
 
+        public override string GetRendererName()
+        {
+            return "player";
+        }
+
+        public override string GetEntityName()
+        {
+            return "player";
+        }
+
+        public ItemBottom GetBottom()
+        {
+            return this.inventory.GetBottom();
+        }
+
+        public ItemSpecial GetSpecial()
+        {
+            return this.inventory.GetSpecial();
+        }
+
+        public void UseSpecial()
+        {
+            inventory.UseSpecial();
+        }
+
+        public virtual void Teleport(float x, float y, float z)
+        {
+            SetPosition(x, y, z);
+        }
+
+        public void Teleport(Vector3 position)
+        {
+            Teleport(position.X, position.Y, position.Z);
+        }
+
+        public int GetScore()
+        {
+            return this.score;
+        }
+
+        public void SetScore(int score)
+        {
+            this.score = score;
+        }
+
+        public void AddScore(int add)
+        {
+            this.score += add;
+        }
+
+        public void CopyFrom(EntityPlayer player)
+        {
+            this.name = player.GetName();
+            this.maxHealth = player.GetMaxHealth();
+            this.maxMana = player.GetMaxMana();
+            this.level = player.GetLevel();
+            this.exp = player.GetExp();
+            this.str = player.GetStr();
+            this.wsd = player.GetWsd();
+            this.dex = player.GetDex();
+            this.luk = player.GetLuk();
+            this.skinColor = player.GetSkinColor();
+            this.hairID = player.GetHairID();
+            this.hairColor = player.GetHairColor();
+            this.eyesID = player.GetEyesID();
+            this.eyesColor = player.GetEyesColor();
+            this._class = player.GetClass();
+        }
+
         public override void Read(BinaryReader reader)
         {
             base.Read(reader);
             this.name = reader.ReadString();
+            this.maxHealth = reader.ReadInt32();
+            this.maxMana = reader.ReadInt32();
+            this.level = reader.ReadInt32();
+            this.exp = reader.ReadInt32();
+            this.str = reader.ReadInt32();
+            this.wsd = reader.ReadInt32();
+            this.dex = reader.ReadInt32();
+            this.luk = reader.ReadInt32();
             this.skinColor = reader.ReadColorRGB();
             this.hairID = reader.ReadByte();
             this.hairColor = reader.ReadColorRGB();
             this.eyesID = reader.ReadByte();
             this.eyesColor = reader.ReadColorRGB();
+            this._class = Classes.GetClassFromID(reader.ReadInt32());
         }
 
         public override void Write(BinaryWriter writer)
         {
             base.Write(writer);
             writer.Write(name);
+            writer.Write(maxHealth);
+            writer.Write(maxMana);
+            writer.Write(level);
+            writer.Write(exp);
+            writer.Write(str);
+            writer.Write(wsd);
+            writer.Write(dex);
+            writer.Write(luk);
             writer.WriteColorRGB(skinColor);
             writer.Write(hairID);
             writer.WriteColorRGB(hairColor);
             writer.Write(eyesID);
             writer.WriteColorRGB(eyesColor);
+            writer.Write(Classes.GetIDFromClass(_class));
         }
     }
 }

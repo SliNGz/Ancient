@@ -20,9 +20,9 @@ namespace ancient.game.client.network.packet.handler.world
 
             Ancient.ancient.CreateWorld(worldPacket.GetSeed(), true);
             Ancient.ancient.world.SetSpawnPoint(new Vector3(worldPacket.GetXSpawn(), worldPacket.GetYSpawn(), worldPacket.GetZSpawn()));
-            Ancient.ancient.player.SetID(worldPacket.GetPlayerID());
 
-            Ancient.ancient.guiManager.DisplayGui(Ancient.ancient.guiManager.ingame);
+            //Ancient.ancient.user.SetCharactersArray(worldPacket.GetCharactersArray());
+            //Ancient.ancient.guiManager.characterSelection.character = Ancient.ancient.user.GetCharactersArray().GetCharacter(0);
         }
     }
 }

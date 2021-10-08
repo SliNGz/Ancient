@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ancient.game.entity.player;
-using ancient.game.camera;
 using ancient.game.renderers.world;
+using ancient.game.client.camera;
 
 namespace ancient.game.client.input.keybinding.keyaction
 {
@@ -16,7 +16,7 @@ namespace ancient.game.client.input.keybinding.keyaction
 
         public void UpdatePressed(EntityPlayer player)
         {
-            Camera camera = WorldRenderer.camera;
+            CameraFOV camera = WorldRenderer.camera;
 
             if (camera.GetDistance() == 0)
                 camera.SetDistance(5F);

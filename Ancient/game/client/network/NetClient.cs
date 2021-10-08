@@ -9,6 +9,7 @@ using System.Net;
 using ancientlib.game.network.packet;
 using ancientlib.game.network.packet.client.handshake;
 using ancient.game.client.gui;
+using ancient.game.client.utils;
 
 namespace ancient.game.client.network
 {
@@ -36,6 +37,7 @@ namespace ancient.game.client.network
                 this.netConnection = new NetConnection(new TcpClient(ip, port));
                 this.netConnection.IOExceptionCaughtEvent += new IOExceptionCaughtEventHandler(OnCatchIOException);
                 this.netConnection.player = Ancient.ancient.player;
+                //this.netConnection.SetUser(Ancient.ancient.user);
                 InitializeConnection();
                 return true;
             }
@@ -49,7 +51,7 @@ namespace ancient.game.client.network
         {
             Ancient.ancient.inputManager.playerInput = Ancient.ancient.inputManager.onlineInput;
 
-            SendPacket(new PacketHandshake());
+            SendPacket(new PacketHandshake(netConnection));
             netConnection.StartReadingPackets();
         }
 

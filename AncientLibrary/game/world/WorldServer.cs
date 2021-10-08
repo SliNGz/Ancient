@@ -18,6 +18,7 @@ using ancientlib.game.network.packet.server.entity;
 using ancientlib.game.entity.world;
 using ancientlib.game.init;
 using ancientlib.game.network.packet.server.world;
+using ancientlib.game.utils.chat;
 
 namespace ancientlib.game.world
 {
@@ -43,6 +44,17 @@ namespace ancientlib.game.world
                 ((EntityPlayerOnline)players[i]).netConnection.SendPacket(packet);
         }
 
+        public void BroadcastPacket(Packet packet, EntityPlayer exceptionPlayer)
+        {
+            for (int i = 0; i < players.Count; i++)
+            {
+                EntityPlayerOnline player = (EntityPlayerOnline)players[i];
+
+                if (player != exceptionPlayer)
+                    player.netConnection.SendPacket(packet);
+            }
+        }
+
         public void KickPlayer(EntityPlayer player, string message = "You were kicked from the server")
         {
             EntityPlayerOnline playerOnline = (EntityPlayerOnline)player;
@@ -54,27 +66,34 @@ namespace ancientlib.game.world
         public override void SpawnEntity(Entity entity)
         {
             base.SpawnEntity(entity);
-            netEntityManager.AddNetEntity(entity);
+
+            if (entity.IsMultiplayerSupported())
+                netEntityManager.AddNetEntity(entity);
         }
 
         public override void DespawnEntity(Entity entity)
         {
             base.DespawnEntity(entity);
-            netEntityManager.RemoveNetEntity(entity);
+
+            if (entity.IsMultiplayerSupported())
+                netEntityManager.RemoveNetEntity(entity);
         }
 
         public override void OnDespawnEntity(Entity entity)
         {
             base.OnDespawnEntity(entity);
 
-            if (entity is EntityPlayerOnline)
-                NetServer.instance.RemoveNetConnection(((EntityPlayerOnline)entity).netConnection);
-
-            PacketDespawnEntity despawnPacket = new PacketDespawnEntity(entity);
-            for (int i = 0; i < players.Count; i++)
+            if (entity.IsMultiplayerSupported())
             {
-                if (entity != players[i])
-                    ((EntityPlayerOnline)players[i]).netConnection.SendPacket(despawnPacket);
+                if (entity is EntityPlayerOnline)
+                    NetServer.instance.RemoveNetConnection(((EntityPlayerOnline)entity).netConnection);
+
+                PacketDespawnEntity despawnPacket = new PacketDespawnEntity(entity);
+                for (int i = 0; i < players.Count; i++)
+                {
+                    if (entity != players[i])
+                        ((EntityPlayerOnline)players[i]).netConnection.SendPacket(despawnPacket);
+                }
             }
         }
 
@@ -87,6 +106,15 @@ namespace ancientlib.game.world
         {
             base.OnWeatherChange();
             BroadcastPacket(new PacketToggleRain(isRaining));
+        }
+
+        public override void AddChatComponent(ChatComponent chatComponent)
+        {
+            if (chatComponent is ChatComponentText)
+            {
+                ChatComponentText textComponent = (ChatComponentText)chatComponent;
+                Console.WriteLine(textComponent.GetText());
+                    }
         }
     }
 }

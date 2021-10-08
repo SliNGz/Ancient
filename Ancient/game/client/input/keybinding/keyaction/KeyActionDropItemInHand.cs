@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ancient.game.entity.player;
+using ancient.game.client.network;
+using ancientlib.game.network.packet.client.player;
 
 namespace ancient.game.client.input.keybinding.keyaction
 {
@@ -14,7 +16,10 @@ namespace ancient.game.client.input.keybinding.keyaction
 
         public void UpdatePressed(EntityPlayer player)
         {
-            player.DropItemInHand();
+            if (!player.GetWorld().IsRemote())
+                player.DropItemInHand();
+            else
+                NetClient.instance.SendPacket(new PacketPlayerDropItem());
         }
 
         public void UpdateReleased(EntityPlayer player)

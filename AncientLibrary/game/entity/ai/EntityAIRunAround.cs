@@ -20,7 +20,7 @@ namespace ancientlib.game.entity.ai
             if (entity is EntityPet && ((EntityPet)entity).HasOwner())
                 return false;
 
-            return entity.OnGround() && entity.IsAttacked();
+            return entity.IsAttacked() && entity.OnGround() && !entity.GetPathFinder().HasPath();
         }
     }
 }

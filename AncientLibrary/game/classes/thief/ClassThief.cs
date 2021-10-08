@@ -10,7 +10,7 @@ using ancientlib.game.skill.thief;
 
 namespace ancientlib.game.classes.thief
 {
-    class ClassThief : Class
+    public class ClassThief : Class
     {
         public ClassThief() : base("Thief")
         {

@@ -11,6 +11,7 @@ using ancientlib.game.world.biome;
 using ancient.game.entity.player;
 using Microsoft.Xna.Framework.Graphics;
 using ancient.game.client.utils;
+using ancient.game.renderers.world;
 
 namespace ancient.game.client.gui
 {
@@ -23,6 +24,8 @@ namespace ancient.game.client.gui
         private GuiText chunksRendered;
 
         private GuiText fps;
+
+        private GuiText direction;
 
         public GuiDebug(GuiManager guiManager) : base(guiManager, "debug")
         { }
@@ -61,11 +64,18 @@ namespace ancient.game.client.gui
             this.fps.SetOutline(1);
             this.fps.SetColor(Color.Yellow);
             this.components.Add(fps);
+
+            this.direction = new GuiText("Direction: ");
+            this.direction.SetX(position.GetX());
+            this.direction.SetY(fps.GetY() + GuiUtils.GetRelativeYFromY(fps.GetHeight() + 30));
+            this.components.Add(direction);
         }
 
         public override void Update(MouseState mouseState)
         {
             base.Update(mouseState);
+
+            player = Ancient.ancient.player;
 
             this.position.SetText("Position: " + player.GetPosition());
 
@@ -78,6 +88,8 @@ namespace ancient.game.client.gui
                     + ", Rainfall: " + BiomeManager.GetRainfall((int)player.GetX(), (int)player.GetZ()));
 
             this.fps.SetText("FPS: " + Ancient.ancient.frameRate);
+
+            this.direction.SetText("Direction: " + WorldRenderer.camera.GetDirection().ToString());
         }
     }
 }

@@ -10,116 +10,257 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\..\MagicaVoxelContentExtension\bin\Debug\MagicaVoxelContentExtension.dll
 
 #---------------------------------- Content ---------------------------------#
 
-#begin effect.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:effect.fx
-
 #begin model/block/blueberries_bush.vox
-/copy:model/block/blueberries_bush.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=0.0625, 0.0625, 0.0625
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/block/blueberries_bush.vox
 
 #begin model/block/blueberries_bush_snow.vox
-/copy:model/block/blueberries_bush_snow.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=0.0625, 0.0625, 0.0625
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/block/blueberries_bush_snow.vox
 
 #begin model/block/campfire.vox
-/copy:model/block/campfire.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=0.077, 0.077, 0.077
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/block/campfire.vox
 
 #begin model/block/flowers.vox
-/copy:model/block/flowers.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=0.0625, 0.0625, 0.0625
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/block/flowers.vox
 
 #begin model/block/lantern.vox
-/copy:model/block/lantern.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=0.058, 0.058, 0.058
+/processorParam:Offset=0.176, 0, 0.176
+/processorParam:Alpha=1
+/build:model/block/lantern.vox
 
 #begin model/block/lantern_glass.vox
-/copy:model/block/lantern_glass.vox
-
-#begin model/block/tall_grass.vox
-/copy:model/block/tall_grass.vox
-
-#begin model/block/tall_grass_snow.vox
-/copy:model/block/tall_grass_snow.vox
-
-#begin model/entity/passive/slime.vox
-/copy:model/entity/passive/slime.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=0.058, 0.058, 0.058
+/processorParam:Offset=0.294, 0.117, 0.294
+/processorParam:Alpha=0.65
+/build:model/block/lantern_glass.vox
 
 #begin model/entity/player/eyes/female/eyes_female_0.vox
-/copy:model/entity/player/eyes/female/eyes_female_0.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/female/eyes_female_0.vox
 
 #begin model/entity/player/eyes/female/eyes_female_0_pupils.vox
-/copy:model/entity/player/eyes/female/eyes_female_0_pupils.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/female/eyes_female_0_pupils.vox
 
 #begin model/entity/player/eyes/female/eyes_female_1.vox
-/copy:model/entity/player/eyes/female/eyes_female_1.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/female/eyes_female_1.vox
 
 #begin model/entity/player/eyes/female/eyes_female_1_pupils.vox
-/copy:model/entity/player/eyes/female/eyes_female_1_pupils.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/female/eyes_female_1_pupils.vox
 
 #begin model/entity/player/eyes/eyes_0.vox
-/copy:model/entity/player/eyes/eyes_0.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/eyes_0.vox
 
 #begin model/entity/player/eyes/eyes_0_pupils.vox
-/copy:model/entity/player/eyes/eyes_0_pupils.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/eyes_0_pupils.vox
 
 #begin model/entity/player/eyes/eyes_1.vox
-/copy:model/entity/player/eyes/eyes_1.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, -1, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/eyes_1.vox
 
 #begin model/entity/player/eyes/eyes_1_pupils.vox
-/copy:model/entity/player/eyes/eyes_1_pupils.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/eyes_1_pupils.vox
 
 #begin model/entity/player/eyes/eyes_2.vox
-/copy:model/entity/player/eyes/eyes_2.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/eyes_2.vox
 
 #begin model/entity/player/eyes/eyes_3.vox
-/copy:model/entity/player/eyes/eyes_3.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/eyes_3.vox
 
 #begin model/entity/player/eyes/eyes_3_pupils.vox
-/copy:model/entity/player/eyes/eyes_3_pupils.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/eyes_3_pupils.vox
 
 #begin model/entity/player/eyes/eyes_4.vox
-/copy:model/entity/player/eyes/eyes_4.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/eyes_4.vox
 
 #begin model/entity/player/eyes/eyes_4_pupils.vox
-/copy:model/entity/player/eyes/eyes_4_pupils.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, -1, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/eyes_4_pupils.vox
 
 #begin model/entity/player/eyes/eyes_5.vox
-/copy:model/entity/player/eyes/eyes_5.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/eyes_5.vox
 
 #begin model/entity/player/eyes/eyes_5_pupils.vox
-/copy:model/entity/player/eyes/eyes_5_pupils.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, -1, 0
+/processorParam:Alpha=1
+/build:model/entity/player/eyes/eyes_5_pupils.vox
 
 #begin model/entity/player/hair/hair_0.vox
-/copy:model/entity/player/hair/hair_0.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/hair/hair_0.vox
 
 #begin model/entity/player/hair/hair_1.vox
-/copy:model/entity/player/hair/hair_1.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/hair/hair_1.vox
 
 #begin model/entity/world/berkin.vox
-/copy:model/entity/world/berkin.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/world/berkin.vox
 
 #begin model/item/bow/wooden_bow.vox
-/copy:model/item/bow/wooden_bow.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/bow/wooden_bow.vox
 
 #begin model/item/pet/food/blueberries.vox
-/copy:model/item/pet/food/blueberries.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/pet/food/blueberries.vox
 
 #begin model/item/pet/food/carrot.vox
-/copy:model/item/pet/food/carrot.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/pet/food/carrot.vox
 
 #begin model/item/staff/staff.vox
-/copy:model/item/staff/staff.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/staff/staff.vox
 
 #begin model/item/sword/sword.vox
-/copy:model/item/sword/sword.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/sword/sword.vox
 
 #begin model/item/sword/sword2.vox
-/copy:model/item/sword/sword2.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/sword/sword2.vox
 
 #begin model/skill/thief/flash_jump.vox
-/copy:model/skill/thief/flash_jump.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/skill/thief/flash_jump.vox
 
 #begin sound/character/jump.wav
 /importer:WavImporter
@@ -150,6 +291,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:sound/item/pickup_item.wav
+
+#begin sound/item/bow/shoot_arrow_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/item/bow/shoot_arrow_0.wav
 
 #begin sound/skill/thief/flash_jump.wav
 /importer:WavImporter
@@ -204,18 +351,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:texture/gui/inventory/inventory_slots.png
-
-#begin texture/gui/inventory/inventory_window.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:texture/gui/inventory/inventory_window.png
 
 #begin texture/gui/player/bar_frame.png
 /importer:TextureImporter
@@ -301,20 +436,37 @@
 /processorParam:TextureFormat=Color
 /build:texture/gui/font.png
 
-#begin model/block/tall_grass_taiga.vox
-/copy:model/block/tall_grass_taiga.vox
-
 #begin model/particle/particle_snow_0.vox
-/copy:model/particle/particle_snow_0.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/particle/particle_snow_0.vox
 
 #begin model/particle/particle_snow_1.vox
-/copy:model/particle/particle_snow_1.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/particle/particle_snow_1.vox
 
 #begin model/particle/particle_snow_2.vox
-/copy:model/particle/particle_snow_2.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/particle/particle_snow_2.vox
 
 #begin model/particle/particle_snow_3.vox
-/copy:model/particle/particle_snow_3.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/particle/particle_snow_3.vox
 
 #begin music/bgm/bgm_snow_0.mp3
 /importer:Mp3Importer
@@ -329,10 +481,20 @@
 /build:music/bgm/logo.mp3
 
 #begin model/item/dagger/dagger.vox
-/copy:model/item/dagger/dagger.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/dagger/dagger.vox
 
 #begin model/item/projectile/arrow/steel_arrow.vox
-/copy:model/item/projectile/arrow/steel_arrow.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/projectile/arrow/steel_arrow.vox
 
 #begin sound/world/explosion_0.wav
 /importer:WavImporter
@@ -340,47 +502,53 @@
 /processorParam:Quality=Best
 /build:sound/world/explosion_0.wav
 
-#begin sound\item\bow\shoot_arrow_0.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:sound\item\bow\shoot_arrow_0.wav
-
-#begin sound\item\bow\shoot_arrow_1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:sound\item\bow\shoot_arrow_1.wav
-
-#begin sound\item\bow\shoot_arrow_2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:sound\item\bow\shoot_arrow_2.wav
-
-#begin sound\item\bow\shoot_arrow_3.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:sound\item\bow\shoot_arrow_3.wav
-
 #begin model/item/projectile/arrow/explosive_arrow.vox
-/copy:model/item/projectile/arrow/explosive_arrow.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/projectile/arrow/explosive_arrow.vox
 
 #begin model/entity/player/races/human/human.vox
-/copy:model/entity/player/races/human/human.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/races/human/human.vox
 
 #begin model/entity/player/races/elf/elf.vox
-/copy:model/entity/player/races/elf/elf.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/races/elf/elf.vox
 
 #begin model/entity/player/races/human/human_sitting.vox
-/copy:model/entity/player/races/human/human_sitting.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/races/human/human_sitting.vox
 
 #begin model/entity/passive/tortoise/tortoise.vox
-/copy:model/entity/passive/tortoise/tortoise.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/passive/tortoise/tortoise.vox
 
 #begin model/entity/passive/tortoise/tortoise_sleeping.vox
-/copy:model/entity/passive/tortoise/tortoise_sleeping.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/passive/tortoise/tortoise_sleeping.vox
 
 #begin texture/gui/player/exp_frame.png
 /importer:TextureImporter
@@ -417,4 +585,241 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:texture/gui/inventory/inventory_bar.png
+
+#begin model/item/equip/special/jetpack.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/equip/special/jetpack.vox
+
+#begin model/item/equip/special/jetpack_use.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/equip/special/jetpack_use.vox
+
+#begin texture/gui/inventory/inventory_window.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/inventory/inventory_window.png
+
+#begin texture/gui/component/scroll.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/component/scroll.png
+
+#begin texture/gui/component/scroll_arrow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/component/scroll_arrow.png
+
+#begin texture/gui/inventory/inventory_slot.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:texture/gui/inventory/inventory_slot.png
+
+#begin model/entity/player/races/human/human_walking_0.vox
+/copy:model/entity/player/races/human/human_walking_0.vox
+
+#begin model/entity/player/races/human/human_walking_1.vox
+/copy:model/entity/player/races/human/human_walking_1.vox
+
+#begin model/entity/player/races/human/human_walking_2.vox
+/copy:model/entity/player/races/human/human_walking_2.vox
+
+#begin model/entity/player/races/human/human_walking_3.vox
+/copy:model/entity/player/races/human/human_walking_3.vox
+
+#begin model/entity/player/races/human/human_walking_4.vox
+/copy:model/entity/player/races/human/human_walking_4.vox
+
+#begin model/entity/passive/tortoise/tortoise_walking_0.vox
+/copy:model/entity/passive/tortoise/tortoise_walking_0.vox
+
+#begin model/entity/passive/tortoise/tortoise_walking_1.vox
+/copy:model/entity/passive/tortoise/tortoise_walking_1.vox
+
+#begin model/entity/passive/tortoise/tortoise_walking_2.vox
+/copy:model/entity/passive/tortoise/tortoise_walking_2.vox
+
+#begin model/entity/passive/tortoise/tortoise_walking_3.vox
+/copy:model/entity/passive/tortoise/tortoise_walking_3.vox
+
+#begin model/entity/passive/tortoise/tortoise_walking_4.vox
+/copy:model/entity/passive/tortoise/tortoise_walking_4.vox
+
+#begin model/entity/player/races/human/human_head.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/races/human/human_head.vox
+
+#begin model/world/sun.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/world/sun.vox
+
+#begin model/entity/monster/nymu/nymu.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/monster/nymu/nymu.vox
+
+#begin model/item/equip/bottom/bottom_test.vox
+/copy:model/item/equip/bottom/bottom_test.vox
+
+#begin model/entity/player/races/human/human_body.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/races/human/human_body.vox
+
+#begin model/entity/player/races/human/human_hand.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/races/human/human_hand.vox
+
+#begin model/entity/player/races/human/human_leg.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/player/races/human/human_leg.vox
+
+#begin model/entity/world/portal.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/world/portal.vox
+
+#begin model/entity/world/portal_inner.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/world/portal_inner.vox
+
+#begin model/item/axe/stone_axe.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/axe/stone_axe.vox
+
+#begin model/block/branch.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=0.0667, 0.0667, 0.0667
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/block/branch.vox
+
+#begin model/entity/passive/bee/bee.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/passive/bee/bee.vox
+
+#begin model/entity/passive/slime/slime.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/entity/passive/slime/slime.vox
+
+#begin model/block/tall_grass.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=0.125, 0.125, 0.125
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/block/tall_grass.vox
+
+#begin model/block/tall_grass_snow.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=0.125, 0.125, 0.125
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/block/tall_grass_snow.vox
+
+#begin model/item/pickaxe/stone_pickaxe.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/pickaxe/stone_pickaxe.vox
+
+#begin model/item/shovel/stone_shovel.vox
+/importer:MagicaVoxelImporter
+/processor:MagicaVoxelProcessor
+/processorParam:Scale=1, 1, 1
+/processorParam:Offset=0, 0, 0
+/processorParam:Alpha=1
+/build:model/item/shovel/stone_shovel.vox
+
+#begin effects/Effect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:effects/Effect.fx
+
+#begin effects\SkyClear.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:effects\SkyClear.fx
 

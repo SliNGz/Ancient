@@ -22,6 +22,7 @@ namespace ancient.game.world.block.type
         public static readonly BlockType snow = new BlockType("Snow");
         public static readonly BlockType ice = new BlockType("Ice");
         public static readonly BlockType cloud = new BlockType("Cloud");
+        public static readonly BlockType stone = new BlockType("Stone");
 
         public BlockType(string name)
         {

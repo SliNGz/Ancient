@@ -168,6 +168,14 @@ namespace ancient.game.world.chunk
             return new BoundingBox(min, max);
         }
 
+        public BoundingBox GetChunkRenderBoundingBox(int x, int z)
+        {
+            Vector3 min = new Vector3(x, 0, z) * 16;
+            Vector3 max = min + new Vector3(16, 256, 16);
+
+            return new BoundingBox(min, max);
+        }
+
         public BoundingBox GetBlockBoundingBox(int x, int y, int z)
         {
             Block block = GetBlock(x, y, z);

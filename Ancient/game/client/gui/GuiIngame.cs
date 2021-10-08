@@ -21,9 +21,9 @@ using ancient.game.client.renderer.font;
 using ancientlib.game.item;
 using ancientlib.game.inventory;
 using ancient.game.client.renderer.item;
-using ancient.game.camera;
 using ancient.game.renderers.model;
 using ancient.game.client.renderer.model;
+using ancient.game.client.camera;
 
 namespace ancient.game.client.gui
 {
@@ -35,7 +35,7 @@ namespace ancient.game.client.gui
         private int width;
         private int height;
 
-        private Camera camera;
+        private CameraFOV camera;
         private RenderTarget2D[] renderTargets;
         private float yaw;
 
@@ -47,21 +47,23 @@ namespace ancient.game.client.gui
 
         private GuiTexture inventoryBar;
         private GuiTexture selectedSlot;
+        private int lastSlot;
+        public float hotbarAlpha = 1.5F;
 
-        private int slotWidth;
+        private int slotSize;
         private float inventoryX;
         private float inventoryY;
 
         private GuiTexture crosshair;
 
-        private GuiText itemInHand;
+        public GuiText itemInHand;
         private float itemInHandAlpha;
+
+        private GuiChat chat;
 
         public GuiIngame(GuiManager guiManager) : base(guiManager, "ingame")
         {
-            this.camera = new Camera(70, 0.01F, 100);
-            this.player = Ancient.ancient.player;
-            this.inventory = player.GetInventory();
+            this.camera = new CameraFOV(70, 0.01F, 100);
             this.renderTargets = new RenderTarget2D[10];
         }
 
@@ -72,8 +74,13 @@ namespace ancient.game.client.gui
             this.isCursorVisible = false;
             this.lastGui = guiManager.menu;
 
-            this.width = Ancient.ancient.device.Viewport.Width;
-            this.height = Ancient.ancient.device.Viewport.Height;
+            this.chat = guiManager.chat;
+
+            this.width = Ancient.ancient.width;
+            this.height = Ancient.ancient.height;
+
+            this.player = Ancient.ancient.player;
+            this.inventory = player.GetInventory();
 
             // Level
             this.level = new GuiText("LV. 255").SetColor(Color.Gold).SetSize(2).SetSpacing(3);
@@ -82,7 +89,7 @@ namespace ancient.game.client.gui
             this.level.SetY(1 - GuiUtils.GetRelativeYFromY(level.GetHeight() + 3));
             this.components.Add(level);
 
-            this.nickname = new GuiText("SliNGy!").SetColor(Color.Gold).SetSize(2).SetSpacing(1);
+            this.nickname = new GuiText(player.GetName()).SetColor(Color.Gold).SetSize(2).SetSpacing(1);
             this.nickname.SetOutline(1);
             this.nickname.SetX(level.GetX());
             this.nickname.SetY(level.GetY() - GuiUtils.GetRelativeYFromY(nickname.GetHeight() + 3));
@@ -163,20 +170,25 @@ namespace ancient.game.client.gui
 
             for (int i = 0; i < 10; i++)
             {
-                this.renderTargets[i] = new RenderTarget2D(Ancient.ancient.device, Ancient.ancient.device.Viewport.Width, Ancient.ancient.device.Viewport.Height,
-                 false, SurfaceFormat.Color, DepthFormat.Depth24);
+                this.renderTargets[i] = new RenderTarget2D(Ancient.ancient.device, Ancient.ancient.width, Ancient.ancient.height,
+                 false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8);
             }
 
-            slotWidth = (int)(34 * Math.Round(width / (float)GuiUtils.DefaultWidth));
-            inventoryX = -width / 2F + GuiUtils.GetXFromRelativeX(inventoryBar.GetX()) + (float)Math.Floor(width / (float)GuiUtils.DefaultWidth) + slotWidth / 2F;
-            inventoryY = -height / 2F + GuiUtils.GetYFromRelativeY(inventoryBar.GetY()) + (float)Math.Floor(height / (float)GuiUtils.DefaultHeight) + slotWidth / 2F;
+            slotSize = (int)(34 * Math.Round(width / (float)GuiUtils.DefaultWidth));
+            inventoryX = -width / 2F + GuiUtils.GetXFromRelativeX(inventoryBar.GetX()) + (float)Math.Floor(width / (float)GuiUtils.DefaultWidth) + slotSize / 2F;
+            inventoryY = -height / 2F + GuiUtils.GetYFromRelativeY(inventoryBar.GetY()) + (float)Math.Floor(height / (float)GuiUtils.DefaultHeight) + slotSize / 2F;
         }
 
         public override void Update(MouseState mouseState)
         {
             base.Update(mouseState);
+
+            this.player = Ancient.ancient.player;
+            this.inventory = player.GetInventory();
+
             yaw += (float)Ancient.ancient.gameTime.ElapsedGameTime.TotalSeconds;
             UpdateGui();
+            chat.Update(mouseState);
         }
 
         private void UpdateGui()
@@ -187,6 +199,7 @@ namespace ancient.game.client.gui
             UpdateExp();
             UpdateItemInHandText();
             UpdateSelectedSlot();
+            this.nickname.SetText(player.GetName());
         }
 
         private void UpdateLevel()
@@ -228,37 +241,52 @@ namespace ancient.game.client.gui
         private void UpdateSelectedSlot()
         {
             int slot = player.GetHandSlot();
-            selectedSlot.SetX(inventoryBar.GetX() + GuiUtils.GetRelativeXFromX((float)-Math.Round(width / (float)GuiUtils.DefaultWidth) + slot * slotWidth));
+
+            if (lastSlot != slot)
+            {
+                selectedSlot.SetX(inventoryBar.GetX() + GuiUtils.GetRelativeXFromX((float)-Math.Round(width / (float)GuiUtils.DefaultWidth) + slot * slotSize));
+                hotbarAlpha = 1.5F;
+            }
+
+            if (hotbarAlpha > 0)
+            {
+                hotbarAlpha = MathHelper.Clamp(hotbarAlpha - 0.0025F, 0.5F, 1.5F);
+                inventoryBar.SetColor(Color.White * hotbarAlpha);
+                selectedSlot.SetColor(Color.White * hotbarAlpha);
+            }
+
+            this.lastSlot = slot;
         }
 
         public override void Draw3D()
         {
             base.Draw3D();
 
-            WorldRenderer.effect.Parameters["FogEnabled"].SetValue(false);
-            WorldRenderer.effect.Parameters["View"].SetValue(camera.GetViewMatrix(0, 0));
-            WorldRenderer.effect.Parameters["Projection"].SetValue(camera.GetProjectionMatrix());
+            WorldRenderer.currentEffect.Parameters["FogEnabled"].SetValue(false);
+            WorldRenderer.currentEffect.Parameters["View"].SetValue(camera.GetViewMatrix());
+            WorldRenderer.currentEffect.Parameters["Projection"].SetValue(camera.GetProjectionMatrix());
+
+            ItemStack[] items = inventory.GetItems();
 
             for (int i = 0; i < 10; i++)
             {
-                RenderTarget2D renderTarget = renderTargets[i];
-                Ancient.ancient.device.SetRenderTarget(renderTarget);
-                Ancient.ancient.world.GetRenderer().ResetGraphics(Color.Transparent);
-
-                ItemStack[] items = inventory.GetItems();
-
                 if (items[i] == null)
                     continue;
 
+                RenderTarget2D renderTarget = renderTargets[i];
+
                 Item item = items[i].GetItem();
-                ItemRenderer.Draw(item, new Vector3(0, 0, -1F), yaw, MathHelper.PiOver4, 0, item.GetModelScale().X * 0.25F, item.GetModelScale().Y * 0.25F, item.GetModelScale().Z * 0.25F, true);
-                Ancient.ancient.device.SetRenderTarget(null);
+                ItemRenderer.DrawToRenderTarget(renderTarget, item, yaw, MathHelper.PiOver4, 0,
+                    item.GetHandScale().X * 0.25F, item.GetHandScale().Y * 0.25F, item.GetHandScale().Z * 0.25F);
             }
+
+            chat.Draw3D();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
+            chat.Draw(spriteBatch);
             DrawEntitiesNames(spriteBatch);
             DrawInventoryHotbar(spriteBatch);
         }
@@ -292,12 +320,18 @@ namespace ancient.game.client.gui
         {
             for (int i = 0; i < 10; i++)
             {
-                Item item = inventory.GetItemAt(i);
+                ItemStack itemStack = inventory.GetItemStackAt(i);
 
-                if (item == null)
+                if (itemStack == null)
                     continue;
 
-                spriteBatch.Draw(renderTargets[i], new Vector2(inventoryX + i * slotWidth, inventoryY), Color.White);
+                spriteBatch.Draw(renderTargets[i], new Vector2(inventoryX + i * slotSize, inventoryY), Color.White * hotbarAlpha);
+
+                int size = GuiUtils.GetScaledX(1);
+                string amount = itemStack.GetAmount().ToString();
+                float x = Ancient.ancient.screenCenter.X + inventoryX + i * slotSize + slotSize / 2 - (int)FontRenderer.MeasureGuiText(amount, size, 0) - GuiUtils.GetScaledX(3);
+                float y = Ancient.ancient.screenCenter.Y + inventoryY + slotSize / 2 - 8 * size - GuiUtils.GetScaledY(2);
+                FontRenderer.DrawString(spriteBatch, amount, x, y, Color.White, size, 0, 1, Color.Black);
             }
         }
 
@@ -314,6 +348,11 @@ namespace ancient.game.client.gui
             }
             else
                 itemInHand.SetText("");
+        }
+
+        public override bool Draw3DFromGuiManager()
+        {
+            return false;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace ancientlib.game.world.biome
 {
     public class BiomeTundra : Biome
     {
-        public BiomeTundra()
+        public BiomeTundra() : base("tundra")
         {
             this.maxHeight = 144;
             this.minHeight = 64;

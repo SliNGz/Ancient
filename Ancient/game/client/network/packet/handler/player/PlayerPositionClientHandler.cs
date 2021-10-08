@@ -21,7 +21,7 @@ namespace ancient.game.client.network.packet.handler.player
 
             player.SetPosition(playerPos.GetX(), playerPos.GetY(), playerPos.GetZ());
 
-            if (player.HasMount())
+            if (player.IsRiding())
                 player.GetMount().SetPosition(player.GetPosition() - player.GetMount().GetMountOffset());
         }
     }

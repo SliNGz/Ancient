@@ -5,45 +5,95 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using ancient.game.entity.player;
+using ancientlib.game.utils;
 
 namespace ancientlib.game.entity.ai
 {
     class EntityAIAttack : EntityAI
     {
-        private EntityLiving entity;
-        private float distance;
-        private EntityPlayer playerToAttack;
+        private EntityLiving living;
 
-        public EntityAIAttack(EntityLiving entity, int priority) : base(priority)
+        private EntityLiving target;
+        private float distance;
+
+        private float lookRange;
+        private float chaseRange;
+        private float attackRange;
+
+        private int attackCooldown;
+        private int attackTimer;
+
+        public EntityAIAttack(EntityLiving living, int priority, float lookRange, float chaseRange, float attackRange, int attackCooldown) : base(priority)
         {
-            this.entity = entity;
+            this.living = living;
+            this.lookRange = lookRange;
+            this.chaseRange = chaseRange;
+            this.attackRange = attackRange;
+            this.attackCooldown = attackCooldown;
         }
 
         public override void Execute()
         {
-
+            attackTimer = 0;
         }
 
         public override bool ShouldExecute()
         {
-            if (entity.IsHostile())
+            if (IsTargetInRange())
+                return false;
+
+            if (living.IsAttacked())
             {
-                playerToAttack = entity.GetNearestPlayerWithinRange(distance);
-                return playerToAttack != null;
+                this.target = living.GetLastAttacker();
+
+                if (IsTargetInRange())
+                    return true;
             }
 
-            return entity.IsAttacked();
+            if (living.IsHostile())
+            {
+                this.target = living.GetNearestLiving(lookRange);
+
+                if (this.target == null)
+                    return false;
+
+                return true;
+            }
+
+            return false;
         }
 
         public override bool ShouldUpdate()
         {
-            return false;
+            return target != null && distance <= lookRange;
         }
 
         public override void Stop()
-        { }
+        {
+            target = null;
+            attackTimer = 0;
+        }
 
         public override void Update(GameTime gameTime)
-        { }
+        {
+            attackTimer--;
+            distance = Vector3.Distance(living.GetPosition(), this.target.GetPosition());
+
+            living.SetLookAt(target);
+
+            if (distance <= chaseRange)
+                living.SetMovement(Vector3.Forward);
+
+            if (distance <= attackRange && attackTimer <= 0)
+            {
+                target.Damage(new AttackInfo(living, living.GetDamage()));
+                attackTimer = attackCooldown;
+            }
+        }
+
+        private bool IsTargetInRange()
+        {
+            return this.target != null && (distance = Vector3.Distance(living.GetPosition(), this.target.GetPosition())) <= lookRange;
+        }
     }
 }

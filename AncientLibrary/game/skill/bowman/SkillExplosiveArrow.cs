@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using ancientlib.game.entity.projectile;
 using ancientlib.game.init;
 using ancientlib.game.entity;
+using ancientlib.game.entity.model;
 
 namespace ancientlib.game.skill.bowman
 {
@@ -40,14 +41,14 @@ namespace ancientlib.game.skill.bowman
             return 0;
         }
 
-        public override EntityModelState GetModelState()
-        {
-            return null;
-        }
-
         public override int GetMaxLevel()
         {
             return 20;
+        }
+
+        public override EntityModelCollection GetModelCollection()
+        {
+            return null;
         }
 
         protected override void OnLevelChanged()
@@ -66,7 +67,7 @@ namespace ancientlib.game.skill.bowman
         {
             int initialCooldown = 20;
             int level = this.level == 1 ? 0 : this.level;
-            this.cooldown = 0;// 128 * (int)Math.Round(initialCooldown - level * 0.7);
+            this.cooldown = 128 * (int)Math.Round(initialCooldown - level * 0.7);
         }
 
         protected override void UpdateManaConsumption()

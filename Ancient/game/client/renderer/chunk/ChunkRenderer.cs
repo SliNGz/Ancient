@@ -3,6 +3,7 @@ using ancient.game.renderers.world;
 using ancient.game.world.chunk;
 using ancientlib.game.utils;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,13 @@ namespace ancient.game.client.renderer.chunk
     {
         private List<ChunkData> loadedList;
         public List<ChunkData> renderList;
+        private List<ChunkData> shadowList;
 
         public ChunkRenderer()
         {
             this.loadedList = new List<ChunkData>();
             this.renderList = new List<ChunkData>();
+            this.shadowList = new List<ChunkData>();
 
             ThreadUtils.CreateThread("Render Thread", Update, true).Start();
         }
@@ -33,17 +36,24 @@ namespace ancient.game.client.renderer.chunk
                 {
                     lock (renderList)
                     {
-                        renderList.Clear();
-
-                        foreach (ChunkData chunkData in loadedList)
+                        lock (shadowList)
                         {
-                            if (chunkData.ShouldDraw())
-                                renderList.Add(chunkData);
+                            renderList.Clear();
+                            shadowList.Clear();
+
+                            foreach (ChunkData chunkData in loadedList)
+                            {
+                                if (chunkData.ShouldDraw(false))
+                                    renderList.Add(chunkData);
+
+                                if (chunkData.ShouldDraw(true))
+                                    shadowList.Add(chunkData);
+                            }
                         }
                     }
                 }
 
-                Thread.Sleep(TimeSpan.FromSeconds(1 / 128.0));
+                Thread.Sleep(TimeSpan.FromSeconds(1 / 16F));
             }
         }
 
@@ -61,6 +71,24 @@ namespace ancient.game.client.renderer.chunk
             lock (renderList)
             {
                 foreach (ChunkData chunkData in renderList)
+                    chunkData.DrawLiquid();
+            }
+        }
+
+        public void DrawShadowSolid()
+        {
+            lock (shadowList)
+            {
+                foreach (ChunkData chunkData in shadowList)
+                    chunkData.DrawSolid();
+            }
+        }
+
+        public void DrawShadowLiquid()
+        {
+            lock (shadowList)
+            {
+                foreach (ChunkData chunkData in shadowList)
                     chunkData.DrawLiquid();
             }
         }
@@ -105,8 +133,6 @@ namespace ancient.game.client.renderer.chunk
         {
             this.chunk = chunk;
             this.data = new VoxelRendererData(chunk);
-
-            chunk.isLoaded = true;
         }
 
         public void Reload()
@@ -131,10 +157,18 @@ namespace ancient.game.client.renderer.chunk
             VoxelRenderer.DrawLiquid(data, chunk.GetPosition(), Vector3.Zero, 0, 0, 0);
         }
 
-        public bool ShouldDraw()
+        public bool ShouldDraw(bool shadow)
         {
-            if (!Ancient.ancient.world.GetChunkLoader().IsChunkVisible(Ancient.ancient.player, chunk.GetIndex()))
-                return false;
+            if (shadow)
+            {
+                if (!Ancient.ancient.world.GetChunkLoader().IsChunkVisibleShadow(Ancient.ancient.player, chunk.GetIndex()))
+                    return false;
+            }
+            else
+            {
+                if (!Ancient.ancient.world.GetChunkLoader().IsChunkVisible(Ancient.ancient.player, chunk.GetIndex()))
+                    return false;
+            }
 
             int solid = 0;
             int liquid = 0;

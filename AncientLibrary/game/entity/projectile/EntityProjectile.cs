@@ -13,6 +13,7 @@ using ancient.game.world.block;
 using System.IO;
 using ancientlib.game.item;
 using ancient.game.entity.player;
+using ancientlib.game.entity.model;
 
 namespace ancientlib.game.entity.projectile
 {
@@ -28,8 +29,6 @@ namespace ancientlib.game.entity.projectile
             this.projectile = Items.steelArrow;
             this.damage = Items.steelArrow.GetDamage();
             this.lifeSpan = 2560;
-
-            SetModelState(projectile.GetModelState());
         }
 
         public EntityProjectile(World world, EntityLiving shooter, ItemProjectile projectile) : this(world)
@@ -51,14 +50,12 @@ namespace ancientlib.game.entity.projectile
 
             this.yaw = shooter.GetHeadYaw();
             this.pitch = shooter.GetHeadPitch();
-
-            SetModelState(projectile.GetModelState());
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            AddMovement(Vector3.Forward);
+            SetMovement(Vector3.Forward);
         }
 
         protected override bool ShouldInterpolate()
@@ -78,8 +75,11 @@ namespace ancientlib.game.entity.projectile
 
         protected override void OnCollisionWithBlock(BoundingBox blockBB, Block block)
         {
-            if (block.IsSolid())
-                world.DespawnEntity(this);
+            if (!world.IsRemote())
+            {
+                if (block.IsSolid())
+                    world.DespawnEntity(this);
+            }
         }
 
         protected override bool CanCollideWithBlockBoundingBox(Block block)
@@ -128,10 +128,9 @@ namespace ancientlib.game.entity.projectile
         public void SetProjectile(ItemProjectile projectile)
         {
             this.projectile = projectile;
-            SetModelState(projectile.GetModelState());
             this.gravity = projectile.GetGravity();
         }
-        
+
         public int GetDamage()
         {
             return this.damage;
@@ -152,9 +151,12 @@ namespace ancientlib.game.entity.projectile
             return projectile.GetSpeed();
         }
 
-        protected override EntityModelState GetDefaultModelState()
+        public override EntityModelCollection GetModelCollection()
         {
-            return projectile.GetModelState();
+            if (projectile != null)
+                return projectile.GetModelCollection();
+
+            return null;
         }
 
         public override void Read(BinaryReader reader)

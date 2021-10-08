@@ -26,19 +26,25 @@ namespace ancient.game.client.gui
         public GuiInventory inventory;
         public GuiDeath death;
         public GuiMap map;
-        public GuiChat chat;
+        public GuiChatInput chatInput;
         public GuiMainMenu mainMenu;
         public GuiCharacterCreation characterCreation;
+        public GuiCharacterSelection characterSelection;
         public GuiServerBrowser serverBrowser;
         public GuiPlayMenu playMenu;
         public GuiWorldCreation worldCreation;
         public GuiDebug debug;
+        public GuiChat chat;
 
         private float backgroundHue;
         public Color backgroundColor;
 
+        public List<Gui> draw3DGuis;
+
         public GuiManager()
         {
+            this.cursor = new GuiCursor();
+
             this.ingame = new GuiIngame(this);
             this.menu = new GuiIngameMenu(this);
             this.options = new GuiOptions(this);
@@ -46,24 +52,33 @@ namespace ancient.game.client.gui
             this.inventory = new GuiInventory(this);
             this.death = new GuiDeath(this);
             this.map = new GuiMap(this);
-            this.chat = new GuiChat(this);
+            this.chatInput = new GuiChatInput(this);
             this.mainMenu = new GuiMainMenu(this);
             this.characterCreation = new GuiCharacterCreation(this);
+            this.characterSelection = new GuiCharacterSelection(this);
             this.serverBrowser = new GuiServerBrowser(this);
             this.playMenu = new GuiPlayMenu(this);
             this.worldCreation = new GuiWorldCreation(this);
             this.debug = new GuiDebug(this);
+            this.chat = new GuiChat(this);
 
             this.currentGui = mainMenu;
             this.lastGui = currentGui;
 
             this.backgroundColor = Utils.HSVToRGB(backgroundHue, 0.35F, 1);
+
+            this.draw3DGuis = new List<Gui>();
         }
 
         public void Initialize()
         {
             foreach (Gui gui in guis.Values)
+            {
                 gui.Initialize();
+
+                if (!gui.Draw3DFromGuiManager())
+                    draw3DGuis.Add(gui);
+            }
 
             this.cursor = new GuiCursor();
         }
@@ -95,7 +110,7 @@ namespace ancient.game.client.gui
             else
                 Ancient.ancient.device.Clear(currentGui.GetBackgroundColor());
 
-            if (currentGui != ingame && currentGui != inventory)
+            if (currentGui.Draw3DFromGuiManager())
                 currentGui.Draw3D();
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);

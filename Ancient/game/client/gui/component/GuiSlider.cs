@@ -17,12 +17,15 @@ namespace ancient.game.client.gui.component
     {
         public event ValueChangedEventHandler ValueChanged;
 
-        private float value;
+        protected float value;
 
-        public GuiSlider() : base("button2")
+        protected GuiSlider(string textureName) : base(textureName)
+        { }
+
+        public GuiSlider() : base("null")
         {
             this.value = 1;
-            this.width = 220;
+            this.width = 180;
             this.height = 60;
         }
 
@@ -37,9 +40,7 @@ namespace ancient.game.client.gui.component
         public override void OnHold(MouseState mouseState)
         {
             base.OnHold(mouseState);
-
-            int x = mouseState.X - GuiUtils.GetXFromRelativeX(this.x);
-            SetValue((float)Math.Round(((x / (float)this.width) * 100)) / 100F);
+            OnClick(mouseState);
         }
 
         public float GetValue()
@@ -47,7 +48,7 @@ namespace ancient.game.client.gui.component
             return this.value;
         }
 
-        public void SetValue(float value)
+        public virtual void SetValue(float value)
         {
             this.value = MathHelper.Clamp(value, 0, 1);
 

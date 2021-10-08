@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ancientlib.game.classes.magician
 {
-    class ClassMagician : Class
+    public class ClassMagician : Class
     {
         public ClassMagician() : base("Magician")
         {

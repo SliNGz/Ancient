@@ -207,12 +207,12 @@ namespace ancientlib.game.entity
 
                 BoundingBox[] boundingBoxes = new BoundingBox[]
                 {
-                    Utils.GetBlockDownFace(x, y, z),
-                    Utils.GetBlockUpFace(x, y, z),
-                    Utils.GetBlockNorthFace(x, y, z),
-                    Utils.GetBlockSouthFace(x, y, z),
-                    Utils.GetBlockWestFace(x, y, z),
-                    Utils.GetBlockEastFace(x, y, z)
+                    Utils.GetBlockDownFace(world, x, y, z),
+                    Utils.GetBlockUpFace(world, x, y, z),
+                    Utils.GetBlockNorthFace(world, x, y, z),
+                    Utils.GetBlockSouthFace(world, x, y, z),
+                    Utils.GetBlockWestFace(world, x, y, z),
+                    Utils.GetBlockEastFace(world, x, y, z)
                 };
 
                 for (int i = 0; i < 6; i++)
@@ -256,7 +256,7 @@ namespace ancientlib.game.entity
 
         public void AddMaxHealth(int add)
         {
-            this.maxHealth = MathHelper.Clamp(this.maxHealth + add, 0, GameConstants.MAX_HEALTH);
+            SetMaxHealth(this.maxHealth + add);
         }
 
         public int GetMaxHealth()
@@ -271,7 +271,7 @@ namespace ancientlib.game.entity
 
         public void AddHealth(int add)
         {
-            this.health = MathHelper.Clamp(this.health + add, 0, maxHealth);
+            SetHealth(this.health + add);
         }
 
         public int GetHealth()
@@ -286,7 +286,7 @@ namespace ancientlib.game.entity
 
         public void AddMaxMana(int add)
         {
-            this.maxMana = MathHelper.Clamp(this.maxMana + add, 0, GameConstants.MAX_MANA);
+            SetMaxMana(this.maxMana + add);
         }
 
         public int GetMaxMana()
@@ -301,7 +301,7 @@ namespace ancientlib.game.entity
 
         public void AddMana(int add)
         {
-            this.mana = MathHelper.Clamp(this.mana + add, 0, maxMana);
+            SetMana(this.mana + add);
         }
 
         public int GetMana()
@@ -395,10 +395,14 @@ namespace ancientlib.game.entity
         private void RewardAttacker(Entity entity)
         {
             if (entity is EntityPlayer)
-                ((EntityPlayer)entity).AddExp(expReward);
+            {
+                EntityPlayer player = (EntityPlayer)entity;
+                player.AddExp(expReward);
+                player.AddScore(world.rand.Next(1, expReward + 3));
+            }
         }
 
-        private void UpdateFallDamage()
+        protected virtual void UpdateFallDamage()
         {
             if (!onGround)
             {
@@ -426,7 +430,7 @@ namespace ancientlib.game.entity
             SetHeadYaw(0);
             SetHeadPitch(0);
             SetVelocity(Vector3.Zero);
-            SetMovement(Vector3.Zero);
+            this.movement = Vector3.Zero;
         }
 
         public Entity GetLookAtEntity(float range = 256)
@@ -478,11 +482,6 @@ namespace ancientlib.game.entity
         public virtual string GetDeathSound()
         {
             return null;
-        }
-
-        public override Vector3 GetModelScale()
-        {
-            return new Vector3(0.1F, 0.1F, 0.1F);
         }
 
         public List<EntityPet> GetPets()
@@ -553,13 +552,17 @@ namespace ancientlib.game.entity
 
         public void Jump()
         {
-            if (HasMount())
+            if (IsRiding())
                 mount.Jump();
             else
             {
-                if (isInWater)
-                    this.yVelocity += jumpSpeed * 0.42F;
-
+                if (inWaterLower)
+                {
+                    if (yVelocity >= 0)
+                        this.yVelocity = jumpSpeed;
+                }
+                else if (inWater)
+                    this.yVelocity = MathHelper.Clamp(yVelocity + jumpSpeed * 0.4f, -100, 3);
                 else if (onGround)
                     this.yVelocity += jumpSpeed;
             }
@@ -581,6 +584,11 @@ namespace ancientlib.game.entity
 
             if (noClip)
                 this.fallVelocity = 0;
+        }
+
+        public override string GetRendererName()
+        {
+            return "living";
         }
 
         public override void Read(BinaryReader reader)

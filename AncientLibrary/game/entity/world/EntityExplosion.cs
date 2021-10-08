@@ -8,6 +8,11 @@ using ancient.game.world;
 using Microsoft.Xna.Framework;
 using ancientlib.game.utils;
 using ancient.game.utils;
+using ancientlib.game.entity.model;
+using ancient.game.world.block;
+using System.IO;
+using ancientlib.game.entity.player;
+using ancientlib.game.network.packet.server.entity;
 
 namespace ancientlib.game.entity.world
 {
@@ -21,7 +26,6 @@ namespace ancientlib.game.entity.world
             this.lifeSpan = 1;
             this.interactWithEntities = true;
             this.interactWithBlocks = false;
-            SetModelState(null);
             SetDimensions(3, 3, 3);
         }
 
@@ -31,19 +35,37 @@ namespace ancientlib.game.entity.world
             SetDimensions(width, height, length);
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            UpdateBoundingBox();
+            base.Update(gameTime);
+        }
+
+        protected override bool CanCollideWithBlockBoundingBox(Block block)
+        {
+            return false;
+        }
+
+        protected override bool CanCollideWithEntityBoundingBox(Entity entity)
+        {
+            return false;
+        }
+
         protected override void OnCollideWithEntity(Entity entity)
         {
             base.OnCollideWithEntity(entity);
+            Vector3 velocity = entity.GetBoundingBox().GetCenter() - boundingBox.GetCenter();
+            velocity /= velocity.Length();
+            velocity *= world.rand.Next(7, 13);
+            entity.SetVelocity(velocity);
 
-            if (entity is EntityLiving)
+            if (!world.IsRemote())
             {
-                Vector3 velocity = entity.GetBoundingBox().GetCenter() - boundingBox.GetCenter();
-                velocity /= velocity.Length();
-                velocity *= world.rand.Next(7, 13);
-                entity.SetVelocity(velocity);
-
-                if (attackInfo != null && attackInfo.GetAttacker() != entity)
-                    ((EntityLiving)entity).Damage(attackInfo);
+                if (entity is EntityLiving)
+                {
+                    if (attackInfo != null && attackInfo.GetAttacker() != entity)
+                        ((EntityLiving)entity).Damage(attackInfo);
+                }
             }
         }
 
@@ -62,9 +84,48 @@ namespace ancientlib.game.entity.world
             this.attackInfo = attackInfo;
         }
 
-        protected override EntityModelState GetDefaultModelState()
+        public override EntityModelCollection GetModelCollection()
         {
-            return this.GetModelState();
+            return null;
+        }
+
+        protected override bool ShouldInterpolate()
+        {
+            return false;
+        }
+
+        public override bool ShouldSendPosition()
+        {
+            return false;
+        }
+
+        public override bool ShouldSendRotation()
+        {
+            return false;
+        }
+
+        public override string GetEntityName()
+        {
+            return "explosion";
+        }
+
+        public override bool IsMultiplayerSupported()
+        {
+            return true;
+        }
+
+        public override void Write(BinaryWriter writer)
+        {
+            base.Write(writer);
+            writer.Write((int)width);
+        }
+
+        public override void Read(BinaryReader reader)
+        {
+            base.Read(reader);
+            this.width = reader.ReadInt32();
+            this.height = width;
+            this.length = width;
         }
     }
 }

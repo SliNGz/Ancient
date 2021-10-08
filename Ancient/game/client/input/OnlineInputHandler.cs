@@ -53,7 +53,7 @@ namespace ancient.game.client.input
 
         public void OnLeftButtonHeld()
         {
-            if (Ancient.ancient.player.GetItemInHand() != null && Ancient.ancient.player.GetItemInHand().GetItem() is ItemWeapon)
+            if (Ancient.ancient.player.GetItemInHand() != null && Ancient.ancient.player.GetItemInHand().GetItem().CanBeSpammed())
                 useLeft = UseAction.HOLD_LEFT;
         }
 
@@ -65,6 +65,7 @@ namespace ancient.game.client.input
         public void OnLeftButtonReleased()
         {
             useLeft = UseAction.RELEASE_LEFT;
+            Ancient.ancient.player.usingItemInHand = false;
         }
 
         public void OnRightButtonHeld()
@@ -81,6 +82,7 @@ namespace ancient.game.client.input
         public void OnRightButtonReleased()
         {
             useRight = UseAction.RELEASE_RIGHT;
+            Ancient.ancient.player.usingItemInHand = false;
         }
     }
 }

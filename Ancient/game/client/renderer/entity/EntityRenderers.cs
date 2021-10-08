@@ -8,14 +8,25 @@ using System.Threading.Tasks;
 
 namespace ancient.game.client.renderer.entity
 {
-    class EntityRenderers
+    public class EntityRenderers
     {
         private static Dictionary<string, RenderEntity> renderers = new Dictionary<string, RenderEntity>();
 
+        public static RenderEntity renderEntity = new RenderEntity();
+        public static RenderEntityLiving renderLiving = new RenderEntityLiving();
+        public static RenderEntityPlayerBase renderPlayerBase = new RenderEntityPlayerBase();
+        public static RenderEntityPlayer renderPlayer = new RenderEntityPlayer();
+        public static RenderEntityDrop renderDrop = new RenderEntityDrop();
+        public static RenderEntityPortal renderPortal = new RenderEntityPortal();
+
         public static void Initialize()
         {
-            InitializeRenderEntity("entity", new RenderEntity());
-            InitializeRenderEntity("playerBase", new RenderEntityPlayerBase());
+            InitializeRenderEntity("entity", renderEntity);
+            InitializeRenderEntity("living", renderLiving);
+            InitializeRenderEntity("player_base", renderPlayerBase);
+            InitializeRenderEntity("player", renderPlayer);
+            InitializeRenderEntity("drop", renderDrop);
+            InitializeRenderEntity("portal", renderPortal);
         }
 
         private static void InitializeRenderEntity(string name, RenderEntity renderEntity)
@@ -26,7 +37,7 @@ namespace ancient.game.client.renderer.entity
         public static RenderEntity GetRenderEntityFromEntity(Entity entity)
         {
             RenderEntity renderEntity = null;
-            renderers.TryGetValue(entity.GetRenderEntity(), out renderEntity);
+            renderers.TryGetValue(entity.GetRendererName(), out renderEntity);
 
             return renderEntity;
         }

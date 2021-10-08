@@ -12,7 +12,7 @@ namespace ancientlib.game.constants
         public static int INTERP_MULTIPLIER = 4;
 
         // Player Position Handler
-        public static float MAX_SPEED_DIFF = 1F;
+        public static float MAX_SPEED_DIFF = 1.5F;
         public static float MAX_Y_DIFF = 2;
     }
 }

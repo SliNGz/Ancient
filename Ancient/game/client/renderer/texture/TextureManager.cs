@@ -17,29 +17,35 @@ namespace ancient.game.client.renderer.texture
 
         public static readonly string basePath = "texture/";
 
+        public static ContentManager content;
+
         public static void LoadContent(ContentManager content)
         {
-            LoadTexture(content, "gui/crosshair");
-            LoadTexture(content, "gui/font");
+            TextureManager.content = content;
+            LoadTexture("gui/crosshair");
+            LoadTexture("gui/font");
 
-            LoadTexture(content, "gui/component/cursor");
-            LoadTexture(content, "gui/component/button/button");
-            LoadTexture(content, "gui/component/button/button2");
+            LoadTexture("gui/component/cursor");
+            LoadTexture("gui/component/button/button");
+            LoadTexture("gui/component/button/button2");
+            LoadTexture("gui/component/scroll");
+            LoadTexture("gui/component/scroll_arrow");
 
-            LoadTexture(content, "gui/player/bar_frame");
-            LoadTexture(content, "gui/player/exp_frame");
-            LoadTexture(content, "gui/player/health_bar");
-            LoadTexture(content, "gui/player/mana_bar");
-            LoadTexture(content, "gui/player/exp_bar");
-            LoadTexture(content, "gui/player/use_bar");
+            LoadTexture("gui/player/bar_frame");
+            LoadTexture("gui/player/exp_frame");
+            LoadTexture("gui/player/health_bar");
+            LoadTexture("gui/player/mana_bar");
+            LoadTexture("gui/player/exp_bar");
+            LoadTexture("gui/player/use_bar");
 
-            LoadTexture(content, "gui/inventory/inventory_window");
-            LoadTexture(content, "gui/inventory/inventory_slots");
-            LoadTexture(content, "gui/inventory/inventory_bar");
-            LoadTexture(content, "gui/inventory/selected_slot");
+            LoadTexture("gui/inventory/inventory_window");
+            LoadTexture("gui/inventory/inventory_slots");
+            LoadTexture("gui/inventory/inventory_slot");
+            LoadTexture("gui/inventory/inventory_bar");
+            LoadTexture("gui/inventory/selected_slot");
         }
 
-        private static void LoadTexture(ContentManager content, string path)
+        private static void LoadTexture(string path)
         {
             string[] splitedPath = path.Split('/');
             textures.Add(splitedPath[splitedPath.Length - 1], content.Load<Texture2D>(basePath + path));

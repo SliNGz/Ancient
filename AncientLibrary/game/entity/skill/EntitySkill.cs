@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using ancientlib.game.skill;
 using ancient.game.entity.player;
 using ancient.game.world.block;
+using ancientlib.game.entity.model;
 
 namespace ancientlib.game.entity.skill
 {
@@ -26,7 +27,6 @@ namespace ancientlib.game.entity.skill
             this.gravity = 0;
             this.interactWithBlocks = false;
             this.interactWithEntities = false;
-            SetModelState(skill.GetModelState());
         }
 
         public override void Update(GameTime gameTime)
@@ -55,9 +55,17 @@ namespace ancientlib.game.entity.skill
             return new Vector3(0.1F, 0.1F, 0.1F);
         }
 
-        protected override EntityModelState GetDefaultModelState()
+        public override EntityModelCollection GetModelCollection()
         {
-            return skill.GetModelState();
+            if (skill != null)
+                return skill.GetModelCollection();
+
+            return null;
+        }
+
+        public override string GetEntityName()
+        {
+            return "skill";
         }
     }
 }

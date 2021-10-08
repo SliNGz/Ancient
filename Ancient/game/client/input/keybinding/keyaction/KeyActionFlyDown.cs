@@ -10,6 +10,8 @@ namespace ancient.game.client.input.keybinding.keyaction
 {
     class KeyActionFlyDown : IKeyAction
     {
+        private bool updatedModel;
+
         public void UpdateHeld(EntityPlayer player)
         {
             UpdatePressed(player);
@@ -19,10 +21,33 @@ namespace ancient.game.client.input.keybinding.keyaction
         {
             if (player.HasNoClip())
                 player.inputVector += Vector3.Down;
+            else
+            {
+                if (player.IsRiding())
+                {
+                    player.GetMount().SetModel(player.GetMount().GetModelCollection().GetSleepingModel());
+                    updatedModel = true;
+                }
+                else if (player.GetModel() != player.GetModelCollection().GetSittingModel())
+                {
+                    player.SetModel(player.GetModelCollection().GetSittingModel());
+                    updatedModel = true;
+                }
+            }
         }
 
         public void UpdateReleased(EntityPlayer player)
-        { }
+        {
+            if (updatedModel)
+            {
+                if (player.IsRiding())
+                    player.GetMount().SetModel(player.GetMount().GetModelCollection().GetStandingModel());
+                else
+                    player.SetModel(player.GetModelCollection().GetStandingModel());
+
+                updatedModel = false;
+            }
+        }
 
         public void UpdateUp(EntityPlayer player)
         { }

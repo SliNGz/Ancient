@@ -13,16 +13,8 @@ namespace ancientlib.game.block
     {
         public BlockCloud() : base("Cloud", BlockType.cloud)
         {
-            this.color = new Color(255, 255, 255, 128);
-            this.secondaryColor = new Color(220, 220, 255, 128);
-        }
-
-        public override bool ShouldRenderFace(Block neighbor, int xOffset, int yOffset, int zOffset)
-        {
-            if (neighbor is BlockCloud)
-                return false;
-
-            return base.ShouldRenderFace(neighbor, xOffset, yOffset, zOffset);
+            this.color = new Color(255, 255, 255);
+            this.secondaryColor = new Color(220, 220, 255);
         }
     }
 }

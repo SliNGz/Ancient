@@ -46,24 +46,8 @@ namespace ancient.game.client.gui
 
         private void OnConnectButtonClicked(object sender, EventArgs e)
         {
-            string address = ipTextBox.GetTextBox().GetText();
-            string[] splitedAdress = address.Split(':');
-
-            if (splitedAdress.Length > 2 || splitedAdress.Length == 0)
-                return;
-
-            string ip = splitedAdress[0];
-            int port = 15050;
-
-            if (splitedAdress.Length == 2)
-            {
-                bool parsed = int.TryParse(splitedAdress[1], out port);
-
-                if (!parsed)
-                    return;
-            }
-
-            bool connected = NetClient.instance.TryConnect(ip, port);
+            string ipAddress = ipTextBox.GetTextBox().GetText();
+            Console.WriteLine("Connected: " + NetworkUtils.TryConnect(ipAddress));
         }
     }
 }

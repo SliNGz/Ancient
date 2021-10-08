@@ -12,12 +12,17 @@ namespace ancient.game.client.input.keybinding.keyaction
     {
         public void UpdateHeld(EntityPlayer player)
         {
+            player.SetJumping(false);
+
             if (player.HasNoClip())
                 player.inputVector += Vector3.Up;
             else
             {
-                if (player.IsInWater())
+                if (player.InWater())
+                {
                     player.Jump();
+                    player.SetJumping(true);
+                }
             }
         }
 

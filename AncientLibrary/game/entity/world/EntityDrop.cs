@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using ancientlib.game.world;
+using ancientlib.game.entity.model;
 
 namespace ancientlib.game.entity.world
 {
@@ -32,7 +33,6 @@ namespace ancientlib.game.entity.world
             this.yawVelocity = 1.5F;
 
             this.itemStack = new ItemStack(Items.dirt, 1);
-            SetModelState(itemStack.GetItem().GetDropModelState());
         }
 
         public EntityDrop(World world, float x, float y, float z, ItemStack itemStack) : this(world)
@@ -41,7 +41,6 @@ namespace ancientlib.game.entity.world
             this.y = y;
             this.z = z;
             this.itemStack = itemStack;
-            SetModelState(itemStack.GetItem().GetDropModelState());
         }
 
         public EntityDrop(World world, float x, float y, float z, Item item, int amount) : this(world, x, y, z, new ItemStack(item, amount))
@@ -130,7 +129,7 @@ namespace ancientlib.game.entity.world
 
         public Vector3 GetAnimationPosition()
         {
-            return new Vector3((float)x, (float)y + yAnim, (float)z);
+            return new Vector3(x, y + yAnim, z);
         }
 
         public override Vector3 GetModelScale()
@@ -175,6 +174,7 @@ namespace ancientlib.game.entity.world
         {
             base.Read(reader);
             itemStack.Read(reader);
+            this.model = GetModelCollection().GetStandingModel();
         }
 
         public override void Write(BinaryWriter writer)
@@ -183,9 +183,22 @@ namespace ancientlib.game.entity.world
             itemStack.Write(writer);
         }
 
-        protected override EntityModelState GetDefaultModelState()
+        public override EntityModelCollection GetModelCollection()
         {
-            return this.GetModelState();
+            if (itemStack != null)
+                return itemStack.GetModelCollection();
+
+            return null;
+        }
+
+        public override string GetRendererName()
+        {
+            return "drop";
+        }
+
+        public override string GetEntityName()
+        {
+            return "drop";
         }
     }
 }

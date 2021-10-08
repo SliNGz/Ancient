@@ -10,7 +10,7 @@ namespace ancientlib.game.world.biome
 {
     public class BiomeDesert : Biome
     {
-        public BiomeDesert()
+        public BiomeDesert() : base("desert")
         {
             this.maxHeight = 80;
             this.minHeight = 60;

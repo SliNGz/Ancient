@@ -11,7 +11,7 @@ namespace ancientlib.game.world.biome
 {
     public class BiomeOcean : Biome
     {
-        public BiomeOcean()
+        public BiomeOcean() : base("ocean")
         {
             this.maxHeight = 48;
             this.minHeight = 24;
@@ -51,8 +51,10 @@ namespace ancientlib.game.world.biome
                         if (wy >= WATER_LEVEL)
                             genScenery = true;
                     }
-                    else
+                    else if (wy == height - 1)
                         blocks.SetBlock(baseBlock, index);
+                    else
+                        blocks.SetBlock(Blocks.stone, index);
                 }
                 else
                 {

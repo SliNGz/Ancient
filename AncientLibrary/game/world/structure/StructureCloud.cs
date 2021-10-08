@@ -1,5 +1,6 @@
 ﻿using ancient.game.world;
 using ancient.game.world.block;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace ancientlib.game.world.structure
 {
     class StructureCloud : Structure
     {
-        public StructureCloud(string path) : base(path)
+        public StructureCloud(string path, Dictionary<Color, Block> colorToBlockList) : base(path, colorToBlockList)
         { }
 
         public override void Generate(World world, int x, int y, int z)

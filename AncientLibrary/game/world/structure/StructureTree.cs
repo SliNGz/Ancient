@@ -12,7 +12,7 @@ namespace ancientlib.game.world.structure
 {
     public class StructureTree : Structure
     {
-        public StructureTree(string path) : base(path)
+        public StructureTree(string path, Dictionary<Color, Block> colorToBlockList) : base(path, colorToBlockList)
         { }
 
         public override void Generate(World world, int x, int y, int z)

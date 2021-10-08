@@ -8,16 +8,18 @@ using System.Threading.Tasks;
 using ancient.game.entity.player;
 using ancientlib.game.classes;
 using ancientlib.game.item.statbased;
+using ancientlib.game.item.tool;
+using ancient.game.world.block;
 
 namespace ancientlib.game.item
 {
-    public abstract class ItemWeapon : ItemStatDependent
+    public abstract class ItemWeapon : ItemTool
     {
         protected int damage;
 
-        public ItemWeapon(string name, Class _class, int damage, int cooldown) : base(name, _class, 0, 0, 0, 0, 0)
+        public ItemWeapon(string name, Class _class, int damage, int cooldown) : base(name)
         {
-            this.maxItemStack = 1;
+            this._class = _class;
             SetDamage(damage);
             this.cooldown = cooldown;
         }
@@ -40,6 +42,11 @@ namespace ancientlib.game.item
         public override int GetCooldown(EntityPlayer player)
         {
             return MathHelper.Clamp((int)(cooldown - (player.GetDex() / 20F)), 0, int.MaxValue);
+        }
+
+        protected override bool CanDestroyBlock(Block block)
+        {
+            return false;
         }
     }
 }

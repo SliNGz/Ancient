@@ -1,142 +1,90 @@
-﻿using ancient.game.client.gui.component;
-using ancient.game.client.utils;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 using ancient.game.client.renderer.font;
-using ancient.game.input;
-using ancientlib.game.command;
-using ancient.game.client.input.utils;
-using ancient.game.client.network;
-using ancientlib.game.network.packet.client.player;
+using ancient.game.client.utils;
+using Microsoft.Xna.Framework;
+using ancient.game.client.gui.component;
+using Microsoft.Xna.Framework.Input;
+using ancientlib.game.utils.chat;
+using ancient.game.client.renderer.chat;
+using ancientlib.game.init;
 
 namespace ancient.game.client.gui
 {
-    public class GuiChat : Gui, IKeyboardSubscriber
+    public class GuiChat : Gui
     {
-        private Texture2D chatTexture;
-        private GuiTexture chatGuiTexture;
+        public static int FONT_SIZE = 3;
+        private List<ChatComponent> chat;
 
-        private GuiText text;
-        private List<GuiText> chatHistory;
+        public int linesToRender;
 
         public GuiChat(GuiManager guiManager) : base(guiManager, "chat")
-        { }
+        {
+            this.chat = new List<ChatComponent>();
+            this.chat.Add(new ChatComponentItem(Items.staff));
+            linesToRender = 5;
+        }
 
         public override void Initialize()
         {
-            base.Initialize();
+            ChatRenderItem.Initialize();
+        }
 
-            this.lastGui = guiManager.ingame;
+        public override void Update(MouseState mouseState)
+        {
+            base.Update(mouseState);
 
-            this.chatTexture = new Texture2D(Ancient.ancient.GraphicsDevice, 320, 192);
+            for (int i = 0; i < chat.Count; i++)
+                chat[i].Update();
+        }
 
-            Color[] data = new Color[chatTexture.Width * chatTexture.Height];
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
 
-            for (int i = 0; i < chatTexture.Width; i++)
+            int y = GuiUtils.GetYFromRelativeY(guiManager.ingame.itemInHand.GetY()) - FontRenderer.CHAR_SIZE * FONT_SIZE - 5;
+
+            for (int i = Math.Max(0, chat.Count - linesToRender); i < chat.Count; i++)
             {
-                for (int j = 0; j < chatTexture.Height; j++)
-                {
-                    data[i + j * chatTexture.Width] = new Color(31, 31, 31, 150);
-                }
-            }
+                ChatComponent chatComponent = chat[i];
+                int x = 3;
 
-            this.chatTexture.SetData(data);
+                if (chatComponent is ChatComponentItem)
+                    x = 20;
 
-            this.chatGuiTexture = new GuiTexture(chatTexture);
-            this.chatGuiTexture.SetY(1 - GuiUtils.GetRelativeYFromY(chatGuiTexture.GetHeight()));
-            this.components.Add(chatGuiTexture);
-
-            this.text = new GuiText();
-            this.text.SetY(1 - GuiUtils.GetRelativeYFromY(text.GetHeight()));
-            this.components.Add(text);
-
-            this.chatHistory = new List<GuiText>();
-        }
-
-        public override void OnDisplay(Gui lastGui)
-        {
-            base.OnDisplay(lastGui);
-            Ancient.ancient.keyDispatcher.Subscriber = this;
-        }
-
-        public override void OnClose()
-        {
-            base.OnClose();
-            Ancient.ancient.keyDispatcher.Subscriber = null;
-        }
-
-        public override bool CanClose()
-        {
-            return text.GetText() == "";
-        }
-
-        public void RecieveTextInput(char inputChar)
-        {
-            this.text.Add(inputChar);
-        }
-
-        public void RecieveTextInput(string text)
-        { }
-
-        public void RecieveCommandInput(char command)
-        { }
-
-        public void RecieveSpecialInput(Keys key)
-        {
-            switch (key)
-            {
-                case Keys.Back:
-                    text.Delete();
-                    break;
-                case Keys.Enter:
-                    OnEnterPressed();
-                    break;
-                case Keys.Tab:
-                    OnTabPressed();
-                    break;
+                ChatRenderer.Draw(spriteBatch, chat[i], x, y - (chat.Count - 1 - i) * FontRenderer.CHAR_SIZE * FONT_SIZE);
             }
         }
 
-        private void OnEnterPressed()
+        public override void Draw3D()
         {
-            if (!Ancient.ancient.world.IsRemote())
-            {
-                if (text.GetText().StartsWith("/"))
-                    CommandHandler.HandleText(Ancient.ancient.player, text.GetText());
-            }
-            else
-                NetClient.instance.SendPacket(new PacketPlayerChat(text.GetText()));
-
-            text.SetText("");
+            base.Draw3D();
+            for (int i = 0; i < chat.Count; i++)
+                ChatRenderer.Draw3D(chat[i]);
         }
 
-        private void OnTabPressed()
+        public void AddComponent(ChatComponent chatComponent)
         {
-            if (this.text.GetText().Length == 0)
-                return;
+            if (chat.Count > 10)
+                chat.RemoveAt(0);
 
-            string[] args = this.text.GetText().Split(' ');
-            string text = args[args.Length - 1];
+            chat.Add(chatComponent);
+        }
 
-            if (text.StartsWith("/"))
-            {
-                text = text.Remove(0, 1);
+        public void SetChatVisible()
+        {
+            for (int i = 0; i < chat.Count; i++)
+                chat[i].alpha = ChatComponent.MAX_ALPHA;
+        }
 
-                try
-                {
-                    text = CommandHandler.commands.First(x => x.Key.StartsWith(text)).Key;
-                    text = "/" + text;
-                    this.text.SetText(text);
-                }
-                catch(InvalidOperationException ex)
-                { }
-            }
+        public void Clear()
+        {
+            this.chat.Clear();
+            linesToRender = 5;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ancient.game.client.gui
 {
     public class GuiOptions : GuiMenuBackground
     {
-        private GameSettings gameSettings;
+        private ControlsSettings controlsSettings;
 
         private GuiButtonText videoSettingsButton;
         private GuiSlider volumeSlider;
@@ -24,7 +24,7 @@ namespace ancient.game.client.gui
 
         public GuiOptions(GuiManager guiManager) : base(guiManager, "options")
         {
-            this.gameSettings = Ancient.ancient.gameSettings;
+            this.controlsSettings = Ancient.ancient.gameSettings.GetControlsSettings();
         }
 
         public override void Initialize()
@@ -42,10 +42,11 @@ namespace ancient.game.client.gui
             this.volumeSlider = new GuiSlider();
             this.volumeSlider.Centralize();
             this.volumeSlider.AddY(GuiUtils.GetRelativeYFromY(-volumeSlider.GetHeight() - 5));
-            this.volumeSlider.SetValue(gameSettings.GetVolume());
-            this.volumeSlider.SetGuiText(new GuiText("Volume: " + volumeSlider.GetValue() * 100).SetSize(3).SetColor(Color.White));
+            this.volumeSlider.SetValue(controlsSettings.GetVolume());
+            this.volumeSlider.SetGuiText(new GuiText("Volume: " + volumeSlider.GetValue() * 100).SetSize(3).SetColor(Color.White).SetOutline(1));
             this.volumeSlider.CentralizeText();
             this.volumeSlider.ValueChanged += new ValueChangedEventHandler(OnVolumeChanged);
+            OnVolumeChanged(volumeSlider, EventArgs.Empty);
             this.components.Add(volumeSlider);
 
             this.back = new GuiButtonText(new GuiText("Back").SetOutline(1));
@@ -69,8 +70,10 @@ namespace ancient.game.client.gui
 
         private void OnVolumeChanged(object sender, EventArgs e)
         {
-            gameSettings.SetVolume(volumeSlider.GetValue());
+            controlsSettings.SetVolume(volumeSlider.GetValue());
             volumeSlider.GetGuiText().SetText("Volume: " + volumeSlider.GetValue() * 100);
+            GuiSlider slider = (GuiSlider)sender;
+            slider.GetGuiText().SetColor(Color.Lerp(Color.Red, Color.LightGreen, slider.GetValue()));
         }
 
         private void OnVideoSettingsButtonClicked(object sender, EventArgs e)

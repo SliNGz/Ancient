@@ -21,25 +21,40 @@ namespace ancientlib.game.entity.ai.pathfinding
 
         private PathNode currentPathNode;
 
+        private Stopwatch watch;
+
         public PathFinder(Entity entity)
         {
             this.path = new List<PathNode>();
             this.entity = entity;
+            watch = new Stopwatch();
         }
 
         public void Update(GameTime gameTime)
         {
             if (HasPath())
             {
-                entity.AddMovement(Vector3.Forward);
+                Vector3 movement = Vector3.Forward;
 
-                if (currentPathNode.GetY() - 1 > entity.GetFootPosition().Y)
+                if (currentPathNode.GetY() > entity.GetFootPosition().Y)
                 {
                     if (entity is EntityLiving)
-                        ((EntityLiving)entity).Jump();
+                    {
+                        if (entity is EntityFlying)
+                            movement += Vector3.Up;
+                        else
+                            ((EntityLiving)entity).Jump();
+                    }
                     else
-                        entity.AddMovement(Vector3.Up);
+                        movement += Vector3.Up;
                 }
+                else if (currentPathNode.GetY() < entity.GetFootPosition().Y)
+                {
+                    if (entity is EntityFlying)
+                        movement += Vector3.Down;
+                }
+
+                entity.SetMovement(movement);
 
                 UpdatePath(gameTime);
             }
@@ -48,7 +63,7 @@ namespace ancientlib.game.entity.ai.pathfinding
         private void UpdatePath(GameTime gameTime)
         {
             if (entity is EntityLiving)
-                ((EntityLiving)entity).SetLookAt(currentPathNode.GetX() + 0.5f, currentPathNode.GetY(), currentPathNode.GetZ() + 0.5f);
+                ((EntityLiving)entity).SetLookAt(currentPathNode.GetX() + 0.5F, currentPathNode.GetY(), currentPathNode.GetZ() + 0.5F);
 
             if (HasReachedCurrentPathNode())
             {
@@ -62,15 +77,16 @@ namespace ancientlib.game.entity.ai.pathfinding
             }
         }
 
-        private List<PathNode> GetPathTo(int x, int y, int z)
+        public List<PathNode> GetPathTo(int x, int y, int z)
         {
-            Stopwatch watch = new Stopwatch();
+            watch.Reset();
             watch.Start();
 
             SortedSet<PathNode> openSet = new SortedSet<PathNode>();
             List<PathNode> closedSet = new List<PathNode>();
 
-            PathNode startNode = new PathNode((int)entity.GetX(), (int)(entity.GetFootPosition().Y + 1), (int)entity.GetZ());
+            Vector3 center = entity.GetBoundingBox().GetCenter();
+            PathNode startNode = new PathNode((int)Math.Round(center.X), (int)(entity.GetFootPosition().Y), (int)Math.Round(center.Z));
             PathNode endNode = new PathNode(x, y, z);
 
             openSet.Add(startNode);
@@ -103,7 +119,7 @@ namespace ancientlib.game.entity.ai.pathfinding
                     }
                 }
 
-                if (watch.Elapsed.TotalSeconds >= 0.5F)
+                if (watch.Elapsed.TotalSeconds >= 3)
                 {
                     Console.WriteLine("Took too long to find path");
                     break;
@@ -129,12 +145,21 @@ namespace ancientlib.game.entity.ai.pathfinding
 
         public void SetPath(int x, int y, int z)
         {
-            new Thread(() => SetPathTo(x, y, z)) { IsBackground = true }.Start();
+            entity.GetWorld().GetPathFinderManager().EnqueuePath(this, x, y, z);
         }
 
-        private void SetPathTo(int x, int y, int z)
+        public void SetPathUnsafe(int x, int y, int z)
         {
             this.path = GetPathTo(x, y, z);
+            this.pathCount = 0;
+
+            if (HasPath())
+                this.currentPathNode = path[pathCount];
+        }
+
+        public void SetPath(List<PathNode> path)
+        {
+            this.path = path;
             this.pathCount = 0;
 
             if (HasPath())

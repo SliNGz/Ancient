@@ -17,6 +17,11 @@ namespace ancientlib.game.entity.npc
             this.name = "NPC";
         }
 
+        public override string GetEntityName()
+        {
+            return "npc";
+        }
+
         public override void OnPlayerInteraction(EntityPlayer player)
         {
             base.OnPlayerInteraction(player);

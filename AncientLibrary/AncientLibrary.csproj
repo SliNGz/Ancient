@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ancientlib</RootNamespace>
     <AssemblyName>Ancient Library</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -30,10 +30,30 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,13 +62,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="game\block\BlockBase.cs" />
     <Compile Include="game\block\BlockBlueberriesBush.cs" />
+    <Compile Include="game\block\BlockBranch.cs" />
     <Compile Include="game\block\BlockCampfire.cs" />
     <Compile Include="game\block\BlockCloud.cs" />
+    <Compile Include="game\block\BlockSnowLayer.cs" />
     <Compile Include="game\block\BlockFlowers.cs" />
     <Compile Include="game\block\BlockIce.cs" />
     <Compile Include="game\block\BlockLantern.cs" />
     <Compile Include="game\block\BlockLightSource.cs" />
+    <Compile Include="game\block\BlockStone.cs" />
     <Compile Include="game\block\IBlockModel.cs" />
     <Compile Include="game\block\BlockSand.cs" />
     <Compile Include="game\block\BlockScenery.cs" />
@@ -57,19 +81,29 @@
     <Compile Include="game\block\BlockTallGrass.cs" />
     <Compile Include="game\classes\bowman\ClassBowman.cs" />
     <Compile Include="game\classes\Classes.cs" />
+    <Compile Include="game\classes\ClassExplorer.cs" />
     <Compile Include="game\classes\magician\ClassMagician.cs" />
     <Compile Include="game\classes\thief\ClassThief.cs" />
     <Compile Include="game\classes\warrior\ClassWarrior.cs" />
+    <Compile Include="game\command\CommandAddItem.cs" />
+    <Compile Include="game\command\CommandChangeValueFloat.cs" />
+    <Compile Include="game\command\CommandClass.cs" />
+    <Compile Include="game\command\CommandDex.cs" />
     <Compile Include="game\command\CommandExp.cs" />
     <Compile Include="game\command\CommandChangeValue.cs" />
     <Compile Include="game\command\CommandHealth.cs" />
+    <Compile Include="game\command\CommandLuk.cs" />
+    <Compile Include="game\command\CommandSpeed.cs" />
+    <Compile Include="game\command\CommandStr.cs" />
     <Compile Include="game\command\CommandToggleRain.cs" />
+    <Compile Include="game\command\CommandWsd.cs" />
     <Compile Include="game\command\ICommand.cs" />
     <Compile Include="game\command\CommandHandler.cs" />
     <Compile Include="game\command\CommandSpawnEntity.cs" />
     <Compile Include="game\constants\NetConstants.cs" />
     <Compile Include="game\entity\ai\EntityAI.cs" />
     <Compile Include="game\entity\ai\EntityAIAttack.cs" />
+    <Compile Include="game\entity\ai\EntityAIFlyToBlock.cs" />
     <Compile Include="game\entity\ai\EntityAIRunAround.cs" />
     <Compile Include="game\entity\ai\EntityAIFollowOwner.cs" />
     <Compile Include="game\entity\ai\EntityAILookAtPlayer.cs" />
@@ -78,15 +112,22 @@
     <Compile Include="game\entity\ai\EntityAISeemIdle.cs" />
     <Compile Include="game\entity\ai\EntityAIWander.cs" />
     <Compile Include="game\entity\ai\pathfinding\PathFinder.cs" />
+    <Compile Include="game\entity\ai\pathfinding\PathFinderManager.cs" />
     <Compile Include="game\entity\ai\pathfinding\PathNode.cs" />
     <Compile Include="game\entity\Entities.cs" />
     <Compile Include="game\entity\Entity.cs" />
     <Compile Include="game\entity\EntityDeveloping.cs" />
+    <Compile Include="game\entity\EntityFlying.cs" />
     <Compile Include="game\entity\EntityLiving.cs" />
-    <Compile Include="game\entity\EntityModelState.cs" />
+    <Compile Include="game\entity\model\EntityModelAnimation.cs" />
+    <Compile Include="game\entity\model\EntityModelCollection.cs" />
+    <Compile Include="game\entity\model\EntityModel.cs" />
     <Compile Include="game\entity\EntityMount.cs" />
     <Compile Include="game\entity\EntityPet.cs" />
+    <Compile Include="game\entity\monster\EntityMonster.cs" />
+    <Compile Include="game\entity\monster\EntityNymu.cs" />
     <Compile Include="game\entity\npc\EntityNPC.cs" />
+    <Compile Include="game\entity\passive\EntityBee.cs" />
     <Compile Include="game\entity\passive\EntitySlime.cs" />
     <Compile Include="game\entity\passive\EntityTortoise.cs" />
     <Compile Include="game\entity\player\EntityPlayer.cs" />
@@ -100,14 +141,25 @@
     <Compile Include="game\entity\world\EntityDrop.cs" />
     <Compile Include="game\block\Blocks.cs" />
     <Compile Include="game\entity\world\EntityExplosion.cs" />
+    <Compile Include="game\entity\world\EntityPortal.cs" />
     <Compile Include="game\init\Init.cs" />
     <Compile Include="game\inventory\Inventory.cs" />
-    <Compile Include="game\item\statbased\ItemStatDependent.cs" />
+    <Compile Include="game\inventory\InventoryPlayer.cs" />
+    <Compile Include="game\item\equip\bottom\ItemBottom.cs" />
+    <Compile Include="game\item\equip\ItemEquip.cs" />
+    <Compile Include="game\item\equip\special\ItemJetpack.cs" />
+    <Compile Include="game\item\equip\special\ItemSpecial.cs" />
+    <Compile Include="game\item\ItemHand.cs" />
+    <Compile Include="game\item\ItemStatDependent.cs" />
     <Compile Include="game\item\Item.cs" />
     <Compile Include="game\item\block\ItemBlock.cs" />
     <Compile Include="game\item\Items.cs" />
     <Compile Include="game\item\projectile\ItemArrow.cs" />
     <Compile Include="game\item\projectile\ItemProjectile.cs" />
+    <Compile Include="game\item\tool\ItemAxe.cs" />
+    <Compile Include="game\item\tool\ItemPickaxe.cs" />
+    <Compile Include="game\item\tool\ItemTool.cs" />
+    <Compile Include="game\item\tool\ItemShovel.cs" />
     <Compile Include="game\item\weapon\ItemBow.cs" />
     <Compile Include="game\item\ItemStack.cs" />
     <Compile Include="game\item\weapon\ItemDagger.cs" />
@@ -125,11 +177,14 @@
     <Compile Include="game\network\NetServer.cs" />
     <Compile Include="game\network\NetValidate.cs" />
     <Compile Include="game\network\packet\client\handshake\PacketHandshake.cs" />
-    <Compile Include="game\network\packet\client\player\PacketCharacterCreation.cs" />
+    <Compile Include="game\network\packet\client\player\PacketCreateCharacter.cs" />
     <Compile Include="game\network\packet\client\player\PacketPlayerChangeSlot.cs" />
-    <Compile Include="game\network\packet\client\player\PacketPlayerChat.cs" />
+    <Compile Include="game\network\packet\client\player\PacketPlayerDropItem.cs" />
     <Compile Include="game\network\packet\client\player\PacketPlayerInput.cs" />
     <Compile Include="game\network\packet\client\player\PacketPlayerUseItem.cs" />
+    <Compile Include="game\network\packet\client\player\PacketSelectCharacter.cs" />
+    <Compile Include="game\network\packet\common\player\PacketPlayerUseSpecial.cs" />
+    <Compile Include="game\network\packet\common\chat\PacketChatComponent.cs" />
     <Compile Include="game\network\packet\common\player\PacketPlayerPosition.cs" />
     <Compile Include="game\network\packet\client\player\PacketPlayerRotation.cs" />
     <Compile Include="game\network\packet\common\player\PacketPlayerRespawn.cs" />
@@ -140,21 +195,27 @@
     <Compile Include="game\network\packet\server\entity\PacketDamageEntity.cs" />
     <Compile Include="game\network\packet\server\entity\PacketDespawnEntity.cs" />
     <Compile Include="game\network\packet\server\entity\PacketEntity.cs" />
+    <Compile Include="game\network\packet\server\entity\PacketEntityHeadRotation.cs" />
     <Compile Include="game\network\packet\server\entity\PacketEntityHealth.cs" />
     <Compile Include="game\network\packet\server\entity\PacketEntityPosition.cs" />
     <Compile Include="game\network\packet\server\entity\PacketEntityRotation.cs" />
     <Compile Include="game\network\packet\server\entity\PacketSpawnEntity.cs" />
-    <Compile Include="game\network\packet\server\player\PacketCharacterCreationStatus.cs" />
+    <Compile Include="game\network\packet\server\player\PacketCharacterStatus.cs" />
     <Compile Include="game\network\packet\common\status\PacketDisconnect.cs" />
     <Compile Include="game\network\packet\server\player\PacketPlayerChangeClass.cs" />
+    <Compile Include="game\network\packet\server\player\PacketPlayerChangeExp.cs" />
+    <Compile Include="game\network\packet\server\player\PacketPlayerChangeLevel.cs" />
     <Compile Include="game\network\packet\server\player\PacketPlayerItemAction.cs" />
+    <Compile Include="game\network\packet\server\player\PacketPlayerMaxHealth.cs" />
     <Compile Include="game\network\packet\server\player\PacketPlayerMountPet.cs" />
     <Compile Include="game\network\packet\server\player\PacketPlayerTamePet.cs" />
     <Compile Include="game\network\packet\server\world\PacketCreateWorld.cs" />
     <Compile Include="game\network\packet\server\world\PacketDestroyBlock.cs" />
+    <Compile Include="game\network\packet\server\world\PacketExplosion.cs" />
     <Compile Include="game\network\packet\server\world\PacketPlaceBlock.cs" />
     <Compile Include="game\network\packet\server\world\PacketToggleRain.cs" />
     <Compile Include="game\particle\Particle.cs" />
+    <Compile Include="game\particle\ParticleFallingLeaf.cs" />
     <Compile Include="game\particle\ParticleFlame.cs" />
     <Compile Include="game\particle\Particles.cs" />
     <Compile Include="game\particle\ParticleSnow.cs" />
@@ -165,21 +226,32 @@
     <Compile Include="game\skill\Skills.cs" />
     <Compile Include="game\skill\thief\SkillFlashJump.cs" />
     <Compile Include="game\stats\StatTable.cs" />
+    <Compile Include="game\user\CharacterArray.cs" />
+    <Compile Include="game\user\User.cs" />
     <Compile Include="game\utils\AttackInfo.cs" />
+    <Compile Include="game\utils\chat\ChatComponent.cs" />
+    <Compile Include="game\utils\chat\ChatComponentItem.cs" />
+    <Compile Include="game\utils\chat\ChatComponents.cs" />
+    <Compile Include="game\utils\chat\ChatComponentText.cs" />
+    <Compile Include="game\utils\ColorsUtils.cs" />
+    <Compile Include="game\utils\RandomExtensions.cs" />
     <Compile Include="game\utils\ConsoleExtensions.cs" />
     <Compile Include="game\utils\DirectionHelper.cs" />
     <Compile Include="game\utils\BBExtensions.cs" />
     <Compile Include="game\utils\MagicaVoxelImporter.cs" />
     <Compile Include="game\utils\MathUtils.cs" />
     <Compile Include="game\utils\NetExtensions.cs" />
+    <Compile Include="game\utils\AttackUtils.cs" />
     <Compile Include="game\utils\ThreadUtils.cs" />
     <Compile Include="game\utils\Utils.cs" />
     <Compile Include="game\world\biome\Biome.cs" />
+    <Compile Include="game\world\biome\BiomeBlossom.cs" />
     <Compile Include="game\world\biome\BiomeDesert.cs" />
+    <Compile Include="game\world\biome\BiomeJungle.cs" />
     <Compile Include="game\world\biome\BiomeOcean.cs" />
+    <Compile Include="game\world\biome\BiomeSkyland.cs" />
     <Compile Include="game\world\biome\BiomeTaiga.cs" />
     <Compile Include="game\world\biome\BiomeManager.cs" />
-    <Compile Include="game\world\biome\BiomeTaigaHills.cs" />
     <Compile Include="game\world\entity\NetEntities.cs" />
     <Compile Include="game\world\entity\NetEntityLiving.cs" />
     <Compile Include="game\world\entity\NetEntityPlayer.cs" />
@@ -215,8 +287,16 @@
     <Compile Include="game\world\World.cs" />
     <Compile Include="game\world\WorldServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\AncientService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Content\structure\cloud\cloud_0.vox">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -232,6 +312,15 @@
     <None Include="Content\structure\tree\tree_2.vox">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\structure\tree\tree_blossom_0.vox">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\structure\tree\tree_blossom_1.vox">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\structure\tree\tree_jungle_0.vox">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\structure\tree\tree_snow_0.vox">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -241,8 +330,59 @@
     <None Include="Content\structure\tree\tree_snow_2.vox">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Service References\AncientService\ancientlib.AncientService.GetCharacterImageResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AncientService\ancientlib.AncientService.Player.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AncientService\ancientlib.AncientService.Players.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AncientService\ancientlib.AncientService.Score.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AncientService\ancientlib.AncientService.Scores.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AncientService\ancientlib.AncientService.Users.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AncientService\Arrays.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AncientService\HELPER.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AncientService\MODEL.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AncientService\service.wsdl" />
+    <None Include="Service References\AncientService\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AncientService\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\AncientService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AncientService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AncientService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AncientService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

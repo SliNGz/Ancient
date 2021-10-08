@@ -1,7 +1,9 @@
-﻿using ancient.game.client.network.packet.handler.entity;
+﻿using ancient.game.client.network.packet.handler.chat;
+using ancient.game.client.network.packet.handler.entity;
 using ancient.game.client.network.packet.handler.player;
 using ancient.game.client.network.packet.handler.status;
 using ancient.game.client.network.packet.handler.world;
+using ancientlib.game.network.packet.common.chat;
 using ancientlib.game.network.packet.common.player;
 using ancientlib.game.network.packet.common.status;
 using ancientlib.game.network.packet.handler;
@@ -22,7 +24,7 @@ namespace ancient.game.client.network.packet.handler
         {
             packetHandlers.Add(typeof(PacketDisconnect), new DisconnectClientHandler());
             packetHandlers.Add(typeof(PacketCreateWorld), new CreateWorldHandler());
-            packetHandlers.Add(typeof(PacketCharacterCreationStatus), new CharacterCreationStatusHandler());
+            packetHandlers.Add(typeof(PacketCharacterStatus), new CharacterCreateStatusHandler());
             packetHandlers.Add(typeof(PacketSpawnEntity), new EntitySpawnHandler());
             packetHandlers.Add(typeof(PacketDespawnEntity), new EntityDespawnHandler());
             packetHandlers.Add(typeof(PacketEntityPosition), new EntityPositionHandler());
@@ -37,6 +39,14 @@ namespace ancient.game.client.network.packet.handler
             packetHandlers.Add(typeof(PacketPlayerRespawn), new PlayerRespawnClientHandler());
             packetHandlers.Add(typeof(PacketDamageEntity), new EntityDamagedHandler());
             packetHandlers.Add(typeof(PacketToggleRain), new ToggleRainHandler());
+            packetHandlers.Add(typeof(PacketExplosion), new ExplosionHandler());
+            packetHandlers.Add(typeof(PacketChatComponent), new ChatComponentClientHandler());
+            packetHandlers.Add(typeof(PacketPlayerUseSpecial), new PlayerUseSpecialClientHandler());
+            packetHandlers.Add(typeof(PacketEntityHeadRotation), new EntityHeadRotationHandler());
+            packetHandlers.Add(typeof(PacketPlayerChangeExp), new PlayerChangeExpHandler());
+            packetHandlers.Add(typeof(PacketPlayerChangeLevel), new PlayerLevelChangeHandler());
+            packetHandlers.Add(typeof(PacketPlayerMaxHealth), new PlayerMaxHealthHandler());
+            packetHandlers.Add(typeof(PacketPlayerChangeClass), new PlayerChangeClassHandler());
         }
     }
 }

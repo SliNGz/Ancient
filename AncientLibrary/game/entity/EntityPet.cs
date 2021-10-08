@@ -104,5 +104,13 @@ namespace ancientlib.game.entity
                 }
             }
         }
+
+        protected override void UpdateFallDamage()
+        {
+            if (HasOwner())
+                return;
+
+            base.UpdateFallDamage();
+        }
     }
 }

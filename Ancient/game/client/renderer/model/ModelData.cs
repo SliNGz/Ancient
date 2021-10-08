@@ -5,6 +5,7 @@ using ancient.game.utils;
 using ancient.game.world.block;
 using ancientlib.game.entity;
 using ancientlib.game.init;
+using MagicaVoxelContentExtension;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,13 @@ namespace ancient.game.renderers.model
         private Vector3 offset;
 
         private List<ModelData> attachments;
+
+        public ModelData(string name, MagicaVoxelModelData mvModel) : this(name, mvModel.GetVoxels())
+        {
+            this.scale = mvModel.scale;
+            this.offset = mvModel.offset;
+            SetAlpha(mvModel.alpha);
+        }
 
         public ModelData(string name, Color[,,] voxels)
         {
@@ -65,6 +73,11 @@ namespace ancient.game.renderers.model
         public VoxelRendererData GetVoxelRendererData()
         {
             return this.voxelRendererData;
+        }
+
+        public Vector3 GetDimensions()
+        {
+            return new Vector3(width, height, length);
         }
 
         public int GetWidth()

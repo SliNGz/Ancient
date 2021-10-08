@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ancientserver</RootNamespace>
     <AssemblyName>Ancient Server</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -34,12 +34,37 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>ancientserver.game.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,10 +75,13 @@
   <ItemGroup>
     <Compile Include="game\AncientServer.cs" />
     <Compile Include="game\network\packet\handler\handshake\HandshakeHandler.cs" />
-    <Compile Include="game\network\packet\handler\player\CharacterCreationHandler.cs" />
+    <Compile Include="game\network\packet\handler\player\PlayerCreateCharacterHandler.cs" />
     <Compile Include="game\network\packet\handler\player\PlayerChangeSlotHandler.cs" />
-    <Compile Include="game\network\packet\handler\player\PlayerChatHandler.cs" />
+    <Compile Include="game\network\packet\handler\chat\ChatComponentServerHandler.cs" />
+    <Compile Include="game\network\packet\handler\player\PlayerDropItemHandler.cs" />
     <Compile Include="game\network\packet\handler\player\PlayerInputHandler.cs" />
+    <Compile Include="game\network\packet\handler\player\PlayerSelectCharacterHandler.cs" />
+    <Compile Include="game\network\packet\handler\player\PlayerUseSpecialServerHandler.cs" />
     <Compile Include="game\network\packet\handler\player\PlayerUseItemHandler.cs" />
     <Compile Include="game\network\packet\handler\player\PlayerRespawnServerHandler.cs" />
     <Compile Include="game\network\packet\handler\player\PlayerPositionServerHandler.cs" />
@@ -61,10 +89,13 @@
     <Compile Include="game\network\packet\handler\ServerPacketHandlers.cs" />
     <Compile Include="game\network\packet\handler\status\DisconnectServerHandler.cs" />
     <Compile Include="game\Program.cs" />
+    <Compile Include="game\utils\AncientServiceServerUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AncientLibrary\AncientLibrary.csproj">
@@ -72,7 +103,6 @@
       <Name>AncientLibrary</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

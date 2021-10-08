@@ -105,13 +105,13 @@ namespace ancient.game.client.gui.component
             return this.x;
         }
 
-        public GuiComponent SetX(float x)
+        public virtual GuiComponent SetX(float x)
         {
             this.x = x;
             return this;
         }
 
-        public GuiComponent AddX(float add)
+        public virtual GuiComponent AddX(float add)
         {
             this.x += add;
             return this;
@@ -122,13 +122,13 @@ namespace ancient.game.client.gui.component
             return this.y;
         }
 
-        public GuiComponent SetY(float y)
+        public virtual GuiComponent SetY(float y)
         {
             this.y = y;
             return this;
         }
 
-        public GuiComponent AddY(float add)
+        public virtual GuiComponent AddY(float add)
         {
             this.y += add;
             return this;
@@ -180,10 +180,10 @@ namespace ancient.game.client.gui.component
             return this;
         }
 
-        public void ScaleToMatchResolution()
+        public virtual void ScaleToMatchResolution()
         {
-            this.width = ((int)(width * Math.Round(Ancient.ancient.GraphicsDevice.Viewport.Width / (float)GuiUtils.DefaultWidth)));
-            this.height = ((int)(height * Math.Round(Ancient.ancient.GraphicsDevice.Viewport.Height / (float)GuiUtils.DefaultHeight)));
+            this.width = ((int)(width * Math.Round(Ancient.ancient.width / (float)GuiUtils.DefaultWidth)));
+            this.height = ((int)(height * Math.Round(Ancient.ancient.height / (float)GuiUtils.DefaultHeight)));
         }
 
         public Color GetColor()

@@ -19,7 +19,7 @@ namespace ancientlib.game.inventory
         {
             this.items = new ItemStack[slots];
             this.slots = slots;
-            this.lineSize = 4;
+            this.lineSize = 6;
         }
 
         public Inventory(int slots, int lineSize)
@@ -89,7 +89,7 @@ namespace ancientlib.game.inventory
             this.items[slot] = itemStack;
         }
 
-        public bool AddItem(Item item, int amount)
+        public bool AddItemUnsafe(Item item, int amount)
         {
             if (amount == 0)
                 return false;
@@ -124,12 +124,12 @@ namespace ancientlib.game.inventory
             return false;
         }
 
-        public bool AddItem(ItemStack itemStack)
+        public bool AddItemUnsafe(ItemStack itemStack)
         {
-            return AddItem(itemStack.GetItem(), itemStack.GetAmount());
+            return AddItemUnsafe(itemStack.GetItem(), itemStack.GetAmount());
         }
 
-        public bool RemoveItem(Item item, int amount)
+        public bool RemoveItemUnsafe(Item item, int amount)
         {
             if (amount == 0)
                 return false;
@@ -156,9 +156,9 @@ namespace ancientlib.game.inventory
             return false;
         }
 
-        public bool RemoveItem(ItemStack itemStack)
+        public bool RemoveItemUnsafe(ItemStack itemStack)
         {
-            return RemoveItem(itemStack.GetItem(), itemStack.GetAmount());
+            return RemoveItemUnsafe(itemStack.GetItem(), itemStack.GetAmount());
         }
 
         public int GetSlotOfItem(Item item)

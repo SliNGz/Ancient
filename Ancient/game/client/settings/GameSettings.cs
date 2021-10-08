@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Media;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,70 +8,30 @@ namespace ancient.game.client.settings
 {
     public class GameSettings
     {
-        // Video Settings
-        private int antiAliasing;
-        private int renderDistance;
-
-        // Audio Settings
-        private float volume;
-
-        // Gameplay Settings
-        private float sensitivity;
+        private ControlsSettings controlsSettings;
+        private VideoSettings videoSettings;
+        private AudioSettings audioSettings;
 
         public GameSettings()
         {
-            this.antiAliasing = 16;
-            this.renderDistance = 12;
-
-            this.volume = 0.2F;
-
-            this.sensitivity = 1;
+            this.controlsSettings = new ControlsSettings();
+            this.videoSettings = new VideoSettings();
+            this.audioSettings = new AudioSettings();
         }
 
-        public int GetAntiAliasing()
+        public ControlsSettings GetControlsSettings()
         {
-            return this.antiAliasing;
+            return this.controlsSettings;
         }
 
-        public void SetAntiAliasing(int antiAliasing)
+        public VideoSettings GetVideoSettings()
         {
-            this.antiAliasing = MathHelper.Clamp(antiAliasing, 0, 16);
+            return this.videoSettings;
         }
 
-        public int GetRenderDistance()
+        public AudioSettings GetAudioSettings()
         {
-            return this.renderDistance;
-        }
-
-        public void SetRenderDistance(int renderDistance)
-        {
-            this.renderDistance = MathHelper.Clamp(renderDistance, 0, 16);
-        }
-
-        public float GetVolume()
-        {
-            return this.volume;
-        }
-
-        public void SetVolume(float volume)
-        {
-            this.volume = MathHelper.Clamp(volume, 0, 1);
-            MediaPlayer.Volume = volume;
-        }
-
-        public void AddVolume(float add)
-        {
-            SetVolume(volume + add);
-        }
-
-        public float GetSensitivity()
-        {
-            return this.sensitivity;
-        }
-
-        public void SetSensitivity(float sensitivity)
-        {
-            this.sensitivity = sensitivity;
+            return this.audioSettings;
         }
     }
 }

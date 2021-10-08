@@ -15,6 +15,7 @@ namespace ancientlib.game.particle
         {
             AddParticle(0, typeof(ParticleFlame));
             AddParticle(1, typeof(ParticleSnow));
+            AddParticle(2, typeof(ParticleFallingLeaf));
         }
 
         private static void AddParticle(int id, Type type)

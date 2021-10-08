@@ -17,6 +17,8 @@ namespace ancient.game.client.input.keybinding
         private IKeyAction keyAction;
         private List<object> supportedGuis; // Guis in which this keybinding can be activated, if supportedGuis is null - keybinding can be activated anywhere.
 
+        private Gui lastGui;
+
         public KeyBinding(Keys key, IKeyAction keyAction, params object[] supportedGuis)
         {
             this.key = key;
@@ -27,6 +29,15 @@ namespace ancient.game.client.input.keybinding
         public void Update(EntityPlayer player)
         {
             Gui currentGui = Ancient.ancient.guiManager.GetCurrentGui();
+
+            if (currentGui != lastGui)
+            {
+                if (lastGui != null && supportedGuis.Contains(lastGui) && !supportedGuis.Contains(currentGui))
+                    keyAction.UpdateReleased(player);
+
+                this.lastGui = currentGui;
+            }
+
             if (currentGui != Ancient.ancient.guiManager.debug && (supportedGuis.Count > 0 && !supportedGuis.Contains(currentGui) || (supportedGuis.Contains(currentGui) && !currentGui.CanClose())))
                 return;
 

@@ -19,9 +19,9 @@ namespace ancientlib.game.item.weapon
             this.renderRoll = 65;
         }
 
-        public override void Use(EntityPlayer player)
+        public override void Use(EntityPlayer player, ItemStack itemStack)
         {
-            base.Use(player);
+            base.Use(player,itemStack);
             player.GetWorld().SpawnEntity(new EntityProjectileStaff(player.GetWorld(), player));
         }
     }

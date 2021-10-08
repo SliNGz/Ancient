@@ -27,6 +27,11 @@ using ancientlib.game.item;
 using Microsoft.Xna.Framework.Media;
 using ancientlib.game.world.biome;
 using ancientlib.game.particle;
+using Microsoft.Xna.Framework.Graphics;
+using ancient.game.client.renderer.font;
+using ancientlib.game.utils.chat;
+using ancientlib.game.entity.passive;
+using ancientlib.game.init;
 
 namespace ancient.game.client.world
 {
@@ -63,6 +68,8 @@ namespace ancient.game.client.world
             UpdateDeathGui();
             particleManager.Update();
             UpdateBackgroundMusic();
+            renderer.Update();
+            renderer.fogStart = ancient.player.GetBiome().GetFogStart();
         }
 
         public void Draw()
@@ -105,7 +112,7 @@ namespace ancient.game.client.world
                 Vector3 position = ancient.player.GetPosition();
 
                 if (ancient.guiManager.GetCurrentGui() == ancient.guiManager.map)
-                    position += WorldRenderer.camera.GetTargetVector(ancient.player.GetHeadYaw(), ancient.player.GetHeadPitch()) * ancient.guiManager.map.distance;
+                    position += WorldRenderer.camera.GetTargetVector() * ancient.guiManager.map.distance;
 
                 snow.SetPosition(position + new Vector3(x, rand.Next(1, 7), z));
                 snow.SetScale(Vector3.One * rand.Next(10, 25) / 1000F);
@@ -212,7 +219,7 @@ namespace ancient.game.client.world
         {
             if (stopBGM)
             {
-                MediaPlayer.Volume -= 0.0025F;
+                MediaPlayer.Volume -= 0.0007F;
 
                 if (MediaPlayer.Volume == 0)
                 {
@@ -220,6 +227,11 @@ namespace ancient.game.client.world
                     MediaPlayer.Stop();
                 }
             }
+        }
+
+        public override void AddChatComponent(ChatComponent chatComponent)
+        {
+            Ancient.ancient.guiManager.chat.AddComponent(chatComponent);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace ancient.game.world.block
     {
         public BlockLog() : base("Log", BlockType.wood)
         {
-            this.color = new Color(36, 17, 0);
+            this.color = new Color(53, 40, 31);
             this.secondaryColor = color;
         }
     }

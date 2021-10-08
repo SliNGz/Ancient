@@ -1,6 +1,7 @@
 ﻿using ancient.game.entity.player;
 using ancientlib.game.network.packet;
 using ancientlib.game.network.packet.handler;
+using ancientlib.game.user;
 using ancientlib.game.utils;
 using System;
 using System.Collections.Concurrent;
@@ -35,6 +36,8 @@ namespace ancientlib.game.network
 
         public EntityPlayer player;
 
+        private User user;
+
         public NetConnection(TcpClient tcpClient)
         {
             this.outgoingPackets = new ConcurrentQueue<Packet>();
@@ -48,6 +51,8 @@ namespace ancientlib.game.network
             this.player = null;
 
             this.stage = ConnectionStage.HANDSHAKE;
+
+            this.user = new User();
         }
 
         public void Update()
@@ -209,12 +214,22 @@ namespace ancientlib.game.network
         {
             return this.tcpClient.Client.RemoteEndPoint;
         }
+
+        public User GetUser()
+        {
+            return this.user;
+        }
+
+        public void SetUser(User user)
+        {
+            this.user = user;
+        }
     }
 
     public enum ConnectionStage
     {
         HANDSHAKE,
-        CHARACTER_CREATION,
+        CHARACTER_SELECTION,
         INGAME
     }
 }

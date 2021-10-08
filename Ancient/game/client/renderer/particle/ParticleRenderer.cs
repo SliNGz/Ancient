@@ -25,7 +25,7 @@ namespace ancient.game.client.renderer.particle
 
         public void Draw()
         {
-            WorldRenderer.effect.Parameters["MultiplyColorEnabled"].SetValue(true);
+            WorldRenderer.currentEffect.Parameters["MultiplyColorEnabled"].SetValue(true);
 
             List<Particle> particles = world.GetParticleManager().GetParticleList();
 
@@ -39,11 +39,11 @@ namespace ancient.game.client.renderer.particle
 
                 Vector3 rotationCenter = new Vector3(size.X / -2F, size.Y / 2F, size.Z / -2F);
 
-                WorldRenderer.effect.Parameters["MultiplyColor"].SetValue(particle.GetColor().ToVector4());
+                WorldRenderer.currentEffect.Parameters["MultiplyColor"].SetValue(particle.GetColor().ToVector4());
                 VoxelRenderer.Draw(model.GetVoxelRendererData(), particle.GetPosition(), rotationCenter, particle.GetYaw(), particle.GetPitch(), particle.GetRoll(), scale.X, scale.Y, scale.Z);
             }
 
-            WorldRenderer.effect.Parameters["MultiplyColorEnabled"].SetValue(false);
+            WorldRenderer.currentEffect.Parameters["MultiplyColorEnabled"].SetValue(false);
         }
     }
 }

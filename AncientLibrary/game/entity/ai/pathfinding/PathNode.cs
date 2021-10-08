@@ -98,23 +98,23 @@ namespace ancientlib.game.entity.ai.pathfinding
 
         public bool IsWalkable(Entity entity)
         {
-            return !entity.GetWorld().IsSolidAt(x, y - 1, z);
+            return !entity.GetWorld().IsSolidAt(x, y, z);
         }
 
         public List<PathNode> GetNeighbors()
         {
             List<PathNode> neighbors = new List<PathNode>();
 
-            for (int i = x - 1; i <= x + 1; i++)
+            for (int i = -1; i <= 1; i++)
             {
-                for (int j = y - 1; j <= y + 1; j++)
+                for (int j = -1; j <= 1; j++)
                 {
-                    for (int k = z - 1; k <= z + 1; k++)
+                    for (int k = -1; k <= 1; k++)
                     {
-                        if (i == x && j == y && k == z)
+                        if (i == 0 && j == 0 && k == 0)
                             continue;
 
-                        neighbors.Add(new PathNode(i, j, k));
+                        neighbors.Add(new PathNode(x + i, y + j, z + k));
                     }
                 }
             }

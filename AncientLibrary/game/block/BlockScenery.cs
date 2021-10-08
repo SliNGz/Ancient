@@ -13,7 +13,7 @@ namespace ancientlib.game.block
 {
     public abstract class BlockScenery : Block
     {
-        public BlockScenery(string name) : base(name, BlockType.grass)
+        public BlockScenery(string name, BlockType type) : base(name, type)
         { }
 
         public override bool IsSolid()
@@ -46,6 +46,11 @@ namespace ancientlib.game.block
         {
             if (!CanBlockStay(world, x, y, z))
                 world.DestroyBlock(x, y, z);
+        }
+
+        public override Vector3 GetItemModelScale()
+        {
+            return base.GetItemModelScale() / 8F;
         }
     }
 }

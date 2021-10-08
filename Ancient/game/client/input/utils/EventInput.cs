@@ -157,8 +157,7 @@ namespace ancient.game.client.input.utils
                 throw new InvalidOperationException("TextInput.Initialize can only be called once!");
 
             hookProcDelegate = new WndProc(HookProc);
-            prevWndProc = (IntPtr)SetWindowLong(window.Handle, GWL_WNDPROC,
-                (int)Marshal.GetFunctionPointerForDelegate(hookProcDelegate));
+            prevWndProc = (IntPtr)SetWindowLong(window.Handle, GWL_WNDPROC, (int)Marshal.GetFunctionPointerForDelegate(hookProcDelegate));
 
             hIMC = ImmGetContext(window.Handle);
             initialized = true;

@@ -1,7 +1,5 @@
 ﻿using ancient.game.entity;
-using ancient.game.world;
 using ancientlib.game.entity;
-using ancientlib.game.utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +14,13 @@ namespace ancientlib.game.network.packet.server.entity
         private Entity entity;
         private int typeID;
 
+        #region Properties
+        public Entity Entity
+        {
+            get { return entity; }
+        }
+        #endregion
+
         public PacketSpawnEntity()
         { }
 
@@ -29,7 +34,7 @@ namespace ancientlib.game.network.packet.server.entity
         {
             base.Read(reader);
             this.typeID = reader.ReadInt32();
-            this.entity = Entities.CreateEntityFromTypeID(typeID, World.world);
+            this.entity = Entities.CreateEntityFromTypeID(typeID);
             this.entity.SetID(id);
             entity.Read(reader);
         }
@@ -39,11 +44,6 @@ namespace ancientlib.game.network.packet.server.entity
             base.Write(writer);
             writer.Write(typeID);
             entity.Write(writer);
-        }
-
-        public Entity GetEntity()
-        {
-            return this.entity;
         }
     }
 }

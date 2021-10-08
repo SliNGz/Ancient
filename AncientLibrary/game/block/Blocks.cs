@@ -1,5 +1,6 @@
 ﻿using ancient.game.world.block;
 using ancientlib.game.block;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,12 @@ namespace ancientlib.game.init
         public static readonly BlockFlowers flowers = new BlockFlowers();
         public static readonly BlockBlueberriesBush blueberries_bush = new BlockBlueberriesBush(false);
         public static readonly BlockBlueberriesBush blueberries_bush_snow = new BlockBlueberriesBush(true);
+        public static readonly BlockSnowLayer snow_layer = new BlockSnowLayer();
+        public static readonly BlockLog log_sakura = (BlockLog)(new BlockLog().SetName("Sakura Log").SetColor(new Color(69, 69, 82)).SetSecondaryColor(new Color(54, 37, 47)));
+        public static readonly BlockLeaves leaves_sakura = (BlockLeaves)(new BlockLeaves().SetName("Sakura Leaves").SetColor(new Color(219, 144, 183)).SetSecondaryColor(new Color(247, 221, 234)));
+        public static readonly BlockStone stone = new BlockStone();
+        public static readonly BlockBase baseBlock = new BlockBase();
+        public static readonly BlockBranch branch = new BlockBranch();
 
         public static void Initialize()
         {
@@ -49,6 +56,12 @@ namespace ancientlib.game.init
             InitializeBlock(14, flowers);
             InitializeBlock(15, blueberries_bush);
             InitializeBlock(16, blueberries_bush_snow);
+            InitializeBlock(17, snow_layer);
+            InitializeBlock(18, log_sakura);
+            InitializeBlock(19, leaves_sakura);
+            InitializeBlock(20, stone);
+            InitializeBlock(21, baseBlock);
+            InitializeBlock(22, branch);
         }
 
         private static void InitializeBlock(int id, Block block)

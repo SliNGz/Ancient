@@ -40,14 +40,13 @@ namespace ancient.game.client.world.chunk
         {
             while (true)
             {
-                lock (reloadSet)
+                for (int i = 0; i < reloadSet.Count; i++)
                 {
-                    foreach (Vector3 index in reloadSet)
-                        ReloadChunk((int)index.X, (int)index.Y, (int)index.Z);
-
-                    reloadSet.Clear();
+                    Vector3 index = reloadSet[i];
+                    ReloadChunk((int)index.X, (int)index.Y, (int)index.Z);
                 }
 
+                reloadSet.Clear();
                 Thread.Sleep(TimeSpan.FromSeconds(1 / 128.0));
             }
         }
@@ -71,7 +70,12 @@ namespace ancient.game.client.world.chunk
 
         public override bool IsChunkVisible(EntityPlayer player, Vector3 index)
         {
-            return WorldRenderer.camera.InViewFrustum(world.GetChunkBoundingBox((int)index.X, (int)index.Y, (int)index.Z), player.GetHeadYaw(), player.GetHeadPitch());
+            return WorldRenderer.camera.InViewFrustum(world.GetChunkManager().GetChunkBoundingBox((int)index.X, (int)index.Y, (int)index.Z));
+        }
+
+        public override bool IsChunkVisibleShadow(EntityPlayer player, Vector3 index)
+        {
+            return WorldRenderer.camera.InViewFrustum(world.GetChunkManager().GetChunkRenderBoundingBox((int)index.X, (int)index.Z));
         }
     }
 }

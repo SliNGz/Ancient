@@ -22,7 +22,7 @@ namespace ancientlib.game.world.chunk
 
         protected HashSet<Vector3> buildSet;
         protected HashSet<Vector3> loadSet;
-        protected HashSet<Vector3> reloadSet;
+        protected List<Vector3> reloadSet;
         protected HashSet<Vector3> unloadSet;
 
         public ChunkLoader(World world)
@@ -31,7 +31,7 @@ namespace ancientlib.game.world.chunk
 
             this.buildSet = new HashSet<Vector3>();
             this.loadSet = new HashSet<Vector3>();
-            this.reloadSet = new HashSet<Vector3>();
+            this.reloadSet = new List<Vector3>();
             this.unloadSet = new HashSet<Vector3>();
 
             PrepareSpawn();
@@ -100,17 +100,11 @@ namespace ancientlib.game.world.chunk
                     int xLoad = x + (int)playerIndex.X;
                     int zLoad = z + (int)playerIndex.Z;
 
-                    for (int j = 0; j <= 4; j++)
+                    for (int j = 0; j < 5; j++)
                     {
-                        if (buildsPerTick >= 64)
-                        {
-                            i = maxI;
-                            break;
-                        }
-
                         for (int k = 0; k < 2; j *= -1, k++)
                         {
-                            int yLoad = MathHelper.Clamp((int)playerIndex.Y + j, World.MIN_HEIGHT / 16, World.MAX_HEIGHT / 16 - 1);
+                            int yLoad = MathHelper.Clamp((int)playerIndex.Y + j, World.MIN_HEIGHT / 16, World.MAX_HEIGHT / 16);
                             Vector3 chunkIndex = new Vector3(xLoad, yLoad, zLoad);
 
                             if (Vector3.Distance(chunkIndex, playerIndex) > player.GetRenderDistance())
@@ -122,6 +116,12 @@ namespace ancientlib.game.world.chunk
                             buildSet.Add(chunkIndex);
                             buildsPerTick++;
                         }
+                    }
+
+                    if (buildsPerTick >= 16)
+                    {
+                        i = maxI;
+                        break;
                     }
                 }
 
@@ -137,7 +137,7 @@ namespace ancientlib.game.world.chunk
                 if (unloadsPerTick > 16)
                     break;
 
-                if (Vector3.Distance(chunkIndex, playerIndex) > player.GetRenderDistance() + 1)
+                if (Vector3.Distance(chunkIndex, playerIndex) > player.GetRenderDistance())
                 {
                     unloadSet.Add(chunkIndex);
                     unloadsPerTick++;
@@ -206,6 +206,7 @@ namespace ancientlib.game.world.chunk
                 return false;
 
             Chunk[] neighbors = chunk.GetNeighbors();
+
             for (int i = 0; i < neighbors.Length; i++)
             {
                 if (index.Y == 0 && i == 0)
@@ -219,6 +220,30 @@ namespace ancientlib.game.world.chunk
             }
 
             return true;
+            /*     for (int i = 0; i < 16; i++)
+                 {
+                     if (i == index.Y)
+                         continue;
+
+                     if (world.GetChunk((int)index.X, i, (int)index.Z) == null)
+                         return false;
+                 }*/
+
+            /*    Chunk[] neighbors = chunk.GetNeighbors();
+
+                if (index.Y < 15)
+                {
+                    Chunk topChunk = neighbors[1];
+
+                    if (topChunk == null || (topChunk != null && !topChunk.isLoaded))
+                        return false;
+                }
+
+                for (int i = 2; i < neighbors.Length; i++)
+                {
+                    if (neighbors[i] == null)
+                        return false;
+                }*/
         }
 
         public virtual bool IsChunkVisible(EntityPlayer player, Vector3 index)
@@ -226,13 +251,15 @@ namespace ancientlib.game.world.chunk
             return true;
         }
 
+        public virtual bool IsChunkVisibleShadow(EntityPlayer player, Vector3 index)
+        {
+            return true;
+        }
+
         public void AddToReloadSet(Vector3 index)
         {
-            lock (reloadSet)
-            {
-                if (!reloadSet.Contains(index))
-                    this.reloadSet.Add(index);
-            }
+            if (!reloadSet.Contains(index))
+                reloadSet.Add(index);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace ancientlib.game.entity
 {
     public abstract class EntityMount : EntityPet
     {
-        private Entity ridingEntity;
+        protected Entity ridingEntity;
 
         public EntityMount(World world) : base(world)
         { }
@@ -69,7 +69,12 @@ namespace ancientlib.game.entity
 
         public bool IsRiddenByOwner()
         {
-            return HasOwner() && owner.GetMount() == this;
+            return HasOwner() && ridingEntity == owner;
+        }
+
+        public bool IsRidden()
+        {
+            return this.ridingEntity != null;
         }
 
         public override bool RenderHealthBar()

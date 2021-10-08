@@ -32,7 +32,7 @@ namespace ancientlib.game.entity
             base.Update(gameTime);
             UpdateExp();
 
-            if (HasMount())
+            if (IsRiding())
                 mount.SetRunning(isRunning);
         }
 
@@ -67,7 +67,9 @@ namespace ancientlib.game.entity
         {
             this.exp = 0;
             this.maxHealth = StatTable.GetMaxHealth(level);
-            world.PlaySound("level_up");
+
+            if (world != null)
+                world.PlaySound("level_up");
         }
 
         public void SetExp(int exp)
@@ -123,6 +125,16 @@ namespace ancientlib.game.entity
         public override float GetSpeedAddition()
         {
             return base.GetSpeedAddition() + (isRunning ? runningSpeed : 0);
+        }
+
+        public void SetRunningSpeed(float runningSpeed)
+        {
+            this.runningSpeed = runningSpeed;
+        }
+
+        public void AddRunningSpeed(float add)
+        {
+            this.runningSpeed += add;
         }
 
         public override void Read(BinaryReader reader)

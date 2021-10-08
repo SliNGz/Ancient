@@ -12,6 +12,8 @@ using System.Threading;
 using ancientlib.game.network;
 using ancientserver.game.network.packet.handler;
 using ancientlib.game.utils;
+using ancientlib.AncientService;
+using ancientserver.game.utils;
 
 namespace ancientserver.game
 {
@@ -27,6 +29,8 @@ namespace ancientserver.game
 
         public WorldServer world;
         public NetServer netServer;
+
+        public AncientServiceClient service = new AncientServiceClient();
 
         public AncientServer()
         {
@@ -77,6 +81,7 @@ namespace ancientserver.game
         {
             Init.Initialize();
             ServerPacketHandlers.Initialize();
+            AncientServiceServerUtils.Initialize();
         }
     }
 }

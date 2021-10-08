@@ -6,7 +6,9 @@ using ancient.game.world.chunk;
 using ancient.game.world.generator;
 using ancientlib.game.constants;
 using ancientlib.game.entity;
+using ancientlib.game.entity.model;
 using ancientlib.game.entity.player;
+using ancientlib.game.network.packet.server.entity;
 using ancientlib.game.network.packet.server.player;
 using ancientlib.game.utils;
 using ancientlib.game.world;
@@ -62,13 +64,14 @@ namespace ancient.game.entity
 
         protected bool noClip;
 
-        private float xServer;
-        private float yServer;
-        private float zServer;
+        protected float xServer;
+        protected float yServer;
+        protected float zServer;
 
         protected bool onGround;
 
-        protected bool isInWater;
+        protected bool inWater;
+        protected bool inWaterLower;
 
         protected float slipperiness;
         protected float speedModifier;
@@ -78,15 +81,25 @@ namespace ancient.game.entity
         protected int ticksExisted;
         protected int lifeSpan;
 
-        protected int fadeInTicks; // How many ticks it will take the particle to fade in.
-        protected int fadeOutTicks; // How many ticks it will take the particle to fade out - (ends at death tick, starts at (lifeSpan - fadeTicks)).
+        /* How many ticks it will take the particle to fade in. */
+        protected int fadeInTicks;
+
+        /* How many ticks it will take the particle to fade out - (ends at death tick, starts at (lifeSpan - fadeTicks)). */
+        protected int fadeOutTicks;
 
         protected EntityMount mount;
 
-        protected bool interactWithBlocks; // Whether or not this entity will interact in any way with blocks.
-        protected bool interactWithEntities; // Whether or not this entity will interact in any way with entities.
+        /* Whether or not this entity will interact in any way with blocks. */
+        protected bool interactWithBlocks;
 
-        private EntityModelState modelState;
+        /* Whether or not this entity will interact in any way with entities. */
+        protected bool interactWithEntities;
+
+        protected EntityModel lastModel;
+        protected EntityModel model;
+
+        protected int animationTicks;
+        public int animationIndex;
 
         protected Entity(World world)
         {
@@ -114,12 +127,44 @@ namespace ancient.game.entity
 
             this.interactWithBlocks = true;
             this.interactWithEntities = true;
+
+            if (GetModelCollection() != null)
+            {
+                this.model = GetModelCollection().GetStandingModel();
+                SetDimensions(model.GetWidth(), model.GetHeight(), model.GetLength());
+                this.lastModel = model;
+            }
         }
 
         public virtual void Update(GameTime gameTime)
         {
             this.deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
             ticksExisted++;
+
+            /*    if (GetModelCollection() != null)
+                {
+                    if (movement.Z != 0 || world.IsRemote() && GetServerPosition() != GetPosition() && this != world.GetMyPlayer() && this != world.GetMyPlayer().GetMount())
+                    {
+                        EntityModelAnimation walking = GetModelCollection().GetWalkingAnimationModel();
+
+                        if (walking != null)
+                        {
+                            if (model != walking)
+                                this.model = walking;
+
+                            if ((animationTicks++) % walking.GetAnimationTickRate() == 0)
+                                animationIndex = (animationIndex + 1) % walking.GetAnimationCount();
+                        }
+                    }
+                    else
+                    {
+                        if (model == GetModelCollection().GetWalkingAnimationModel())
+                        {
+                            this.model = GetModelCollection().GetStandingModel();
+                            animationTicks = 0;
+                        }
+                    }
+                }*/
 
             if (ShouldInterpolate())
             {
@@ -129,7 +174,8 @@ namespace ancient.game.entity
 
             this.slipperiness = 0;
             this.speedModifier = 1;
-            this.isInWater = false;
+            this.inWater = false;
+            this.inWaterLower = false;
             this.speed = GetBaseSpeed() + GetSpeedAddition();
 
             UpdateVelocity();
@@ -140,6 +186,9 @@ namespace ancient.game.entity
             UpdateOnGround();
             UpdateMovement();
             UpdateAlpha();
+            UpdateModel();
+
+            this.lastModel = model;
         }
 
         protected void UpdateMovement()
@@ -166,19 +215,14 @@ namespace ancient.game.entity
             if (movement == Vector3.Zero)
                 return;
 
-            if (HasMount())
+            if (IsRiding())
                 mount.SetMovement(movement);
             else
             {
                 this.movement = Vector3.Transform(movement, Matrix.CreateFromYawPitchRoll(yaw, pitch, roll));
                 this.movement.Normalize();
-                this.movement *= (float)speed * speedModifier;
+                this.movement *= speed * speedModifier;
             }
-        }
-
-        public void AddMovement(Vector3 add)
-        {
-            SetMovement(this.movement + add);
         }
 
         protected virtual void UpdateVelocity()
@@ -343,23 +387,17 @@ namespace ancient.game.entity
 
         public void SetVelocity(Vector3 velocity)
         {
-            this.xVelocity = velocity.X;
-            this.yVelocity = velocity.Y;
-            this.zVelocity = velocity.Z;
+            SetVelocity(velocity.X, velocity.Y, velocity.Z);
         }
 
         public void AddVelocity(float xVelocity, float yVelocity, float zVelocity)
         {
-            this.xVelocity += xVelocity;
-            this.yVelocity += yVelocity;
-            this.zVelocity += zVelocity;
+            SetVelocity(this.xVelocity + xVelocity, this.yVelocity + yVelocity, this.zVelocity + zVelocity);
         }
 
         public void AddVelocity(Vector3 velocity)
         {
-            this.xVelocity += velocity.X;
-            this.yVelocity += velocity.Y;
-            this.zVelocity += velocity.Z;
+            AddVelocity(velocity.X, velocity.Y, velocity.Z);
         }
 
         public float GetXVelocity()
@@ -485,6 +523,11 @@ namespace ancient.game.entity
             SetRotation(rotation.X, rotation.Y, rotation.Z);
         }
 
+        public void SetLookAt(Entity entity)
+        {
+            SetLookAt(entity.GetX(), entity.GetY(), entity.GetZ());
+        }
+
         public void SetLookAtDestination(double x, double y, double z, float lookAtDestSpeed = 2)
         {
             this.lookAtDestSpeed = lookAtDestSpeed;
@@ -511,7 +554,7 @@ namespace ancient.game.entity
             return this.boundingBox;
         }
 
-        public double GetSpeed()
+        public float GetSpeed()
         {
             return this.speed;
         }
@@ -521,12 +564,16 @@ namespace ancient.game.entity
             this.speed = speed;
         }
 
+        public void AddSpeed(float add)
+        {
+            this.speed += add;
+        }
+
         public void SetDimensions(float width, float height, float length)
         {
             this.width = width;
             this.height = height;
             this.length = length;
-
             UpdateBoundingBox();
         }
 
@@ -555,17 +602,36 @@ namespace ancient.game.entity
             return !noClip;
         }
 
-        protected virtual void OnCollisionWithBlock(BoundingBox boundingBox, Block block)
+        protected virtual void OnCollisionWithBlock(BoundingBox blockBB, Block block)
         {
-            if (block.IsSolid() && CanCollideWithBlockBoundingBox(block))
-                OnCollideWithBoundingBox(boundingBox);
+            Block blockAbove = world.GetBlock((int)blockBB.Min.X, (int)blockBB.Min.Y + 1, (int)blockBB.Min.Z);
 
-            block.OnCollide(this, boundingBox);
+            if (block.IsSolid() && CanCollideWithBlockBoundingBox(block))
+            {
+                OnCollideWithBoundingBox(blockBB);
+                block.OnCollide(this, blockBB);
+
+                if (CanAutoClimb())
+                {
+                    if (blockAbove != null && ((!blockAbove.IsSolid() && blockBB.Min.Y + 1 == Math.Round(this.y - height + 1)) || block.IsSolid() && block.GetDimensions().Y <= 0.2F))
+                    {
+                        if (this is EntityLiving)
+                        {
+                            this.yVelocity = 0;
+                            this.y = (int)blockBB.Min.Y + block.GetDimensions().Y + height;
+                            UpdateBoundingBox();
+                        }
+                    }
+                }
+            }
 
             if (block is BlockWater)
             {
-                if (boundingBox.Max.Y > this.y - height)
-                    this.isInWater = true;
+                if (blockBB.Max.Y > this.y - height)
+                    this.inWater = true;
+
+                if (blockBB.Max.Y <= this.y - height + 1 && !(blockAbove is BlockWater))
+                    inWaterLower = true;
             }
         }
 
@@ -643,7 +709,7 @@ namespace ancient.game.entity
         {
             this.onGround = false;
 
-            if (HasMount())
+            if (IsRiding())
             {
                 if (mount.onGround)
                     this.onGround = true;
@@ -666,7 +732,7 @@ namespace ancient.game.entity
                         {
                             Block block = world.GetBlock(x, y, z);
 
-                            if (block != null && block.IsSolid())
+                            if (block != null && block.IsSolid() && IsBlockGround(block))
                             {
                                 BoundingBox blockBB = world.GetBlockBoundingBox(block, x, y, z);
 
@@ -676,7 +742,8 @@ namespace ancient.game.entity
 
                                     for (int i = y + 1; i < Math.Ceiling(boundingBox.Max.Y); i++)
                                     {
-                                        if (world.IsSolidAt(x, i, z))
+                                        Block blockAboveFeet = world.GetBlock(x, i, z);
+                                        if (blockAboveFeet != null && blockAboveFeet.IsSolid() && blockAboveFeet.GetDimensions().Y > 0.2F)
                                         {
                                             onGround = false;
                                             break;
@@ -697,36 +764,21 @@ namespace ancient.game.entity
 
             if (!onGround && !noClip)
             {
-                if (isInWater)
+                if (inWater)
                     this.yVelocity -= gravity * 0.07F * deltaTime;
                 else
                     this.yVelocity -= gravity * deltaTime;
             }
         }
 
-        private void UpdateIsInWater()
+        protected virtual bool IsBlockGround(Block block)
         {
-            this.isInWater = false;
-
-            foreach (KeyValuePair<BoundingBox, Block> pair in GetCollidedBlocks())
-            {
-                BoundingBox boundingBox = pair.Key;
-                Block block = pair.Value;
-
-                if (block is BlockWater)
-                {
-                    if (boundingBox.Max.Y > this.y - height)
-                    {
-                        this.isInWater = true;
-                        break;
-                    }
-                }
-            }
+            return true;
         }
 
-        public bool IsInWater()
+        public bool InWater()
         {
-            return this.isInWater;
+            return this.inWater;
         }
 
         public Chunk GetChunk()
@@ -751,7 +803,7 @@ namespace ancient.game.entity
             if (noClip)
                 this.yVelocity = 0;
 
-            if (HasMount())
+            if (IsRiding())
                 mount.SetNoClip(noClip);
         }
 
@@ -860,12 +912,6 @@ namespace ancient.game.entity
 
                 if (entity != this)
                 {
-                    if (collidedEntities.ContainsKey(entity))
-                    {
-                        Console.WriteLine("WTF: " + entity);
-                        continue;
-                    }
-
                     if (boundingBox.Intersects(entity.GetBoundingBox()))
                         collidedEntities.Add(entity, entity.GetBoundingBox());
                 }
@@ -940,7 +986,7 @@ namespace ancient.game.entity
 
         public virtual bool ShouldDespawn()
         {
-            return !IsAlive() || (this.y <= -16 || this.y >= 288);
+            return !IsAlive() || this.y <= -16;
         }
 
         public Vector3 GetFootPosition()
@@ -966,7 +1012,7 @@ namespace ancient.game.entity
             this.mount.SetRidingEntity(this);
             SetPosition(GetPosition() + this.mount.GetMountOffset());
             this.mount.SetNoClip(noClip);
-            SetModelState(GetSittingModelState());
+            this.model = GetModelCollection().GetSittingModel();
         }
 
         public void Dismount()
@@ -976,35 +1022,10 @@ namespace ancient.game.entity
                 this.mount.SetRidingEntity(null);
                 this.mount.SetNoClip(false);
                 SetPosition(GetPosition() + new Vector3(width, 0, length) + new Vector3(world.rand.Next(1, 3), 0, world.rand.Next(1, 3)));
-                SetModelState(GetDefaultModelState());
+                this.model = GetModelCollection().GetStandingModel();
 
                 this.mount = null;
             }
-        }
-
-        public bool HasMount()
-        {
-            return this.mount != null;
-        }
-
-        public EntityModelState GetModelState()
-        {
-            return this.modelState;
-        }
-
-        public void SetModelState(EntityModelState modelState)
-        {
-            this.modelState = modelState;
-
-            if (modelState != null)
-                SetDimensions(modelState.GetWidth(), modelState.GetHeight(), modelState.GetLength());
-        }
-
-        protected abstract EntityModelState GetDefaultModelState();
-
-        protected virtual EntityModelState GetSittingModelState()
-        {
-            return this.modelState;
         }
 
         public abstract Vector3 GetModelScale();
@@ -1019,10 +1040,10 @@ namespace ancient.game.entity
             return 0;
         }
 
-        public EntityPlayer GetNearestPlayerWithinRange(float range)
+        public EntityPlayer GetNearestPlayer(float range)
         {
             float minDistance = -1;
-            EntityPlayer lookAtPlayer = null;
+            EntityPlayer nearestPlayer = null;
 
             for (int i = 0; i < world.players.Count; i++)
             {
@@ -1030,25 +1051,62 @@ namespace ancient.game.entity
 
                 float distance = Vector3.Distance(GetPosition(), player.GetPosition());
 
-                if (distance > range)
+                if (distance > range || player == this)
                     continue;
 
                 if (minDistance == -1)
                 {
                     minDistance = distance;
-                    lookAtPlayer = player;
+                    nearestPlayer = player;
                 }
                 else
                 {
                     if (distance < minDistance)
                     {
                         minDistance = distance;
-                        lookAtPlayer = player;
+                        nearestPlayer = player;
                     }
                 }
             }
 
-            return lookAtPlayer;
+            return nearestPlayer;
+        }
+
+        public EntityLiving GetNearestLiving(float range)
+        {
+            float minDistance = -1;
+            EntityLiving nearestLiving = null;
+
+            for (int i = 0; i < world.entityList.Count; i++)
+            {
+                Entity entity = world.entityList[i];
+
+                if (!(entity is EntityLiving) || entity == this)
+                    continue;
+
+                EntityLiving living = (EntityLiving)entity;
+
+                float distance = Vector3.Distance(GetPosition(), living.GetPosition());
+
+                if (distance > range)
+                    continue;
+
+                if (minDistance == -1)
+                {
+                    minDistance = distance;
+                    nearestLiving = living;
+                }
+                else
+                {
+                    if (distance < minDistance)
+                    {
+                        minDistance = distance;
+                        nearestLiving = living;
+                    }
+                }
+            }
+
+            return nearestLiving;
         }
 
         protected virtual bool ShouldInterpolate()
@@ -1058,9 +1116,9 @@ namespace ancient.game.entity
 
         protected void Interpolate()
         {
-            this.x = MathHelper.Lerp((float)x, (float)xServer, (float)deltaTime * NetConstants.INTERP_MULTIPLIER);
-            this.y = MathHelper.Lerp((float)y, (float)yServer, (float)deltaTime * NetConstants.INTERP_MULTIPLIER);
-            this.z = MathHelper.Lerp((float)z, (float)zServer, (float)deltaTime * NetConstants.INTERP_MULTIPLIER);
+            this.x = MathHelper.Lerp(x, xServer, deltaTime * NetConstants.INTERP_MULTIPLIER);
+            this.y = MathHelper.Lerp(y, yServer, deltaTime * NetConstants.INTERP_MULTIPLIER);
+            this.z = MathHelper.Lerp(z, zServer, deltaTime * NetConstants.INTERP_MULTIPLIER);
 
             if (Math.Abs(xServer - x) < 0.005)
                 x = xServer;
@@ -1070,6 +1128,11 @@ namespace ancient.game.entity
 
             if (Math.Abs(zServer - z) < 0.005)
                 z = zServer;
+        }
+
+        public virtual bool IsMultiplayerSupported()
+        {
+            return true;
         }
 
         public virtual bool ShouldSendPosition()
@@ -1129,9 +1192,45 @@ namespace ancient.game.entity
             SetRotationVelocity(rotationVelocity.X, rotationVelocity.Y, rotationVelocity.Z);
         }
 
-        public virtual string GetRenderEntity()
+        public abstract string GetEntityName();
+
+        public virtual string GetRendererName()
         {
             return "entity";
+        }
+
+        public abstract EntityModelCollection GetModelCollection();
+
+        public EntityModel GetModel()
+        {
+            return this.model;
+        }
+
+        public void SetModel(EntityModel model)
+        {
+            this.model = model;
+        }
+
+        public virtual string GetModelName()
+        {
+            if (model != null)
+                return this.model.GetModelName();
+
+            return "";
+        }
+
+        private void UpdateModel()
+        {
+            if (model == null && GetModelCollection() != null)
+                this.model = GetModelCollection().GetStandingModel();
+
+            if (lastModel != model)
+                SetDimensions(model.GetWidth(), model.GetHeight(), model.GetLength());
+        }
+
+        public virtual bool CanAutoClimb()
+        {
+            return false;
         }
 
         public virtual void Read(BinaryReader reader)
@@ -1147,9 +1246,9 @@ namespace ancient.game.entity
 
         public virtual void Write(BinaryWriter writer)
         {
-            writer.Write((float)x);
-            writer.Write((float)y);
-            writer.Write((float)z);
+            writer.Write(x);
+            writer.Write(y);
+            writer.Write(z);
             writer.Write(yaw);
         }
     }

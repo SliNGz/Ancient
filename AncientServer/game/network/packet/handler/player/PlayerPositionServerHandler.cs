@@ -26,11 +26,11 @@ namespace ancientserver.game.network.packet.handler.player
             EntityPlayerOnline player = (EntityPlayerOnline)netConnection.player;
             Vector3 velocity = (recievedPos - player.lastPos);
             float horizontalSpeed = (float)Math.Sqrt(velocity.X * velocity.X + velocity.Z * velocity.Z) / 2F;
-            float verticalSpeed = velocity.Y / 2F;
+            float verticalSpeed = Math.Abs(velocity.Y / 2F);
             player.lastPos = player.GetPosition();
 
-            double speed = player.GetSpeed();
-            double jumpSpeed = player.GetBaseJumpSpeed();
+            float speed = player.GetSpeed();
+            float jumpSpeed = player.GetBaseJumpSpeed();
 
             if (player.IsRiding())
             {
@@ -38,18 +38,27 @@ namespace ancientserver.game.network.packet.handler.player
                 jumpSpeed = player.GetMount().GetBaseJumpSpeed();
             }
 
-            if (horizontalSpeed > speed + NetConstants.MAX_SPEED_DIFF || verticalSpeed >= jumpSpeed + NetConstants.MAX_SPEED_DIFF || Math.Abs(recievedPos.Y - player.GetY()) > NetConstants.MAX_Y_DIFF)
+            if (player.GetVelocity() != Vector3.Zero)
             {
-                Console.WriteLine("DAFUQ");
-                netConnection.SendPacket(new PacketPlayerPosition(netConnection.player));
+                if (horizontalSpeed > 100 || verticalSpeed > 100)
+                {
+                    netConnection.SendPacket(new PacketPlayerPosition(netConnection.player));
+                    return;
+                }
             }
             else
             {
-                player.SetPosition(playerPos.GetX(), playerPos.GetY(), playerPos.GetZ());
-
-                if (player.HasMount())
-                    player.GetMount().SetPosition(new Vector3(playerPos.GetX(), playerPos.GetY(), playerPos.GetZ()) - player.GetMount().GetMountOffset());
+                if (horizontalSpeed > speed + NetConstants.MAX_SPEED_DIFF || verticalSpeed > jumpSpeed + NetConstants.MAX_SPEED_DIFF)
+                {
+                    netConnection.SendPacket(new PacketPlayerPosition(netConnection.player));
+                    return;
+                }
             }
+
+            player.SetPosition(playerPos.GetX(), playerPos.GetY(), playerPos.GetZ());
+
+            if (player.IsRiding())
+                player.GetMount().SetPosition(new Vector3(playerPos.GetX(), playerPos.GetY(), playerPos.GetZ()) - player.GetMount().GetMountOffset());
         }
     }
 }

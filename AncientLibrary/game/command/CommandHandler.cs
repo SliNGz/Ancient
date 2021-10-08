@@ -1,4 +1,6 @@
 ﻿using ancient.game.entity.player;
+using ancientlib.game.utils.chat;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,13 @@ namespace ancientlib.game.command
             commands.Add("health", new CommandHealth());
             commands.Add("togglerain", new CommandToggleRain());
             commands.Add("exp", new CommandExp());
+            commands.Add("additem", new CommandAddItem());
+            commands.Add("speed", new CommandSpeed());
+            commands.Add("str", new CommandStr());
+            commands.Add("wsd", new CommandWsd());
+            commands.Add("dex", new CommandDex());
+            commands.Add("luk", new CommandLuk());
+            commands.Add("class", new CommandClass());
         }
 
         public static ICommand GetCommandFromName(string commandString)
@@ -35,7 +44,7 @@ namespace ancientlib.game.command
 
             if (command == null)
             {
-                Console.WriteLine("Command '" + commandName + "' not found.");
+                sender.GetWorld().AddChatComponent(new ChatComponentText("Command '" + commandName + "' not found.", Color.Red));
                 return;
             }
 

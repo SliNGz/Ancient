@@ -17,21 +17,33 @@ namespace ancient.game.utils
     {
         public static Color GetColorOfBlock(Block block, Chunk chunk, int x, int y, int z)
         {
-            Color color = GetBlockNoiseColor(block, chunk, x, y, z);
-            color = Utils.GetColorAffectedByLight(chunk.GetWorld(), color, chunk.GetX() + x, chunk.GetY() + y, chunk.GetZ() + z);
-            return color;
-        }
-
-        public static Color GetBlockNoiseColor(Block block, Chunk chunk, int x, int y, int z)
-        {
             x += chunk.GetX();
             y += chunk.GetY();
             z += chunk.GetZ();
 
-            float noise = (float)(chunk.GetWorld().GetSimplexNoise().Evaluate(x / 32.0, y / 2.0, z / 32.0));
-            noise = (noise + 1) / 2;
+            Color color = block.GetColorAt(chunk.GetWorld(), x, y, z);
 
-            return Color.Lerp(block.GetColor(), block.GetSecondaryColor(), noise);
+      /*      int maxLight = 0;
+            int sunlight = chunk.GetSunlight(x, y, z);
+
+            Tuple<int, int, int, Block>[] neighbors = chunk.GetWorld().GetNeighborsOfBlock(x, y, z);
+
+            for (int i = 0; i < 6; i++)
+            {
+                Tuple<int, int, int, Block> neighbor = neighbors[i];
+                int light = chunk.GetWorld().GetBlocklight(neighbor.Item1, neighbor.Item2, neighbor.Item3);
+
+                if (light > maxLight)
+                    maxLight = light;
+            }
+
+            maxLight = Math.Max(maxLight, sunlight);
+
+            float lerp = (float)Math.Pow(0.8, 15 - maxLight);
+            Color affectedColor = Color.Lerp(Color.Black, color, lerp);
+            affectedColor.A = color.A;*/
+
+            return color;
         }
     }
 }

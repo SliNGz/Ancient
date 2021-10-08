@@ -19,10 +19,5 @@ namespace ancientlib.game.particle
             this.endColor = Color.Black;
             this.lifeSpan = 192;
         }
-
-        public override string GetModelName()
-        {
-            return "voxel";
-        }
     }
 }

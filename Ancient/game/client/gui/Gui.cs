@@ -109,5 +109,10 @@ namespace ancient.game.client.gui
 
         public virtual void Draw3D()
         { }
+
+        public virtual bool Draw3DFromGuiManager()
+        {
+            return true;
+        }
     }
 }

@@ -2,7 +2,10 @@
 using ancient.game.world.block;
 using ancientlib.game.classes;
 using ancientlib.game.item;
+using ancientlib.game.item.equip.bottom;
+using ancientlib.game.item.equip.special;
 using ancientlib.game.item.projectile;
+using ancientlib.game.item.tool;
 using ancientlib.game.item.weapon;
 using ancientlib.game.item.world;
 using Microsoft.Xna.Framework;
@@ -17,6 +20,8 @@ namespace ancientlib.game.init
     public class Items
     {
         public static readonly Dictionary<int, Item> items = new Dictionary<int, Item>();
+
+        public static readonly ItemHand handDefault = new ItemHand();
 
         //Blocks
         public static readonly ItemBlock air = new ItemBlock("Air", Blocks.air);
@@ -36,6 +41,11 @@ namespace ancientlib.game.init
         public static readonly ItemBlock flowers = new ItemBlock("Flowers", Blocks.flowers);
         public static readonly ItemBlock blueberries_bush = new ItemBlock("Blueberries Bush", Blocks.blueberries_bush);
         public static readonly ItemBlock blueberries_bush_snow = new ItemBlock("Snow Blueberries Bush", Blocks.blueberries_bush_snow);
+        public static readonly ItemBlock snow_layer = new ItemBlock("Snow Layer", Blocks.snow_layer);
+        public static readonly ItemBlock log_sakura = new ItemBlock("Sakura Log", Blocks.log_sakura);
+        public static readonly ItemBlock leaves_sakura = new ItemBlock("Sakura Leaves", Blocks.leaves_sakura);
+        public static readonly ItemBlock stone = new ItemBlock("Stone", Blocks.stone);
+        public static readonly ItemBlock branch = (ItemBlock)(new ItemBlock("Branch", Blocks.branch).SetBaseRenderRoll(-45).SetRenderRoll(0));
 
         //Swords
         public static readonly ItemSword sword = new ItemSword("Sword", 7, 32, 3);
@@ -50,10 +60,19 @@ namespace ancientlib.game.init
         public static readonly ItemBow woodenBow = new ItemBow("Wooden Bow", 9, 32);
 
         //Staffs
-        public static readonly ItemStaff staff = (ItemStaff)(new ItemStaff("Staff", 500, 64).SetModelOffset(new Vector3(0.8F, -0.3f, -1f)));
+        public static readonly ItemStaff staff = (ItemStaff)(new ItemStaff("Staff", 500, 64).SetHandOffset(new Vector3(0.8F, -0.3f, -1f)));
 
         //Daggers
-        public static readonly ItemTwoHandedDagger dagger = (ItemTwoHandedDagger)(new ItemTwoHandedDagger("Dagger", 250, 32, 2.5F).SetModelScale(Vector3.One * 0.008F).SetModelOffset(new Vector3(0.8f, -0.55f, -1.25f)));
+        public static readonly ItemTwoHandedDagger dagger = (ItemTwoHandedDagger)(new ItemTwoHandedDagger("Dagger", 250, 32, 2.5F).SetHandScale(Vector3.One * 0.008F).SetHandOffset(new Vector3(0.8f, -0.55f, -1.25f)));
+
+        //Shovels
+        public static readonly ItemShovel stoneShovel = new ItemShovel("Stone Shovel");
+
+        //Axes
+        public static readonly ItemAxe stoneAxe = new ItemAxe("Stone Axe");
+
+        //Pickaxes
+        public static readonly ItemPickaxe stonePickaxe = new ItemPickaxe("Stone Pickaxe");
 
         //Pet Food
         public static readonly Item carrot = new Item("Carrot");
@@ -61,6 +80,12 @@ namespace ancientlib.game.init
 
         //Berkin
         public static readonly ItemCoin berkin = new ItemCoin();
+
+        //Bottom
+        public static readonly ItemBottom bottomTest = new ItemBottom("Bottom Test", null, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+        //Special
+        public static readonly ItemJetpack jetpack = (ItemJetpack)(new ItemJetpack().SetModelScale(Vector3.One * 0.0625F).SetRenderYaw(180));
 
         public static void Initialize()
         {
@@ -82,6 +107,11 @@ namespace ancientlib.game.init
             InitializeItemBlock(flowers);
             InitializeItemBlock(blueberries_bush);
             InitializeItemBlock(blueberries_bush_snow);
+            InitializeItemBlock(snow_layer);
+            InitializeItemBlock(log_sakura);
+            InitializeItemBlock(leaves_sakura);
+            InitializeItemBlock(stone);
+            InitializeItemBlock(branch);
 
             //Swords
             InitializeItem(256, sword);
@@ -98,8 +128,20 @@ namespace ancientlib.game.init
             InitializeItem(1024, carrot);
             InitializeItem(1025, blueberries);
 
+            //Shovels
+            InitializeItem(1280, stoneShovel);
+
+            //Axes
+            InitializeItem(1536, stoneAxe);
+
+            //Pickaxes
+            InitializeItem(1792, stonePickaxe);
+
             //Berkin
             InitializeItem(32767, berkin);
+
+            //Special
+            InitializeItem(32768, jetpack);
         }
 
         private static void InitializeItemBlock(ItemBlock itemBlock)

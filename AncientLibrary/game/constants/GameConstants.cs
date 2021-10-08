@@ -20,5 +20,8 @@ namespace ancientlib.game.constants
         //Inventory
         public static readonly int INV_MAX_SLOTS = 256;
         public static readonly int INV_MAX_LINE_SIZE = 16;
+
+        //Characters
+        public static readonly int MAX_CHARACTERS = 6;
     }
 }

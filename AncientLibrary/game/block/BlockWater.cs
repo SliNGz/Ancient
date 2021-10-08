@@ -8,6 +8,7 @@ using ancient.game.entity;
 using Microsoft.Xna.Framework;
 using ancientlib.game.block;
 using ancientlib.game.init;
+using ancientlib.game.world.biome;
 
 namespace ancient.game.world.block
 {
@@ -17,8 +18,19 @@ namespace ancient.game.world.block
         {
             this.dimensions = new Vector3(1, 0.8F, 1);
             this.speedModifier = 0.65F;
-            this.color = new Color(0, 85, 255, 128);
-            this.secondaryColor = color;
+            this.color = new Color(148, 232, 255, 192);
+            this.secondaryColor = color;// new Color(59, 216, 128);
+        }
+
+        public override Vector3 GetRenderDimensions(World world, int x, int y, int z)
+        {
+            Vector3 dimensions = this.dimensions;
+            Block topBlock = world.GetBlock(x, y + 1, z);
+
+            if (topBlock != null && topBlock is BlockWater)
+                dimensions.Y = 1;
+
+            return dimensions;
         }
 
         public override bool IsFullBlock()
@@ -26,7 +38,7 @@ namespace ancient.game.world.block
             return false;
         }
 
-        public override bool ShouldRenderFace(Block neighbor, int xOffset, int yOffset, int zOffset)
+        public override bool ShouldRenderFace(World world, int x, int y, int z, Block neighbor, int xOffset, int yOffset, int zOffset)
         {
             if (neighbor is BlockWater)
                 return false;
@@ -39,7 +51,20 @@ namespace ancient.game.world.block
                 return true;
             }
 
-            return base.ShouldRenderFace(neighbor, xOffset, yOffset, zOffset);
+            return base.ShouldRenderFace(world, x, y, z, neighbor, xOffset, yOffset, zOffset);
+        }
+
+        public override Color GetColorAt(World world, int x, int y, int z)
+        {
+            Biome biome = world.GetBiomeAt(x, z);
+            return biome.GetWaterColor();
+        }
+
+        public override Vector4 GetShaderTechnique(World world, int x, int y, int z)
+        {
+            Biome biome = world.GetBiomeAt(x, z);
+
+            return new Vector4(0, 0, 0, biome is BiomeOcean ? 1 : 0);
         }
     }
 }

@@ -33,12 +33,22 @@ namespace ancient.game.client.utils
 
         public static float GetRelativeXFromX(float x)
         {
-            return x / Ancient.ancient.GraphicsDevice.Viewport.Width;
+            return x / Ancient.ancient.width;
         }
 
         public static float GetRelativeYFromY(float y)
         {
-            return y / Ancient.ancient.GraphicsDevice.Viewport.Height;
+            return y / Ancient.ancient.height;
+        }
+
+        public static int GetScaledX(int x)
+        {
+            return x * (int)Math.Round(Ancient.ancient.width / (float)DefaultWidth);
+        }
+
+        public static int GetScaledY(int y)
+        {
+            return y* (int)Math.Round(Ancient.ancient.height / (float)DefaultHeight);
         }
     }
 }

@@ -34,5 +34,10 @@ namespace ancientlib.game.network.packet.server.entity
         {
             return this.id;
         }
+
+        public void SetID(int id)
+        {
+            this.id = id;
+        }
     }
 }

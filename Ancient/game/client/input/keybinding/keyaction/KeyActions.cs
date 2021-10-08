@@ -25,7 +25,7 @@ namespace ancient.game.client.input.keybinding.keyaction
         public static IKeyAction DISPLAY_LAST_GUI = new KeyActionDisplayLastGui();
         public static IKeyAction OPEN_MAP = new KeyActionDisplayGui(Ancient.ancient.guiManager.map);
         public static IKeyAction OPEN_INVENTORY = new KeyActionDisplayGui(Ancient.ancient.guiManager.inventory);
-        public static IKeyAction OPEN_CHAT = new KeyActionDisplayGui(Ancient.ancient.guiManager.chat);
+        public static IKeyAction OPEN_CHAT = new KeyActionDisplayGui(Ancient.ancient.guiManager.chatInput);
         public static IKeyAction OPEN_DEBUG = new KeyActionDisplayGui(Ancient.ancient.guiManager.debug);
 
         public static IKeyAction SWITCH_SLOT_0 = new KeyActionChangeSlot(0);
@@ -44,5 +44,9 @@ namespace ancient.game.client.input.keybinding.keyaction
         public static IKeyAction USE_SKILL_SLOT_R = new KeyActionUseSkillSlot(1);
         public static IKeyAction USE_SKILL_SLOT_T = new KeyActionUseSkillSlot(2);
         public static IKeyAction USE_SKILL_SLOT_F = new KeyActionUseSkillSlot(3);
+
+        public static IKeyAction USE_SPECIAL = new KeyActionUseSpecial();
+
+        public static IKeyAction SCREENSHOT = new KeyActionScreenshot();
     }
 }

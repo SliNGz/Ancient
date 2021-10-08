@@ -1,6 +1,9 @@
 ﻿using ancient.game.entity.player;
 using ancient.game.world;
 using ancientlib.game.entity;
+using ancientlib.game.entity.model;
+using ancientlib.game.network.packet.server.world;
+using ancientlib.game.world;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -18,14 +21,19 @@ namespace ancientlib.game.item
         protected int cooldown;
 
         protected float renderYaw;
+        protected float baseRenderYaw;
         protected float renderPitch;
+        protected float baseRenderPitch;
         protected float renderRoll;
+        protected float baseRenderRoll;
         protected float renderSpeed;
 
-        protected Vector3 modelScale;
-        protected Vector3 modelOffset;
+        protected Vector3 handScale;
+        protected Vector3 handOffset;
         protected Vector3 dropScale;
-        protected EntityModelState dropModelState;
+
+        /* Entity Model Collection for the entity created based on this item */
+        protected EntityModelCollection modelCollection;
 
         public Item(string name)
         {
@@ -34,17 +42,20 @@ namespace ancientlib.game.item
 
             this.renderYaw = 0;
             this.renderPitch = 0;
-            this.renderRoll = 0;
+            this.renderRoll = 45;
+            this.baseRenderYaw = 0;
+            this.baseRenderPitch = 0;
+            this.baseRenderRoll = 0;
             this.renderSpeed = 5;
 
-            this.modelScale = new Vector3(0.01F, 0.01F, 0.01F);
-            this.modelOffset = new Vector3(0.65f, -0.3f, -1f);
+            this.handScale = new Vector3(0.01F, 0.01F, 0.01F);
+            this.handOffset = new Vector3(0.65f, -0.3f, -1f);
             this.dropScale = new Vector3(0.025F, 0.025F, 0.025F);
 
-            this.dropModelState = new EntityModelState(GetModelName(), 0.25F, 0.25F, 0.25F);
+            this.modelCollection = new EntityModelCollection(GetModelName(), 0.25F, 0.25F, 0.25F);
         }
 
-        public virtual void Use(EntityPlayer player)
+        public virtual void Use(EntityPlayer player, ItemStack itemStack)
         {
             player.usingItemInHand = true;
             player.GetWorld().PlaySound(GetUseSound(player.GetWorld()));
@@ -52,6 +63,16 @@ namespace ancientlib.game.item
 
         public virtual void UseRightClick(EntityPlayer player)
         { }
+
+        public virtual void OnUseFinish(EntityPlayer player, ItemStack itemStack)
+        {
+            player.usingItemInHand = false;
+        }
+
+        public virtual void OnUseRightFinish(EntityPlayer player, ItemStack itemStack)
+        {
+            player.usingItemInHand = false;
+        }
 
         public virtual void OnPickup(EntityPlayer player, ItemStack itemStack)
         {
@@ -64,12 +85,17 @@ namespace ancientlib.game.item
             return true;
         }
 
-        public virtual void OnItemChange(EntityPlayer player)
+        public virtual void OnItemChange(EntityPlayer player, ItemStack lastItemStack, ItemStack newItemStack)
         {
-            player.handYaw = 0;
-            player.handPitch = 0;
-            player.handRoll = 0;
+            player.handRenderYaw = 0;
+            player.handRenderPitch = 0;
+            player.handRenderRoll = 0;
             player.usingItemInHand = false;
+
+            if (lastItemStack != null)
+                lastItemStack.ticksUsed = 0;
+
+            player.destroyAnimation = 0;
         }
 
         public string GetName()
@@ -91,10 +117,21 @@ namespace ancientlib.game.item
         {
             return MathHelper.ToRadians(this.renderYaw);
         }
-        
+
         public Item SetRenderYaw(float renderYaw)
         {
             this.renderYaw = renderYaw;
+            return this;
+        }
+
+        public float GetBaseRenderYaw()
+        {
+            return MathHelper.ToRadians(this.baseRenderYaw);
+        }
+
+        public Item SetBaseRenderYaw(float baseRenderYaw)
+        {
+            this.baseRenderYaw = baseRenderYaw;
             return this;
         }
 
@@ -109,6 +146,17 @@ namespace ancientlib.game.item
             return this;
         }
 
+        public float GetBaseRenderPitch()
+        {
+            return MathHelper.ToRadians(this.baseRenderPitch);
+        }
+
+        public Item SetBaseRenderPitch(float baseRenderPitch)
+        {
+            this.baseRenderPitch = baseRenderPitch;
+            return this;
+        }
+
         public float GetRenderRoll()
         {
             return MathHelper.ToRadians(this.renderRoll);
@@ -117,6 +165,17 @@ namespace ancientlib.game.item
         public Item SetRenderRoll(float renderRoll)
         {
             this.renderRoll = renderRoll;
+            return this;
+        }
+
+        public float GetBaseRenderRoll()
+        {
+            return MathHelper.ToRadians(this.baseRenderRoll);
+        }
+
+        public Item SetBaseRenderRoll(float baseRenderRoll)
+        {
+            this.baseRenderRoll = baseRenderRoll;
             return this;
         }
 
@@ -139,25 +198,25 @@ namespace ancientlib.game.item
             return modelName;
         }
 
-        public Vector3 GetModelScale()
+        public Vector3 GetHandScale()
         {
-            return this.modelScale;
+            return this.handScale;
         }
 
-        public Item SetModelScale(Vector3 modelScale)
+        public Item SetHandScale(Vector3 handScale)
         {
-            this.modelScale = modelScale;
+            this.handScale = handScale;
             return this;
         }
 
-        public Vector3 GetModelOffset()
+        public Vector3 GetHandOffset()
         {
-            return this.modelOffset;
+            return this.handOffset;
         }
 
-        public Item SetModelOffset(Vector3 modelOffset)
+        public Item SetHandOffset(Vector3 handOffset)
         {
-            this.modelOffset = modelOffset;
+            this.handOffset = handOffset;
             return this;
         }
 
@@ -172,14 +231,19 @@ namespace ancientlib.game.item
             return this;
         }
 
+        public EntityModelCollection GetModelCollection()
+        {
+            return this.modelCollection;
+        }
+
         public virtual int GetCooldown(EntityPlayer player)
         {
             return this.cooldown;
         }
 
-        public EntityModelState GetDropModelState()
+        public virtual bool CanBeSpammed()
         {
-            return this.dropModelState;
+            return false;
         }
     }
 }

@@ -21,9 +21,9 @@ namespace ancient.game.client.network.packet.handler.player
             ItemAction itemAction = itemPacket.GetItemAction();
 
             if (itemAction == ItemAction.ADD_ITEM)
-                Ancient.ancient.player.GetInventory().AddItem(itemPacket.GetItemStack());
+                Ancient.ancient.player.GetInventory().AddItemUnsafe(itemPacket.GetItemStack());
             else if (itemAction == ItemAction.REMOVE_ITEM)
-                Ancient.ancient.player.GetInventory().RemoveItem(itemPacket.GetItemStack());
+                Ancient.ancient.player.GetInventory().RemoveItemUnsafe(itemPacket.GetItemStack());
         }
     }
 }

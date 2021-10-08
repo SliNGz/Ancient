@@ -20,9 +20,9 @@ namespace ancientlib.game.item.weapon
             this.range = range;
         }
 
-        public override void Use(EntityPlayer player)
+        public override void Use(EntityPlayer player, ItemStack itemStack)
         {
-            base.Use(player);
+            base.Use(player, itemStack);
             Entity entity = player.GetLookAtEntityFromList(player.GetWorld().entityList.OfType<EntityLiving>(), range);
 
             if(entity is EntityLiving)

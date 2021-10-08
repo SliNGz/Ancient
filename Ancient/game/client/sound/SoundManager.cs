@@ -35,10 +35,10 @@ namespace ancient.game.client.sound
             //Item
             LoadSound("item/pickup_item");
 
-            LoadSound("item/bow/shoot_arrow_0");
-            LoadSound("item/bow/shoot_arrow_1");
-            LoadSound("item/bow/shoot_arrow_2");
-            LoadSound("item/bow/shoot_arrow_3");
+            //LoadSound("item/bow/shoot_arrow_0");
+            //LoadSound("item/bow/shoot_arrow_1");
+            //LoadSound("item/bow/shoot_arrow_2");
+            //LoadSound("item/bow/shoot_arrow_3");
 
             //Skill
             LoadSound("skill/thief/flash_jump");
@@ -47,7 +47,6 @@ namespace ancient.game.client.sound
             LoadSound("world/explosion_0");
 
             /*  Songs   */
-
             LoadSong("bgm/bgm_snow_0");
             LoadSong("bgm/logo");
         }
@@ -68,12 +67,12 @@ namespace ancient.game.client.sound
 
         public static void PlaySound(string name)
         {
-            PlaySound(name, Ancient.ancient.gameSettings.GetVolume());
+            PlaySound(name, Ancient.ancient.gameSettings.GetControlsSettings().GetVolume());
         }
 
         public static void PlaySound(string name, float volume)
         {
-            if (Ancient.ancient.gameSettings.GetVolume() == 0)
+            if (Ancient.ancient.gameSettings.GetControlsSettings().GetVolume() == 0)
                 return;
 
             if (name == null)
@@ -103,7 +102,7 @@ namespace ancient.game.client.sound
 
         public static void PlaySong(string name)
         {
-            PlaySong(name, Ancient.ancient.gameSettings.GetVolume());
+            PlaySong(name, Ancient.ancient.gameSettings.GetControlsSettings().GetVolume());
         }
 
         public static void PlaySong(string name, float volume)

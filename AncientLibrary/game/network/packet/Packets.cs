@@ -1,5 +1,6 @@
 ﻿using ancientlib.game.network.packet.client.handshake;
 using ancientlib.game.network.packet.client.player;
+using ancientlib.game.network.packet.common.chat;
 using ancientlib.game.network.packet.common.player;
 using ancientlib.game.network.packet.common.status;
 using ancientlib.game.network.packet.server.entity;
@@ -23,20 +24,23 @@ namespace ancientlib.game.network.packet
         {
             // Client
             clientPackets.Add(0x00, typeof(PacketHandshake));
-            clientPackets.Add(0x01, typeof(PacketCharacterCreation));
-            clientPackets.Add(0x02, typeof(PacketDisconnect));
-            clientPackets.Add(0x03, typeof(PacketPlayerInput));
-            clientPackets.Add(0x04, typeof(PacketPlayerRotation));
-            clientPackets.Add(0x05, typeof(PacketPlayerPosition));
-            clientPackets.Add(0x06, typeof(PacketPlayerUseItem));
-            clientPackets.Add(0x07, typeof(PacketPlayerChangeSlot));
-            clientPackets.Add(0x08, typeof(PacketPlayerRespawn));
-            clientPackets.Add(0x09, typeof(PacketPlayerChat));
+            clientPackets.Add(0x01, typeof(PacketCreateCharacter));
+            clientPackets.Add(0x02, typeof(PacketSelectCharacter));
+            clientPackets.Add(0x03, typeof(PacketDisconnect));
+            clientPackets.Add(0x04, typeof(PacketPlayerInput));
+            clientPackets.Add(0x05, typeof(PacketPlayerRotation));
+            clientPackets.Add(0x06, typeof(PacketPlayerPosition));
+            clientPackets.Add(0x07, typeof(PacketPlayerUseItem));
+            clientPackets.Add(0x08, typeof(PacketPlayerChangeSlot));
+            clientPackets.Add(0x09, typeof(PacketPlayerRespawn));
+            clientPackets.Add(0x10, typeof(PacketChatComponent));
+            clientPackets.Add(0x11, typeof(PacketPlayerUseSpecial));
+            clientPackets.Add(0x12, typeof(PacketPlayerDropItem));
 
             //Server
             serverPackets.Add(0x00, typeof(PacketDisconnect));
             serverPackets.Add(0x01, typeof(PacketCreateWorld));
-            serverPackets.Add(0x02, typeof(PacketCharacterCreationStatus));
+            serverPackets.Add(0x02, typeof(PacketCharacterStatus));
             serverPackets.Add(0x03, typeof(PacketSpawnEntity));
             serverPackets.Add(0x04, typeof(PacketDespawnEntity));
             serverPackets.Add(0x05, typeof(PacketEntityPosition));
@@ -52,6 +56,13 @@ namespace ancientlib.game.network.packet
             serverPackets.Add(0x15, typeof(PacketDamageEntity));
             serverPackets.Add(0x16, typeof(PacketPlayerChangeClass));
             serverPackets.Add(0x17, typeof(PacketToggleRain));
+            serverPackets.Add(0x18, typeof(PacketExplosion));
+            serverPackets.Add(0x19, typeof(PacketChatComponent));
+            serverPackets.Add(0x20, typeof(PacketPlayerUseSpecial));
+            serverPackets.Add(0x21, typeof(PacketEntityHeadRotation));
+            serverPackets.Add(0x22, typeof(PacketPlayerChangeExp));
+            serverPackets.Add(0x23, typeof(PacketPlayerChangeLevel));
+            serverPackets.Add(0x24, typeof(PacketPlayerMaxHealth));
         }
 
         public static Packet GetSendPacketFromID(byte id)

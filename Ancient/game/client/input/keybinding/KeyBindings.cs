@@ -26,8 +26,12 @@ namespace ancient.game.client.input.keybinding
             AddKeyBinding(Keys.S, KeyActions.MOVE_BACKWARD, ingame);
             AddKeyBinding(Keys.D, KeyActions.MOVE_RIGHT, ingame);
             AddKeyBinding(Keys.Space, KeyActions.JUMP_FLY, ingame);
-            AddKeyBinding(Keys.LeftControl, KeyActions.FLY_DOWN, ingame);
+            AddKeyBinding(Keys.LeftAlt, KeyActions.FLY_DOWN, ingame);
             AddKeyBinding(Keys.LeftShift, KeyActions.RUN, ingame);
+
+            AddKeyBinding(Keys.LeftControl, KeyActions.USE_SPECIAL, ingame);
+
+            AddKeyBinding(Keys.E, KeyActions.USE_SKILL_SLOT_E, ingame);
 
             AddKeyBinding(Keys.C, KeyActions.TOGGLE_NO_CLIP, ingame);
 
@@ -48,14 +52,14 @@ namespace ancient.game.client.input.keybinding
 
             AddKeyBinding(Keys.I, KeyActions.OPEN_INVENTORY, ingame, guiManager.inventory);
             AddKeyBinding(Keys.M, KeyActions.OPEN_MAP, ingame, guiManager.map);
-            AddKeyBinding(Keys.Enter, KeyActions.OPEN_CHAT, ingame, guiManager.chat);
+            AddKeyBinding(Keys.Enter, KeyActions.OPEN_CHAT, ingame, guiManager.chatInput);
             AddKeyBinding(Keys.F1, KeyActions.OPEN_DEBUG, ingame, guiManager.debug);
 
             AddKeyBinding(Keys.Escape, KeyActions.DISPLAY_LAST_GUI);
 
             AddKeyBinding(Keys.F11, KeyActions.TOGGLE_FULLSCREEN);
 
-            AddKeyBinding(Keys.E, KeyActions.USE_SKILL_SLOT_E);
+            AddKeyBinding(Keys.F12, KeyActions.SCREENSHOT);
         }
 
         public static void AddKeyBinding(Keys key, IKeyAction keyAction, params object[] supportedGuis)

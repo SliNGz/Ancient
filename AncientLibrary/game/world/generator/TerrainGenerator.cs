@@ -35,10 +35,10 @@ namespace ancient.game.world.generator
 
         private static void GenerateQuarter(Chunk chunk, int xMin, int zMin, int xMax, int zMax)
         {
-            Biome bottomLeftBiome = BiomeManager.GetBiomeOfBlock(chunk.GetX() + xMin, chunk.GetZ() + zMin);
-            Biome bottomRightBiome = BiomeManager.GetBiomeOfBlock(chunk.GetX() + xMax, chunk.GetZ() + zMin);
-            Biome topLeftBiome = BiomeManager.GetBiomeOfBlock(chunk.GetX() + xMin, chunk.GetZ() + zMax);
-            Biome topRightBiome = BiomeManager.GetBiomeOfBlock(chunk.GetX() + xMax, chunk.GetZ() + zMax);
+            Biome bottomLeftBiome = BiomeManager.GetBiomeAt(chunk.GetX() + xMin, chunk.GetZ() + zMin);
+            Biome bottomRightBiome = BiomeManager.GetBiomeAt(chunk.GetX() + xMax, chunk.GetZ() + zMin);
+            Biome topLeftBiome = BiomeManager.GetBiomeAt(chunk.GetX() + xMin, chunk.GetZ() + zMax);
+            Biome topRightBiome = BiomeManager.GetBiomeAt(chunk.GetX() + xMax, chunk.GetZ() + zMax);
 
             int bottomLeft = GetHeight(bottomLeftBiome, chunk.GetX() + xMin, chunk.GetZ() + zMin);
             int bottomRight = GetHeight(bottomRightBiome, chunk.GetX() + xMax, chunk.GetZ() + zMin);
@@ -58,7 +58,7 @@ namespace ancient.game.world.generator
 
                     int height = 0;
 
-                    Biome biome = BiomeManager.GetBiomeOfBlock(chunk.GetX() + x, chunk.GetZ() + z);
+                    Biome biome = BiomeManager.GetBiomeAt(chunk.GetX() + x, chunk.GetZ() + z);
 
                     if (sameBiome)
                         height = GetHeight(biome, chunk.GetX() + x, chunk.GetZ() + z);

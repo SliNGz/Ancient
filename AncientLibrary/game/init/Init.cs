@@ -1,8 +1,11 @@
-﻿using ancientlib.game.command;
+﻿using ancientlib.AncientService;
+using ancientlib.game.classes;
+using ancientlib.game.command;
 using ancientlib.game.entity;
 using ancientlib.game.network.packet;
 using ancientlib.game.particle;
 using ancientlib.game.stats;
+using ancientlib.game.utils.chat;
 using ancientlib.game.world.biome;
 using ancientlib.game.world.entity;
 using ancientlib.game.world.structure;
@@ -28,6 +31,8 @@ namespace ancientlib.game.init
             Packets.Initialize();
             NetEntities.Initialize();
             Particles.Initialize();
+            ChatComponents.Initialize();
+            Classes.Initialize();
         }
     }
 }

@@ -8,15 +8,20 @@ using ancient.game.world.generator.metadata;
 using ancient.game.world.generator.noise;
 using ancientlib.game.block;
 using ancientlib.game.entity;
+using ancientlib.game.entity.ai.pathfinding;
 using ancientlib.game.init;
 using ancientlib.game.item;
+using ancientlib.game.network.packet.server.world;
 using ancientlib.game.particle;
 using ancientlib.game.utils;
+using ancientlib.game.utils.chat;
+using ancientlib.game.world;
 using ancientlib.game.world.biome;
 using ancientlib.game.world.chunk;
 using ancientlib.game.world.entity;
 using ancientlib.game.world.lighting;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
 
@@ -59,7 +64,9 @@ namespace ancient.game.world
         protected bool isRaining = false;
         protected bool wasRaining;
 
-        protected LightingManager lightingManager;
+        public LightingManager lightingManager;
+
+        private PathFinderManager pathFinderManager;
 
         public World(int seed)
         {
@@ -79,19 +86,23 @@ namespace ancient.game.world
             this.skyColor = dawnSkyColor;
             this.dayTicks = 128 * 60 * 5;
 
+            this.wasRaining = !isRaining;
+
             this.lightingManager = new LightingManager(this);
 
-            this.wasRaining = !isRaining;
+            this.pathFinderManager = new PathFinderManager();
 
             world = this;
         }
 
         public virtual void Update(GameTime gameTime)
         {
+            lightingManager.Update();
             entityList.Update(gameTime);
             players.Update();
             chunkManager.Update();
-            UpdateWeather();
+          //  UpdateWeather();
+           // pathFinderManager.Update();
         }
 
         public bool ChunkExists(int x, int y, int z)
@@ -198,7 +209,7 @@ namespace ancient.game.world
                 {
                     for (int y = 0; y < 16; y++)
                     {
-                        if (!chunk.GetBlock(x, y, z).GetBlockType().IsSolid())
+                        if (!chunk.GetBlock(x, y, z).IsSolid())
                             return i * 16 + y;
                     }
                 }
@@ -327,26 +338,6 @@ namespace ancient.game.world
                 chunk.SetBlocklight(x, y, z, blocklight);
         }
 
-        public void AddLightSource(Block block, int x, int y, int z)
-        {
-            lightingManager.AddLightSource(block, x, y, z);
-        }
-
-        public void RemoveLightSource(int x, int y, int z)
-        {
-            lightingManager.RemoveLightSource(x, y, z);
-        }
-
-        public void ReloadLightSource(int x, int y, int z)
-        {
-            lightingManager.ReloadLightSource(x, y, z);
-        }
-
-        public LightingManager GetLightingManager()
-        {
-            return this.lightingManager;
-        }
-
         public virtual void PlaySound(string name)
         { }
 
@@ -399,8 +390,8 @@ namespace ancient.game.world
                 this.skyColor = Color.Gray;
             else
             {
-                if (GetMyPlayer() != null)
-                    this.skyColor = GetMyPlayer().GetBiome().GetSkyColor();
+                //    if (GetMyPlayer() != null)
+                //    this.skyColor = GetMyPlayer().GetBiome().GetSkyColor();
             }
         }
 
@@ -473,7 +464,7 @@ namespace ancient.game.world
 
                         if (x1 + y1 + z1 <= 1)
                         {
-                            Block block = world.GetBlock(x + i, y + j, z + k);
+                            Block block = GetBlock(x + i, y + j, z + k);
 
                             if (!(block is BlockWater))
                                 SetBlock(Blocks.air, x + i, y + j, z + k);
@@ -503,6 +494,21 @@ namespace ancient.game.world
             }
 
             PlaySound("explosion_" + rand.Next(0));
+
+            if (this is WorldServer)
+                ((WorldServer)this).BroadcastPacket(new PacketExplosion(x, y, z, a, b, c));
+        }
+
+        public abstract void AddChatComponent(ChatComponent chatComponent);
+
+        public Biome GetBiomeAt(int x, int z)
+        {
+            return BiomeManager.GetBiomeAt(x, z);
+        }
+
+        public PathFinderManager GetPathFinderManager()
+        {
+            return this.pathFinderManager;
         }
     }
 }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using ancient.game.entity.player;
 using ancientlib.game.entity;
 using ancient.game.entity;
+using ancientlib.game.entity.projectile;
+using Microsoft.Xna.Framework;
+using ancientlib.game.utils.chat;
 
 namespace ancientlib.game.command
 {
@@ -16,15 +19,18 @@ namespace ancientlib.game.command
             int id = 0;
             int.TryParse(args[0], out id);
 
-            Entity entity = Entities.CreateEntityFromTypeID(id, sender.GetWorld());
+            Entity entity = Entities.CreateEntityFromTypeID(id);
 
             if (entity == null)
             {
-                Console.WriteLine("No entity with id: " + id);
+                sender.GetWorld().AddChatComponent(new ChatComponentText("No entity with id: " + id, Color.Red));
                 return;
             }
 
-            entity.SetPosition(sender.GetPosition());
+            if (entity is EntityProjectile)
+                ((EntityProjectile)entity).SetShooter(sender);
+
+            entity.SetPosition(sender.GetPosition() + entity.GetHeight() * Vector3.Up);
             sender.GetWorld().SpawnEntity(entity);
         }
 

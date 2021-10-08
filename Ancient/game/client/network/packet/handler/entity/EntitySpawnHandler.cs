@@ -19,7 +19,7 @@ namespace ancient.game.client.network.packet.handler.entity
         {
             PacketSpawnEntity spawnEntity = (PacketSpawnEntity)packet;
 
-            Ancient.ancient.world.SpawnEntity(spawnEntity.GetEntity());
+            Ancient.ancient.world.SpawnEntity(spawnEntity.Entity);
         }
     }
 }

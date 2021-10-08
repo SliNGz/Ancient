@@ -16,42 +16,40 @@ namespace ancientlib.game.entity.projectile
     class EntityExplosiveArrow : EntityArrow
     {
         private int explosionSize;
-        private EntityExplosion explosion;
+        private EntityExplosion explosionEntity;
 
         public EntityExplosiveArrow(World world) : base(world)
         {
             this.explosionSize = 3;
-            this.explosion = new EntityExplosion(world);
+            this.explosionEntity = new EntityExplosion(world);
         }
 
         public EntityExplosiveArrow(World world, EntityLiving shooter, ItemArrow arrow) : base(world, shooter, arrow)
         {
             this.explosionSize = 3;
-            this.explosion = new EntityExplosion(world, new AttackInfo(shooter, shooter.GetDamage() + arrow.GetDamage()), explosionSize * 2, explosionSize * 2, explosionSize * 2);
+            this.explosionEntity = new EntityExplosion(world, new AttackInfo(shooter, shooter.GetDamage() + arrow.GetDamage()), explosionSize * 2, explosionSize * 2, explosionSize * 2);
         }
 
         public override void SetDamage(int damage)
         {
             base.SetDamage(damage);
-            this.explosion.GetAttackInfo().SetDamage((int)(damage / 2F));
+            this.explosionEntity.GetAttackInfo().SetDamage((int)(damage / 2F));
         }
 
         protected override void OnCollisionWithBlock(BoundingBox blockBB, Block block)
         {
-            base.OnCollisionWithBlock(blockBB, block);
-
             if (!world.IsRemote())
             {
                 if (block.IsSolid() || block is BlockWater)
                 {
-                    if (explosion != null)
+                    if (explosionEntity != null)
                     {
                         world.CreateExplosion((int)x, (int)y, (int)z, explosionSize, explosionSize, explosionSize);
-                        explosion.SetPosition(GetPosition() + new Vector3(0, explosion.GetHeight() / 2F, 0));
-                        explosion.UpdateBoundingBox();
-                        world.SpawnEntity(explosion);
+                        explosionEntity.SetPosition(GetPosition() + new Vector3(0, explosionEntity.GetHeight() / 2F, 0));
+                        explosionEntity.UpdateBoundingBox();
+                        world.SpawnEntity(explosionEntity);
                         world.DespawnEntity(this);
-                        explosion = null;
+                        explosionEntity = null;
                     }
                 }
             }
@@ -65,7 +63,7 @@ namespace ancientlib.game.entity.projectile
         public void SetExplosionSize(int explosionSize)
         {
             this.explosionSize = explosionSize;
-            this.explosion.SetDimensions(Vector3.One * explosionSize * 2);
+            this.explosionEntity.SetDimensions(Vector3.One * explosionSize * 2);
         }
     }
 }

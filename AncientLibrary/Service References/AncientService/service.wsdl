@@ -1,0 +1,478 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AncientService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import namespace="http://tempuri.org/" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/MODEL" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/HELPER" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IAncientService_IsUserValid_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsUserValid" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_IsUserValid_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsUserValidResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_UsernameExists_InputMessage">
+    <wsdl:part name="parameters" element="tns:UsernameExists" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_UsernameExists_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UsernameExistsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_EmailExists_InputMessage">
+    <wsdl:part name="parameters" element="tns:EmailExists" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_EmailExists_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EmailExistsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetPasswordFromUsername_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPasswordFromUsername" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetPasswordFromUsername_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPasswordFromUsernameResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetRoleOfUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRoleOfUser" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetRoleOfUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRoleOfUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_AddUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddUser" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_AddUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetCharacterByNickname_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCharacterByNickname" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetCharacterByNickname_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCharacterByNicknameResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_SetCharacterImage_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetCharacterImage" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_SetCharacterImage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetCharacterImageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetCharacterImage_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCharacterImage" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetCharacterImage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCharacterImageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetUserCharacterNames_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserCharacterNames" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetUserCharacterNames_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserCharacterNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_AddCharacterOfUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddCharacterOfUser" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_AddCharacterOfUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddCharacterOfUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_UpdateCharacterByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCharacterByID" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_UpdateCharacterByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCharacterByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_UpdateCharacter_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCharacter" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_UpdateCharacter_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCharacterResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_AddScore_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddScore" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_AddScore_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddScoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetUsers_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUsers" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetUsers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUsersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetPlayers_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPlayers" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetPlayers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPlayersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetScores_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetScores" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetScores_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetScoresResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetUserCharacters_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserCharacters" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetUserCharacters_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserCharactersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_NicknameExists_InputMessage">
+    <wsdl:part name="parameters" element="tns:NicknameExists" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_NicknameExists_OutputMessage">
+    <wsdl:part name="parameters" element="tns:NicknameExistsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_UpdateUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateUser" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_UpdateUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_DeleteUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteUser" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_DeleteUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_DeleteCharacter_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteCharacter" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_DeleteCharacter_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteCharacterResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_DeleteScore_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteScore" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_DeleteScore_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteScoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetTopFiveScores_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTopFiveScores" />
+  </wsdl:message>
+  <wsdl:message name="IAncientService_GetTopFiveScores_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTopFiveScoresResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IAncientService">
+    <wsdl:operation name="IsUserValid">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/IsUserValid" message="tns:IAncientService_IsUserValid_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/IsUserValidResponse" message="tns:IAncientService_IsUserValid_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UsernameExists">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/UsernameExists" message="tns:IAncientService_UsernameExists_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/UsernameExistsResponse" message="tns:IAncientService_UsernameExists_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="EmailExists">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/EmailExists" message="tns:IAncientService_EmailExists_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/EmailExistsResponse" message="tns:IAncientService_EmailExists_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPasswordFromUsername">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/GetPasswordFromUsername" message="tns:IAncientService_GetPasswordFromUsername_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/GetPasswordFromUsernameResponse" message="tns:IAncientService_GetPasswordFromUsername_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRoleOfUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/GetRoleOfUser" message="tns:IAncientService_GetRoleOfUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/GetRoleOfUserResponse" message="tns:IAncientService_GetRoleOfUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/AddUser" message="tns:IAncientService_AddUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/AddUserResponse" message="tns:IAncientService_AddUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCharacterByNickname">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/GetCharacterByNickname" message="tns:IAncientService_GetCharacterByNickname_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/GetCharacterByNicknameResponse" message="tns:IAncientService_GetCharacterByNickname_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetCharacterImage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/SetCharacterImage" message="tns:IAncientService_SetCharacterImage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/SetCharacterImageResponse" message="tns:IAncientService_SetCharacterImage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCharacterImage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/GetCharacterImage" message="tns:IAncientService_GetCharacterImage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/GetCharacterImageResponse" message="tns:IAncientService_GetCharacterImage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserCharacterNames">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/GetUserCharacterNames" message="tns:IAncientService_GetUserCharacterNames_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/GetUserCharacterNamesResponse" message="tns:IAncientService_GetUserCharacterNames_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddCharacterOfUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/AddCharacterOfUser" message="tns:IAncientService_AddCharacterOfUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/AddCharacterOfUserResponse" message="tns:IAncientService_AddCharacterOfUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCharacterByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/UpdateCharacterByID" message="tns:IAncientService_UpdateCharacterByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/UpdateCharacterByIDResponse" message="tns:IAncientService_UpdateCharacterByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCharacter">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/UpdateCharacter" message="tns:IAncientService_UpdateCharacter_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/UpdateCharacterResponse" message="tns:IAncientService_UpdateCharacter_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddScore">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/AddScore" message="tns:IAncientService_AddScore_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/AddScoreResponse" message="tns:IAncientService_AddScore_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUsers">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/GetUsers" message="tns:IAncientService_GetUsers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/GetUsersResponse" message="tns:IAncientService_GetUsers_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPlayers">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/GetPlayers" message="tns:IAncientService_GetPlayers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/GetPlayersResponse" message="tns:IAncientService_GetPlayers_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetScores">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/GetScores" message="tns:IAncientService_GetScores_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/GetScoresResponse" message="tns:IAncientService_GetScores_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserCharacters">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/GetUserCharacters" message="tns:IAncientService_GetUserCharacters_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/GetUserCharactersResponse" message="tns:IAncientService_GetUserCharacters_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NicknameExists">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/NicknameExists" message="tns:IAncientService_NicknameExists_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/NicknameExistsResponse" message="tns:IAncientService_NicknameExists_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/UpdateUser" message="tns:IAncientService_UpdateUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/UpdateUserResponse" message="tns:IAncientService_UpdateUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/DeleteUser" message="tns:IAncientService_DeleteUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/DeleteUserResponse" message="tns:IAncientService_DeleteUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCharacter">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/DeleteCharacter" message="tns:IAncientService_DeleteCharacter_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/DeleteCharacterResponse" message="tns:IAncientService_DeleteCharacter_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteScore">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/DeleteScore" message="tns:IAncientService_DeleteScore_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/DeleteScoreResponse" message="tns:IAncientService_DeleteScore_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTopFiveScores">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAncientService/GetTopFiveScores" message="tns:IAncientService_GetTopFiveScores_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAncientService/GetTopFiveScoresResponse" message="tns:IAncientService_GetTopFiveScores_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IAncientService" type="tns:IAncientService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="IsUserValid">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/IsUserValid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UsernameExists">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/UsernameExists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EmailExists">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/EmailExists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPasswordFromUsername">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/GetPasswordFromUsername" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoleOfUser">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/GetRoleOfUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUser">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/AddUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCharacterByNickname">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/GetCharacterByNickname" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCharacterImage">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/SetCharacterImage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCharacterImage">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/GetCharacterImage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserCharacterNames">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/GetUserCharacterNames" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCharacterOfUser">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/AddCharacterOfUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCharacterByID">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/UpdateCharacterByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCharacter">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/UpdateCharacter" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddScore">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/AddScore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUsers">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/GetUsers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPlayers">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/GetPlayers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetScores">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/GetScores" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserCharacters">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/GetUserCharacters" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NicknameExists">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/NicknameExists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUser">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/UpdateUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteUser">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/DeleteUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCharacter">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/DeleteCharacter" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteScore">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/DeleteScore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTopFiveScores">
+      <soap:operation soapAction="http://tempuri.org/IAncientService/GetTopFiveScores" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AncientService">
+    <wsdl:port name="BasicHttpBinding_IAncientService" binding="tns:BasicHttpBinding_IAncientService">
+      <soap:address location="http://localhost:8733/Design_Time_Addresses/ANCIENT_SERVICE/AncientService/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

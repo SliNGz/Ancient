@@ -123,7 +123,7 @@ namespace ancient.game.client.gui.component
 
         public new float GetHeight()
         {
-            return FontRenderer.fontSize * size;
+            return FontRenderer.CHAR_SIZE * size;
         }
 
         public override GuiComponent Centralize()

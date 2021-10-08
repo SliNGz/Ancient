@@ -14,6 +14,7 @@ using ancient.game.client.utils;
 using ancient.game.client.gui.component.button;
 using ancient.game.client.network;
 using ancientlib.game.network.packet.client.player;
+using ancient.game.entity.player;
 
 namespace ancient.game.client.gui
 {
@@ -31,14 +32,20 @@ namespace ancient.game.client.gui
 
         private GuiColorRGB hairColor;
 
+        public GuiText errorText;
+
+        private EntityPlayer character;
+
         public GuiCharacterCreation(GuiManager guiManager) : base(guiManager, "character_creation", MIN_DISTANCE, MAX_DISTANCE, SCROLL_VALUE)
-        { }
+        {
+            this.character = new EntityPlayer(null);
+        }
 
         public override void Initialize()
         {
             base.Initialize();
 
-            this.lastGui = guiManager.mainMenu;
+            this.lastGui = guiManager.characterSelection;
 
             this.characterCreationText = new GuiText("Character Creation", 4, 5);
             this.characterCreationText.SetOutline(1);
@@ -114,6 +121,12 @@ namespace ancient.game.client.gui
             this.hairColor = new GuiColorRGB(0.5F, 0.5F);
             this.hairColor.TextChangedEvent += new TextChangedEventHandler(OnHairColorChanged);
             this.components.Add(hairColor);
+
+            this.errorText = new GuiText();
+            this.errorText.SetX(this.nickname.GetX());
+            this.errorText.SetY(this.nickname.GetY() - 0.1F);
+            this.errorText.SetColor(Color.Red);
+            this.components.Add(errorText);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -122,13 +135,20 @@ namespace ancient.game.client.gui
             base.Draw(spriteBatch);
         }
 
+        public override void Update(MouseState mouseState)
+        {
+            camera.SetPitch(character.GetHeadPitch());
+            base.Update(mouseState);
+        }
+
         public override void Draw3D()
         {
+            base.Draw3D();
             Ancient.ancient.world.GetRenderer().ResetGraphics(backgroundColor);
-            WorldRenderer.effect.Parameters["FogEnabled"].SetValue(false);
-            WorldRenderer.effect.Parameters["View"].SetValue(camera.GetViewMatrix(0, Ancient.ancient.player.GetHeadPitch()));
-            WorldRenderer.effect.Parameters["Projection"].SetValue(camera.GetProjectionMatrix());
-            EntityRenderers.GetRenderEntityFromEntity(Ancient.ancient.player).Draw(Ancient.ancient.player);
+            WorldRenderer.currentEffect.Parameters["ShadowsEnabled"].SetValue(false);
+            WorldRenderer.currentEffect.Parameters["MultiplyColorEnabled"].SetValue(true);
+            EntityRenderers.renderPlayer.Draw(character);
+            WorldRenderer.currentEffect.Parameters["MultiplyColorEnabled"].SetValue(false);
         }
 
         protected override void UpdateCameraDistance()
@@ -143,17 +163,17 @@ namespace ancient.game.client.gui
 
         private void OnHairChanged(object sender, EventArgs e)
         {
-            Ancient.ancient.player.SetHairID((byte)hairSwitcher.GetSelectedOption());
+            character.SetHairID((byte)hairSwitcher.GetSelectedOption());
         }
 
         private void OnHairColorChanged(object sender, EventArgs e)
         {
-            Ancient.ancient.player.SetHairColor(hairColor.GetColorValue());
+            character.SetHairColor(hairColor.GetColorValue());
         }
 
         private void OnEyesChanged(object sender, EventArgs e)
         {
-            Ancient.ancient.player.SetEyesID((byte)eyesSwitcher.GetSelectedOption());
+            character.SetEyesID((byte)eyesSwitcher.GetSelectedOption());
         }
 
         private void OnCharacterCreation(object sender, EventArgs e)
@@ -161,15 +181,16 @@ namespace ancient.game.client.gui
             if (!IsNicknameLegal())
                 return;
 
-            Ancient.ancient.player.SetName(nickname.GetTextBox().GetText());
+            character.SetName(nickname.GetTextBox().GetText());
 
             if (!NetClient.instance.IsConnected())
             {
                 guiManager.DisplayGui(guiManager.ingame);
+                Ancient.ancient.player = character;
                 Ancient.ancient.SpawnPlayer();
             }
             else
-                NetClient.instance.SendPacket(new PacketCharacterCreation(Ancient.ancient.player));
+                NetClient.instance.SendPacket(new PacketCreateCharacter(character));
         }
 
         private bool IsNicknameLegal()
@@ -187,8 +208,15 @@ namespace ancient.game.client.gui
             this.hairSwitcher.SetOptionIndex(0);
             this.eyesSwitcher.SetOptionIndex(0);
 
-            Ancient.ancient.player.SetRotation(MathHelper.Pi, 0, 0);
-            Ancient.ancient.player.SetHeadRotation(MathHelper.Pi, 0);
+            this.errorText.SetText("");
+
+            character.SetRotation(MathHelper.Pi, 0, 0);
+            character.SetHeadRotation(MathHelper.Pi, 0);
+        }
+
+        public EntityPlayer GetCharacter()
+        {
+            return new EntityPlayer(null, character);
         }
     }
 }

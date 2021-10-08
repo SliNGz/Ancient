@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/MODEL" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MODEL" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/HELPER" />
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="Player">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ClassName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Dex" type="xs:int" />
+          <xs:element minOccurs="0" name="Exp" type="xs:int" />
+          <xs:element minOccurs="0" name="EyesColor" type="xs:int" />
+          <xs:element minOccurs="0" name="EyesID" type="xs:int" />
+          <xs:element minOccurs="0" name="HairColor" type="xs:int" />
+          <xs:element minOccurs="0" name="HairID" type="xs:int" />
+          <xs:element minOccurs="0" name="Level" type="xs:int" />
+          <xs:element minOccurs="0" name="Luk" type="xs:int" />
+          <xs:element minOccurs="0" name="MaxHealth" type="xs:int" />
+          <xs:element minOccurs="0" name="MaxMana" type="xs:int" />
+          <xs:element minOccurs="0" name="Nickname" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SkinColor" type="xs:int" />
+          <xs:element minOccurs="0" name="Str" type="xs:int" />
+          <xs:element minOccurs="0" name="UserNum" type="xs:int" />
+          <xs:element minOccurs="0" name="Wsd" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Player" nillable="true" type="tns:Player" />
+  <xs:complexType name="BaseEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EntityStatus" type="tns:EntityStatus" />
+      <xs:element minOccurs="0" name="Num" type="xs:int" />
+      <xs:element minOccurs="0" name="checkValidation" type="xs:boolean" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/HELPER" minOccurs="0" name="status" type="q1:ErrorStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseEntity" nillable="true" type="tns:BaseEntity" />
+  <xs:simpleType name="EntityStatus">
+    <xs:list>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Added">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Modified">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Deleted">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Unchanged">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:list>
+  </xs:simpleType>
+  <xs:element name="EntityStatus" nillable="true" type="tns:EntityStatus" />
+  <xs:complexType name="Users">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="User" nillable="true" type="tns:User" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Users" nillable="true" type="tns:Users" />
+  <xs:complexType name="User">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BirthDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Family" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Gender" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Psw" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Roles" type="xs:int" />
+          <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="User" nillable="true" type="tns:User" />
+  <xs:complexType name="BaseListOfUserE4cssQnl">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="BaseListOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/MODEL" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="User" Namespace="http://schemas.datacontract.org/2004/07/MODEL" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="User" nillable="true" type="tns:User" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseListOfUserE4cssQnl" nillable="true" type="tns:BaseListOfUserE4cssQnl" />
+  <xs:complexType name="Players">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Player" nillable="true" type="tns:Player" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Players" nillable="true" type="tns:Players" />
+  <xs:complexType name="Scores">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Score" nillable="true" type="tns:Score" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Scores" nillable="true" type="tns:Scores" />
+  <xs:complexType name="Score">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PlayerNickname" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PlayerNo" type="xs:int" />
+          <xs:element minOccurs="0" name="Points" type="xs:int" />
+          <xs:element minOccurs="0" name="ScoreDate" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Score" nillable="true" type="tns:Score" />
+  <xs:complexType name="BaseListOfScoreE4cssQnl">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="BaseListOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/MODEL" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Score" Namespace="http://schemas.datacontract.org/2004/07/MODEL" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Score" nillable="true" type="tns:Score" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseListOfScoreE4cssQnl" nillable="true" type="tns:BaseListOfScoreE4cssQnl" />
+  <xs:complexType name="ArrayOfPlayer">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Player" nillable="true" type="tns:Player" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPlayer" nillable="true" type="tns:ArrayOfPlayer" />
+  <xs:complexType name="ArrayOfScore">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Score" nillable="true" type="tns:Score" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfScore" nillable="true" type="tns:ArrayOfScore" />
+</xs:schema>

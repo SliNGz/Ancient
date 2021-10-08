@@ -3,6 +3,7 @@ using ancient.game.client.input;
 using ancient.game.client.input.keybinding;
 using ancient.game.client.particle;
 using ancient.game.entity.player;
+using ancientlib.game.entity;
 using ancientlib.game.init;
 using ancientlib.game.item;
 using Microsoft.Xna.Framework;
@@ -57,8 +58,8 @@ namespace ancient.game.input
             {
                 if (Mouse.GetState().Position.ToVector2() != Ancient.ancient.screenCenter)
                 {
-                    Vector3 delta = new Vector3(Ancient.ancient.screenCenter.X - Ancient.ancient.mouseState.Position.X, Ancient.ancient.screenCenter.Y - Ancient.ancient.mouseState.Position.Y, 0)
-                        * Ancient.ancient.gameSettings.GetSensitivity() * (float)gameTime.ElapsedGameTime.TotalSeconds / 10;
+                    Vector2 delta = (Ancient.ancient.screenCenter - Ancient.ancient.mouseState.Position.ToVector2())
+                        * Ancient.ancient.gameSettings.GetControlsSettings().GetSensitivity() * (float)gameTime.ElapsedGameTime.TotalSeconds / 10F;
 
                     float yaw = player.GetHeadYaw() + delta.X;
                     float pitch = player.GetHeadPitch() + delta.Y;

@@ -41,6 +41,7 @@ namespace ancientlib.game.entity.player
                 Jump();
 
             UpdateMouseInput();
+            UpdateSpecial();
 
             base.Update(gameTime);
         }
@@ -79,7 +80,7 @@ namespace ancientlib.game.entity.player
         {
             bool itemAdded = base.AddItem(itemStack);
 
-            if (itemAdded)
+            if (itemAdded && netConnection != null)
                 netConnection.SendPacket(new PacketPlayerItemAction(itemStack, ItemAction.ADD_ITEM));
 
             return itemAdded;
@@ -89,10 +90,22 @@ namespace ancientlib.game.entity.player
         {
             bool itemRemoved = base.RemoveItem(itemStack);
 
-            if (itemRemoved)
+            if (itemRemoved && netConnection != null)
                 netConnection.SendPacket(new PacketPlayerItemAction(itemStack, ItemAction.REMOVE_ITEM));
 
             return itemRemoved;
+        }
+
+        private void UpdateSpecial()
+        {
+            if (usingSpecial)
+                UseSpecial();
+        }
+
+        public override void Teleport(float x, float y, float z)
+        {
+            base.Teleport(x, y, z);
+            netConnection.SendPacket(new PacketPlayerPosition(this));
         }
     }
 }

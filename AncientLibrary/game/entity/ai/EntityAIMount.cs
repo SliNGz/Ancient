@@ -32,7 +32,7 @@ namespace ancientlib.game.entity.ai
 
         public override void Stop()
         {
-            if (mount.GetRidingEntity() != null)
+            if (mount.IsRidden())
                 mount.GetRidingEntity().Dismount();
         }
 

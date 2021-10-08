@@ -15,5 +15,10 @@ namespace ancientlib.game.entity.projectile
 
         public EntityArrow(World world, EntityLiving shooter, ItemArrow arrow) : base(world, shooter, arrow)
         { }
+
+        public override string GetEntityName()
+        {
+            return "arrow";
+        }
     }
 }

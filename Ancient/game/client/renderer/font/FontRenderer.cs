@@ -14,38 +14,38 @@ namespace ancient.game.client.renderer.font
     {
         private static Dictionary<char, int> characterWidth = new Dictionary<char, int>();
         public static Texture2D font;
-        public static int fontSize = 8;
+        public static int CHAR_SIZE = 8;
 
         public static void Initialize()
         {
             font = TextureManager.GetTextureFromName("font");
 
-            Color[] data = new Color[fontSize * fontSize];
+            Color[] data = new Color[CHAR_SIZE * CHAR_SIZE];
 
             for (char character = ' '; character <= 'z'; character++)
             {
                 int index = character - ' ';
-                int x = (index % 16) * fontSize;
-                int y = (index / 16) * fontSize;
+                int x = (index % 16) * CHAR_SIZE;
+                int y = (index / 16) * CHAR_SIZE;
 
-                font.GetData(0, new Rectangle(x, y, fontSize, fontSize), data, 0, fontSize * fontSize);
+                font.GetData(0, new Rectangle(x, y, CHAR_SIZE, CHAR_SIZE), data, 0, CHAR_SIZE * CHAR_SIZE);
 
                 int width = 0;
 
                 if (character == ' ')
                 {
-                    characterWidth.Add(character, fontSize / 2);
+                    characterWidth.Add(character, CHAR_SIZE / 2);
                     continue;
                 }
 
-                for (int i = 0; i < fontSize; i++)
+                for (int i = 0; i < CHAR_SIZE; i++)
                 {
-                    for (int j = 0; j < fontSize; j++)
+                    for (int j = 0; j < CHAR_SIZE; j++)
                     {
-                        if (data[i + j * fontSize] != Color.Transparent)
+                        if (data[i + j * CHAR_SIZE] != Color.Transparent)
                         {
                             width = i + 1;
-                            j = fontSize;
+                            j = CHAR_SIZE;
                         }
                     }
                 }
@@ -74,25 +74,25 @@ namespace ancient.game.client.renderer.font
             {
                 char character = text[i];
                 int index = character - ' ';
-                int rectX = (index % 16) * fontSize;
-                int rectY = (index / 16) * fontSize;
+                int rectX = (index % 16) * CHAR_SIZE;
+                int rectY = (index / 16) * CHAR_SIZE;
 
                 int width = GetWidthOfCharacter(character);
                 if (width == -1)
                 {
-                    drawX += fontSize * size + spacing;
+                    drawX += CHAR_SIZE * size + spacing;
                     continue;
                 }
 
                 if (outline > 0)
                 {
-                    spriteBatch.Draw(font, new Vector2((int)drawX - outline, (int)y), new Rectangle(rectX, rectY, fontSize, fontSize), outlineColor, 0, Vector2.Zero, size, SpriteEffects.None, 0);
-                    spriteBatch.Draw(font, new Vector2((int)drawX + outline, (int)y), new Rectangle(rectX, rectY, fontSize, fontSize), outlineColor, 0, Vector2.Zero, size, SpriteEffects.None, 0);
-                    spriteBatch.Draw(font, new Vector2((int)drawX, (int)y - outline), new Rectangle(rectX, rectY, fontSize, fontSize), outlineColor, 0, Vector2.Zero, size, SpriteEffects.None, 0);
-                    spriteBatch.Draw(font, new Vector2((int)drawX, (int)y + outline), new Rectangle(rectX, rectY, fontSize, fontSize), outlineColor, 0, Vector2.Zero, size, SpriteEffects.None, 0);
+                    spriteBatch.Draw(font, new Vector2((int)drawX - outline, (int)y), new Rectangle(rectX, rectY, CHAR_SIZE, CHAR_SIZE), outlineColor, 0, Vector2.Zero, size, SpriteEffects.None, 0);
+                    spriteBatch.Draw(font, new Vector2((int)drawX + outline, (int)y), new Rectangle(rectX, rectY, CHAR_SIZE, CHAR_SIZE), outlineColor, 0, Vector2.Zero, size, SpriteEffects.None, 0);
+                    spriteBatch.Draw(font, new Vector2((int)drawX, (int)y - outline), new Rectangle(rectX, rectY, CHAR_SIZE, CHAR_SIZE), outlineColor, 0, Vector2.Zero, size, SpriteEffects.None, 0);
+                    spriteBatch.Draw(font, new Vector2((int)drawX, (int)y + outline), new Rectangle(rectX, rectY, CHAR_SIZE, CHAR_SIZE), outlineColor, 0, Vector2.Zero, size, SpriteEffects.None, 0);
                 }
 
-                spriteBatch.Draw(font, new Vector2((int)drawX, (int)y), new Rectangle(rectX, rectY, fontSize, fontSize), color, 0, Vector2.Zero, size, SpriteEffects.None, 0);
+                spriteBatch.Draw(font, new Vector2((int)drawX, (int)y), new Rectangle(rectX, rectY, CHAR_SIZE, CHAR_SIZE), color, 0, Vector2.Zero, size, SpriteEffects.None, 0);
 
                 drawX += width * size + spacing;
             }
@@ -109,8 +109,8 @@ namespace ancient.game.client.renderer.font
             {
                 char character = text[i];
                 int index = character - '0';
-                int rectX = (index % 16) * fontSize;
-                int rectY = (index / 16) * fontSize;
+                int rectX = (index % 16) * CHAR_SIZE;
+                int rectY = (index / 16) * CHAR_SIZE;
 
                 int charWidth = GetWidthOfCharacter(character);
                 if (charWidth == -1)
@@ -133,8 +133,8 @@ namespace ancient.game.client.renderer.font
             {
                 char character = text[i];
                 int index = character - '0';
-                int rectX = (index % 16) * fontSize;
-                int rectY = (index / 16) * fontSize;
+                int rectX = (index % 16) * CHAR_SIZE;
+                int rectY = (index / 16) * CHAR_SIZE;
 
                 int charWidth = GetWidthOfCharacter(character);
                 if (charWidth == -1)

@@ -26,10 +26,16 @@ using ancient.game.utils;
 using ancientlib.game.network.packet.common.status;
 using ancient.game.client.particle;
 using ancient.game.client.renderer.entity;
+using ancient.game.client.renderer.chat;
+using ancientlib.game.classes;
+using ancient.game.client.renderer;
+using ancient.game.client.utils;
+using ancientlib.game.user;
+using ancientlib.AncientService;
 
 namespace ancient.game
 {
-    public class Ancient : Microsoft.Xna.Framework.Game
+    public class Ancient : Game
     {
         public static Ancient ancient;
 
@@ -74,6 +80,11 @@ namespace ancient.game
 
         public bool worldLoaded;
 
+        public int width;
+        public int height;
+
+        public RenderTarget2D renderTarget;
+
         public Ancient()
         {
             this.gameSettings = new GameSettings();
@@ -83,11 +94,12 @@ namespace ancient.game
             graphics.PreferMultiSampling = true;
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 480;
+            graphics.GraphicsProfile = GraphicsProfile.HiDef;
             graphics.ApplyChanges();
 
             graphics.PreparingDeviceSettings += (s, e) =>
             {
-                e.GraphicsDeviceInformation.PresentationParameters.MultiSampleCount = gameSettings.GetAntiAliasing();
+                e.GraphicsDeviceInformation.PresentationParameters.MultiSampleCount = gameSettings.GetVideoSettings().GetAntiAliasing();
             };
 
             Content.RootDirectory = "Content";
@@ -110,18 +122,21 @@ namespace ancient.game
                 this.keyDispatcher = new KeyboardDispatcher(Window);
 
                 this.player = new EntityPlayer(null);
+                player.SetRenderDistance(gameSettings.GetVideoSettings().GetRenderDistance());
 
                 this.guiManager = new GuiManager();
 
                 this.inputManager = new PlayerInputManager();
 
-                effect = Content.Load<Effect>("effect");
+                effect = Content.Load<Effect>("effects/Effect");
 
                 InitializeGame();
 
                 this.netClient = new NetClient();
 
-                this.screenCenter = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+                width = GraphicsDevice.Viewport.Width;
+                height = GraphicsDevice.Viewport.Height;
+                this.screenCenter = new Vector2(width / 2, height / 2);
 
                 base.Initialize();
             }
@@ -138,6 +153,7 @@ namespace ancient.game
 
             TextureManager.LoadContent(Content);
             FontRenderer.Initialize();
+
             SoundManager.LoadContent(Content);
 
             guiManager.Initialize();
@@ -215,10 +231,11 @@ namespace ancient.game
         private void InitializeGame()
         {
             Init.Initialize();
-            ModelDatabase.Initialize();
+            ModelDatabase.Initialize(Content);
             KeyBindings.Initialize();
             ClientPacketHandlers.Initialize();
             EntityRenderers.Initialize();
+            ChatRenderers.Initialize();
         }
 
         public void ToggleFullscreen()
@@ -237,8 +254,13 @@ namespace ancient.game
             graphics.ApplyChanges();
             graphics.ToggleFullScreen();
 
-            this.screenCenter = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            width = GraphicsDevice.Viewport.Width;
+            height = GraphicsDevice.Viewport.Height;
+
+            this.screenCenter = new Vector2(width / 2, height / 2);
             this.guiManager.Initialize();
+            world.GetRenderer().GetShadowMapRenderer().Initialize();
+            world.GetRenderer().Initialize();
         }
 
         protected override void OnExiting(object sender, EventArgs e)
@@ -266,7 +288,7 @@ namespace ancient.game
 
         public void OnLeaveWorld()
         {
-            if (world.IsRemote())
+            if (world != null && world.IsRemote())
             {
                 netClient.SendPacket(new PacketDisconnect());
                 netClient.GetNetConnection().SendPackets(); // Flush all outgoing packets (No more updates will be called after exiting - no packet sending).
@@ -279,8 +301,10 @@ namespace ancient.game
             ThreadUtils.Clear();
             world = null;
 
-            player.SetRotation(0, 0, 0);
-            player.SetHeadRotation(0, 0);
+            player = new EntityPlayer(null);
+            inputManager = new PlayerInputManager();
+
+            guiManager.chat.Clear();
         }
     }
 }

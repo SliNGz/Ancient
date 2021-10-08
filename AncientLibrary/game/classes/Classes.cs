@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 
 namespace ancientlib.game.classes
 {
-    class Classes
+    public class Classes
     {
         private static Dictionary<int, Class> classes = new Dictionary<int, Class>();
 
+        public static ClassExplorer explorer = new ClassExplorer();
         public static ClassWarrior warrior = new ClassWarrior();
         public static ClassMagician magician = new ClassMagician();
         public static ClassBowman bowman = new ClassBowman();
@@ -21,10 +22,11 @@ namespace ancientlib.game.classes
 
         public static void Initialize()
         {
-            InitializeClass(0, warrior);
-            InitializeClass(1, magician);
-            InitializeClass(2, bowman);
-            InitializeClass(3, thief);
+            InitializeClass(0, explorer);
+            InitializeClass(1, warrior);
+            InitializeClass(2, magician);
+            InitializeClass(3, bowman);
+            InitializeClass(4, thief);
         }
 
         private static void InitializeClass(int id, Class _class)
@@ -43,6 +45,17 @@ namespace ancientlib.game.classes
         public static int GetIDFromClass(Class _class)
         {
             return classes.First(x => x.Value == _class).Key;
+        }
+
+        public static Class GetClassFromName(string name)
+        {
+            try
+            {
+                return classes.First(x => x.Value.GetName().ToLower() == name.ToLower()).Value;
+            }
+            catch (Exception)
+            { }
+            return null;
         }
     }
 }

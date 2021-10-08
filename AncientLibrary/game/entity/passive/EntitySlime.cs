@@ -10,13 +10,12 @@ using ancientlib.game.utils;
 using ancientlib.game.init;
 using ancientlib.game.entity.world;
 using ancientlib.game.item;
+using ancientlib.game.entity.model;
 
 namespace ancientlib.game.entity.passive
 {
     public class EntitySlime : EntityPet
     {
-        private static EntityModelState DEFAULT = new EntityModelState("slime", 0.85F, 0.85F, 0.85F);
-
         public EntitySlime(World world) : base(world)
         {
             this.maxHealth = 20;
@@ -27,14 +26,12 @@ namespace ancientlib.game.entity.passive
             this.aiManager.AddTask(new EntityAIFollowOwner(this, 0, 2));
             this.aiManager.AddTask(new EntityAIRunAround(this, 1));
             this.aiManager.AddTask(new EntityAILookAtPlayer(this, 2, 12));
-            this.aiManager.AddTask(new EntityAIWander(this, 3));
+           // this.aiManager.AddTask(new EntityAIWander(this, 3));
             this.aiManager.AddTask(new EntityAISeemIdle(this, 3));
 
             this.colorMultiply = Utils.HSVToRGB(100, 1, 1);
 
             this.food = Items.blueberries;
-
-            SetModelState(DEFAULT);
         }
 
         protected override void DropItems()
@@ -64,9 +61,14 @@ namespace ancientlib.game.entity.passive
             return true;
         }
 
-        protected override EntityModelState GetDefaultModelState()
+        public override EntityModelCollection GetModelCollection()
         {
-            return DEFAULT;
+            return EntityModelCollection.slime;
+        }
+
+        public override string GetEntityName()
+        {
+            return "slime";
         }
     }
 }

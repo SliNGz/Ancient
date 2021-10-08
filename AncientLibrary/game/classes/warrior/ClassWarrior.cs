@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ancientlib.game.classes.warrior
 {
-    class ClassWarrior : Class
+    public class ClassWarrior : Class
     {
         public ClassWarrior() : base("Warrior")
         { }

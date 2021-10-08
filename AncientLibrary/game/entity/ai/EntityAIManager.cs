@@ -39,21 +39,24 @@ namespace ancientlib.game.entity.ai
         {
             for (int i = 0; i < tasks.Count; i++)
             {
-                if(tasks[i].ShouldExecute() && tasks[i] != currentTask)
+                if(tasks[i] != currentTask)
                 {
-                    if (currentTask != null)
+                    if (tasks[i].ShouldExecute())
                     {
-                        if (tasks[i].GetPriority() < currentTask.GetPriority())
+                        if (currentTask != null)
                         {
-                            currentTask.Stop();
+                            if (tasks[i].GetPriority() < currentTask.GetPriority())
+                            {
+                                currentTask.Stop();
+                                currentTask = tasks[i];
+                                executedTask = false;
+                            }
+                        }
+                        else
+                        {
                             currentTask = tasks[i];
                             executedTask = false;
                         }
-                    }
-                    else
-                    {
-                        currentTask = tasks[i];
-                        executedTask = false;
                     }
                 }
             }

@@ -1,5 +1,7 @@
 ﻿using ancient.game.world.chunk;
 using ancient.game.world.generator;
+using ancientlib.game.entity;
+using ancientlib.game.entity.passive;
 using ancientlib.game.init;
 using ancientlib.game.world.structure;
 using Microsoft.Xna.Framework;
@@ -17,7 +19,7 @@ namespace ancientlib.game.world.biome
         private int treeStructureNum = Structures.TREE_NUM;
         protected float treeSpawnChance;
 
-        public BiomeTaiga()
+        public BiomeTaiga(bool snow) : base("taiga")
         {
             this.maxHeight = 112;
             this.minHeight = 56;
@@ -30,9 +32,14 @@ namespace ancientlib.game.world.biome
 
             this.treeSpawnChance = 0.75F;
 
-            AddDecorationBlock(0.03125F, Blocks.tall_grass);
-            AddDecorationBlock(1 / 47300F, Blocks.campfire);
+            AddDecorationBlock(snow ? 0.03125F : 0.078125F, snow ? Blocks.tall_grass_snow : Blocks.tall_grass);
+            AddDecorationBlock(0.00004f, Blocks.campfire);
             AddDecorationBlock(0.0003125F, Blocks.blueberries_bush);
+            AddDecorationBlock(0.003125F, Blocks.flowers);
+            AddDecorationBlock(0.003125F, Blocks.branch);
+
+            this.spawnableEntities.Add(typeof(EntitySlime));
+            this.spawnableEntities.Add(typeof(EntityTortoise));
         }
 
         public Biome SetTreeStructure(string treeStructureName, int treeStructureNum)

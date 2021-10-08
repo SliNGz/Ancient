@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ancientlib.game.classes.bowman
 {
-    class ClassBowman : Class
+    public class ClassBowman : Class
     {
         public ClassBowman() : base("Bowman")
         {

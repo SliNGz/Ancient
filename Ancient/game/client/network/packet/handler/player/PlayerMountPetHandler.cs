@@ -21,10 +21,12 @@ namespace ancient.game.client.network.packet.handler.player
 
             MountAction mountAction = mountPacket.GetMountAction();
 
+            EntityPlayer player = (EntityPlayer)Ancient.ancient.world.GetEntityFromID(mountPacket.GetPlayerID());
+
             if (mountAction == MountAction.MOUNT)
-                Ancient.ancient.player.Mount((EntityMount)Ancient.ancient.world.GetEntityFromID(mountPacket.GetMountID()));
+                player.Mount((EntityMount)Ancient.ancient.world.GetEntityFromID(mountPacket.GetMountID()));
             else
-                Ancient.ancient.player.Dismount();
+                player.Dismount();
         }
     }
 }

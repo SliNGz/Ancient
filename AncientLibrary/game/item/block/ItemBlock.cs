@@ -2,7 +2,10 @@
 using ancient.game.world;
 using ancient.game.world.block;
 using ancientlib.game.entity;
+using ancientlib.game.entity.model;
 using ancientlib.game.init;
+using ancientlib.game.network.packet.server.world;
+using ancientlib.game.world;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -19,16 +22,8 @@ namespace ancientlib.game.item
         public ItemBlock(string name, Block block) : base(name)
         {
             this.block = block;
-            this.modelScale = block.GetItemModelScale();
-            this.dropScale = modelScale * 2.5F;
-
-            this.dropModelState = new EntityModelState(GetModelName(), 0.25F, 0.25F, 0.25F);
-        }
-
-        public override void Use(EntityPlayer player)
-        {
-            base.Use(player);
-            player.DestroyTargetedBlock();
+            this.handScale = block.GetItemModelScale();
+            this.dropScale = handScale * 2.5F;
         }
 
         public override void UseRightClick(EntityPlayer player)
@@ -77,6 +72,9 @@ namespace ancientlib.game.item
                     {
                         world.SetBlock(block, x, y, z);
 
+                        if (world is WorldServer)
+                            ((WorldServer)world).BroadcastPacket(new PacketPlaceBlock(block, x, y, z));
+
                         if (!player.HasNoClip())
                             player.RemoveItem(this, 1);
                     }
@@ -96,7 +94,7 @@ namespace ancientlib.game.item
 
         public override string GetModelName()
         {
-            return block == null ? "" : block.GetModelName();
+            return block == null ? base.GetModelName() : block.GetModelName();
         }
     }
 }

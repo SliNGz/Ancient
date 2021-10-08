@@ -9,13 +9,12 @@ using Microsoft.Xna.Framework;
 using ancientlib.game.entity.skill;
 using ancientlib.game.utils;
 using ancientlib.game.entity;
+using ancientlib.game.entity.model;
 
 namespace ancientlib.game.skill.thief
 {
     public class SkillFlashJump : Skill
     {
-        private static EntityModelState DEFAULT = new EntityModelState("flash_jump", 0, 0, 0);
-
         public SkillFlashJump(EntityPlayer player) : base(player)
         {
             SetLevel(10);
@@ -53,11 +52,6 @@ namespace ancientlib.game.skill.thief
             return 512;
         }
 
-        public override EntityModelState GetModelState()
-        {
-            return DEFAULT;
-        }
-
         public override int GetMaxLevel()
         {
             return 10;
@@ -73,7 +67,6 @@ namespace ancientlib.game.skill.thief
             int initialCooldown = 960;
             float cooldownFactor = 0.675F;
             this.cooldown = (int)(initialCooldown * Math.Pow(cooldownFactor, level));
-            Console.WriteLine(cooldown);
         }
 
         protected override void UpdateManaConsumption()
@@ -81,6 +74,11 @@ namespace ancientlib.game.skill.thief
             int initialConsumption = 70;
             float consumptionFactor = 0.87F;
             this.manaConsumption = (int)(initialConsumption * Math.Pow(consumptionFactor, level));
+        }
+
+        public override EntityModelCollection GetModelCollection()
+        {
+            return EntityModelCollection.flashJump;
         }
     }
 }

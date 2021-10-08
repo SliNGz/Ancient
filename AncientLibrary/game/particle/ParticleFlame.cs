@@ -23,10 +23,5 @@ namespace ancientlib.game.particle
             this.lifeSpan = 512;
             this.interactWithBlocks = false;
         }
-
-        public override string GetModelName()
-        {
-            return "voxel";
-        }
     }
 }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ancientlib.game.entity.model;
 
 namespace ancientlib.game.particle
 {
@@ -87,13 +88,6 @@ namespace ancientlib.game.particle
             this.endColor = endColor;
         }
 
-        public abstract string GetModelName();
-
-        protected override EntityModelState GetDefaultModelState()
-        {
-            return null;
-        }
-
         public override Vector3 GetModelScale()
         {
             return this.scale;
@@ -102,6 +96,21 @@ namespace ancientlib.game.particle
         protected override bool ShouldInterpolate()
         {
             return false;
+        }
+
+        public override EntityModelCollection GetModelCollection()
+        {
+            return null;
+        }
+
+        public override string GetEntityName()
+        {
+            return "particle";
+        }
+
+        public override string GetModelName()
+        {
+            return "voxel";
         }
     }
 }

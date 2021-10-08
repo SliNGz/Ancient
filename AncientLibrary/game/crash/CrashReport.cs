@@ -14,16 +14,13 @@ namespace ancientlib.game.log
         private static string default_name = "crash_report";
 
         public static void CreateCrashReport(Exception exception)
-
         {
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            string date = DateTime.Now.ToString();
-            date = date.Replace('/', '_');
-            date = date.Replace(' ', '_');
-            date = date.Replace(':', '-');
-            StreamWriter writer = File.CreateText(path + default_name + "_" + date + ".txt");
+            DateTime date = DateTime.Now;
+            string dateString = date.Year + "_" + date.Month + "_" + date.Day + "_" + date.Hour + "-" + date.Minute + "-" + date.Second;
+            StreamWriter writer = File.CreateText(path + default_name + "_" + dateString + ".txt");
             writer.Write(exception.ToString());
             writer.Close();
         }

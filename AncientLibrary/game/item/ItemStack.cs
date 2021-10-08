@@ -1,5 +1,6 @@
 ﻿using ancient.game.entity.player;
 using ancient.game.world;
+using ancientlib.game.entity.model;
 using ancientlib.game.init;
 using Microsoft.Xna.Framework;
 using System;
@@ -17,6 +18,9 @@ namespace ancientlib.game.item
         private int amount;
 
         public int ticksElapsed;
+        public int ticksUsed;
+
+        private bool isUsed;
 
         public ItemStack(Item item)
         {
@@ -73,10 +77,14 @@ namespace ancientlib.game.item
 
         public void Use(EntityPlayer player)
         {
+            isUsed = false;
+
             if (CanUseItem(player))
             {
                 this.ticksElapsed = GetCooldown(player);
-                item.Use(player);
+                item.Use(player, this);
+                isUsed = true;
+                ticksUsed++;
             }
         }
 
@@ -89,6 +97,16 @@ namespace ancientlib.game.item
             }
         }
 
+        public void OnUseFinish(EntityPlayer player)
+        {
+            item.OnUseFinish(player, this);
+        }
+
+        public void OnUseRightFinish(EntityPlayer player)
+        {
+            item.OnUseRightFinish(player, this);
+        }
+
         public void OnPickup(EntityPlayer player)
         {
             item.OnPickup(player, this);
@@ -97,6 +115,11 @@ namespace ancientlib.game.item
         public void Update()
         {
             this.ticksElapsed--;
+
+            if (!isUsed)
+                ticksUsed = 0;
+
+            isUsed = false;
         }
 
         public bool CanUseItem(EntityPlayer player)
@@ -104,9 +127,9 @@ namespace ancientlib.game.item
             return this.ticksElapsed <= 0 && item.CanUseItem(player);
         }
 
-        public void OnItemChange(EntityPlayer player)
+        public void OnItemChange(EntityPlayer player, ItemStack lastItemStack)
         {
-            this.item.OnItemChange(player);
+            this.item.OnItemChange(player, lastItemStack, this);
         }
 
         public string GetUseSound(World world)
@@ -114,39 +137,64 @@ namespace ancientlib.game.item
             return this.item.GetUseSound(world);
         }
 
-        public virtual float GetRenderYaw()
+        public float GetRenderYaw()
         {
             return this.item.GetRenderYaw();
         }
 
-        public virtual float GetRenderPitch()
+        public float GetBaseRenderYaw()
+        {
+            return this.item.GetBaseRenderYaw();
+        }
+
+        public float GetRenderPitch()
         {
             return this.item.GetRenderPitch();
         }
 
-        public virtual float GetRenderRoll()
+        public float GetBaseRenderPitch()
+        {
+            return this.item.GetBaseRenderPitch();
+        }
+
+        public float GetRenderRoll()
         {
             return this.item.GetRenderRoll();
         }
 
-        public virtual float GetRenderSpeed(EntityPlayer player)
+        public float GetBaseRenderRoll()
+        {
+            return this.item.GetBaseRenderRoll();
+        }
+
+        public float GetRenderSpeed(EntityPlayer player)
         {
             return this.item.GetRenderSpeed(player);
         }
 
-        public virtual Vector3 GetModelScale()
+        public Vector3 GetModelScale()
         {
-            return this.item.GetModelScale();
+            return this.item.GetHandScale();
         }
 
-        public virtual Vector3 GetDropModelScale()
+        public Vector3 GetDropModelScale()
         {
             return this.item.GetDropModelScale();
+        }
+
+        public EntityModelCollection GetModelCollection()
+        {
+            return item.GetModelCollection();
         }
 
         public int GetCooldown(EntityPlayer player)
         {
             return this.item.GetCooldown(player);
+        }
+
+        public bool CanBeSpammed()
+        {
+            return this.item.CanBeSpammed();
         }
 
         public void Read(BinaryReader reader)

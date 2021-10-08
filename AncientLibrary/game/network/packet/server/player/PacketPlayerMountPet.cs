@@ -11,14 +11,17 @@ namespace ancientlib.game.network.packet.server.player
 {
     public class PacketPlayerMountPet : Packet
     {
+        private int playerID;
         private MountAction mountAction;
         private int mountID;
 
         public PacketPlayerMountPet()
         { }
 
-        public PacketPlayerMountPet(EntityMount mount, MountAction mountAction)
+        public PacketPlayerMountPet(EntityPlayer player, EntityMount mount, MountAction mountAction)
         {
+            playerID = player.GetID();
+
             this.mountAction = mountAction;
 
             if (mountAction == MountAction.MOUNT)
@@ -27,6 +30,8 @@ namespace ancientlib.game.network.packet.server.player
 
         public override void Read(BinaryReader reader)
         {
+            this.playerID = reader.ReadInt32();
+
             this.mountAction = (MountAction)reader.ReadByte();
 
             if (this.mountAction == MountAction.MOUNT)
@@ -35,10 +40,16 @@ namespace ancientlib.game.network.packet.server.player
 
         public override void Write(BinaryWriter writer)
         {
+            writer.Write(playerID);
             writer.Write((byte)mountAction);
 
             if (this.mountAction == MountAction.MOUNT)
                 writer.Write(mountID);
+        }
+
+        public int GetPlayerID()
+        {
+            return this.playerID;
         }
 
         public MountAction GetMountAction()

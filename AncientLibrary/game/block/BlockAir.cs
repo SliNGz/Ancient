@@ -16,10 +16,5 @@ namespace ancient.game.world.block
             this.color = Color.Transparent;
             this.secondaryColor = color;
         }
-
-        public override bool IsFullBlock()
-        {
-            return false;
-        }
     }
 }

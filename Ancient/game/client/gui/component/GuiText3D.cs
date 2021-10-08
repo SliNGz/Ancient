@@ -87,10 +87,10 @@ namespace ancient.game.client.gui.component
 
             Vector3 eyePosition = Ancient.ancient.player.GetEyePosition();
             Matrix worldMatrix = Matrix.CreateTranslation(position - eyePosition);
-            Matrix view = WorldRenderer.camera.GetViewMatrix(yaw, pitch);
+            Matrix view = WorldRenderer.camera.GetViewMatrix();
             Vector3 screenPosition = Ancient.ancient.GraphicsDevice.Viewport.Project(Vector3.Zero, WorldRenderer.camera.GetProjectionMatrix(), view, worldMatrix);
 
-            if (!WorldRenderer.camera.InViewFrustum(position, Ancient.ancient.player.GetHeadYaw(), Ancient.ancient.player.GetHeadPitch()))
+            if (!WorldRenderer.camera.InViewFrustum(position))
                 return;
 
             float distance = Vector3.Distance(position, eyePosition);

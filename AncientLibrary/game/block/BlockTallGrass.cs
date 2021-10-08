@@ -13,12 +13,9 @@ namespace ancientlib.game.block
 {
     public class BlockTallGrass : BlockScenerySnow, IBlockModel
     {
-        public BlockTallGrass(bool snow) : base(snow, "Tall Grass")
-        { }
-
-        public override Vector3 GetItemModelScale()
+        public BlockTallGrass(bool snow) : base(snow, "Tall Grass", BlockType.grass)
         {
-            return base.GetItemModelScale() / 8F;
+            this.dimensions.Y = 0.625F;
         }
 
         protected override void DropItems(World world, int x, int y, int z)
@@ -26,7 +23,12 @@ namespace ancientlib.game.block
 
         public override string GetModelName()
         {
-            return "tall_grass_taiga";
+            return "tall_grass" + (snow ? "_snow" : "");
+        }
+
+        public override Vector4 GetShaderTechnique(World world, int x, int y, int z)
+        {
+            return new Vector4(0, 0, 0, 2);
         }
     }
 }

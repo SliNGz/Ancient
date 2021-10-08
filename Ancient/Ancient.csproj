@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <!--<Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />-->
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{51F266FA-7771-4A10-BCC0-1A6FDB0EDE98}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ancient</RootNamespace>
     <AssemblyName>Ancient</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -62,7 +62,30 @@
     <StartupObject>ancient.game.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
+    <Compile Include="game\client\camera\CameraFOV.cs" />
+    <Compile Include="game\client\camera\CameraOrthographic.cs" />
+    <Compile Include="game\client\camera\CameraPlayerFOV.cs" />
     <Compile Include="game\client\gui\component\button\GuiButton.cs" />
     <Compile Include="game\client\gui\component\button\GuiButtonText.cs" />
     <Compile Include="game\client\gui\component\GuiBar.cs" />
@@ -70,18 +93,21 @@
     <Compile Include="game\client\gui\component\GuiOptionSwitch.cs" />
     <Compile Include="game\client\gui\component\GuiComponent.cs" />
     <Compile Include="game\client\gui\component\GuiComponentText.cs" />
+    <Compile Include="game\client\gui\component\GuiScroll.cs" />
     <Compile Include="game\client\gui\component\GuiSlider.cs" />
     <Compile Include="game\client\gui\component\GuiText.cs" />
     <Compile Include="game\client\gui\component\GuiText3D.cs" />
     <Compile Include="game\client\gui\component\GuiTextBox.cs" />
     <Compile Include="game\client\gui\component\GuiTexture.cs" />
     <Compile Include="game\client\gui\GuiCameraScroller.cs" />
+    <Compile Include="game\client\gui\GuiCharacterSelection.cs" />
+    <Compile Include="game\client\gui\GuiChat.cs" />
     <Compile Include="game\client\gui\GuiDebug.cs" />
     <Compile Include="game\client\gui\GuiDisconnect.cs" />
     <Compile Include="game\client\gui\GuiWorldCreation.cs" />
     <Compile Include="game\client\gui\GuiMenuBackground.cs" />
     <Compile Include="game\client\gui\GuiCharacterCreation.cs" />
-    <Compile Include="game\client\gui\GuiChat.cs" />
+    <Compile Include="game\client\gui\GuiChatInput.cs" />
     <Compile Include="game\client\gui\GuiDeath.cs" />
     <Compile Include="game\client\gui\GuiIngame.cs" />
     <Compile Include="game\client\gui\GuiManager.cs" />
@@ -97,6 +123,8 @@
     <Compile Include="game\client\gui\GuiVideoSettings.cs" />
     <Compile Include="game\client\input\IPlayerInput.cs" />
     <Compile Include="game\client\input\keybinding\keyaction\KeyActionRun.cs" />
+    <Compile Include="game\client\input\keybinding\keyaction\KeyActionScreenshot.cs" />
+    <Compile Include="game\client\input\keybinding\keyaction\KeyActionUseSpecial.cs" />
     <Compile Include="game\client\input\OnlineInputHandler.cs" />
     <Compile Include="game\client\input\OfflineInputHandler.cs" />
     <Compile Include="game\client\input\utils\EventInput.cs" />
@@ -120,30 +148,46 @@
     <Compile Include="game\client\input\utils\TextBoxUtils.cs" />
     <Compile Include="game\client\network\NetClient.cs" />
     <Compile Include="game\client\network\NetPlay.cs" />
+    <Compile Include="game\client\network\packet\handler\chat\ChatComponentClientHandler.cs" />
     <Compile Include="game\client\network\packet\handler\ClientPacketHandlers.cs" />
     <Compile Include="game\client\network\packet\handler\entity\EntityDamagedHandler.cs" />
     <Compile Include="game\client\network\packet\handler\entity\EntityDespawnHandler.cs" />
     <Compile Include="game\client\network\packet\handler\entity\AbstractEntityHandler.cs" />
+    <Compile Include="game\client\network\packet\handler\entity\EntityHeadRotationHandler.cs" />
     <Compile Include="game\client\network\packet\handler\entity\EntityHealthHandler.cs" />
     <Compile Include="game\client\network\packet\handler\entity\EntityPositionHandler.cs" />
     <Compile Include="game\client\network\packet\handler\entity\EntityRotationHandler.cs" />
     <Compile Include="game\client\network\packet\handler\entity\EntitySpawnHandler.cs" />
-    <Compile Include="game\client\network\packet\handler\player\CharacterCreationStatusHandler.cs" />
+    <Compile Include="game\client\network\packet\handler\player\CharacterStatusHandler.cs" />
     <Compile Include="game\client\network\packet\handler\player\PlayerChangeClassHandler.cs" />
+    <Compile Include="game\client\network\packet\handler\player\PlayerChangeExpHandler.cs" />
+    <Compile Include="game\client\network\packet\handler\player\PlayerLevelChangeHandler.cs" />
+    <Compile Include="game\client\network\packet\handler\player\PlayerMaxHealthHandler.cs" />
     <Compile Include="game\client\network\packet\handler\player\PlayerPositionClientHandler.cs" />
     <Compile Include="game\client\network\packet\handler\player\PlayerItemActionHandler.cs" />
     <Compile Include="game\client\network\packet\handler\player\PlayerMountPetHandler.cs" />
     <Compile Include="game\client\network\packet\handler\player\PlayerRespawnClientHandler.cs" />
     <Compile Include="game\client\network\packet\handler\player\PlayerTamePetHandler.cs" />
+    <Compile Include="game\client\network\packet\handler\player\PlayerUseSpecialClientHandler.cs" />
     <Compile Include="game\client\network\packet\handler\status\DisconnectClientHandler.cs" />
     <Compile Include="game\client\network\packet\handler\world\BlockDestructionHandler.cs" />
     <Compile Include="game\client\network\packet\handler\world\BlockPlacementHandler.cs" />
     <Compile Include="game\client\network\packet\handler\world\CreateWorldHandler.cs" />
+    <Compile Include="game\client\network\packet\handler\world\ExplosionHandler.cs" />
     <Compile Include="game\client\network\packet\handler\world\ToggleRainHandler.cs" />
     <Compile Include="game\client\particle\ParticleManager.cs" />
+    <Compile Include="game\client\renderer\chat\ChatRender.cs" />
+    <Compile Include="game\client\renderer\chat\ChatRenderer.cs" />
+    <Compile Include="game\client\renderer\chat\ChatRenderers.cs" />
+    <Compile Include="game\client\renderer\chat\ChatRenderItem.cs" />
+    <Compile Include="game\client\renderer\chat\ChatRenderText.cs" />
+    <Compile Include="game\client\renderer\entity\RenderEntityDrop.cs" />
     <Compile Include="game\client\renderer\entity\RenderEntity.cs" />
     <Compile Include="game\client\renderer\entity\EntityRenderers.cs" />
+    <Compile Include="game\client\renderer\entity\RenderEntityLiving.cs" />
+    <Compile Include="game\client\renderer\entity\RenderEntityPlayer.cs" />
     <Compile Include="game\client\renderer\entity\RenderEntityPlayerBase.cs" />
+    <Compile Include="game\client\renderer\entity\RenderEntityPortal.cs" />
     <Compile Include="game\client\renderer\model\ModelDatabase.cs" />
     <Compile Include="game\client\renderer\chunk\ChunkRenderer.cs" />
     <Compile Include="game\client\renderer\item\ItemRenderer.cs" />
@@ -151,15 +195,23 @@
     <Compile Include="game\client\renderer\font\FontRenderer.cs" />
     <Compile Include="game\client\renderer\model\ModelData.cs" />
     <Compile Include="game\client\renderer\particle\ParticleRenderer.cs" />
+    <Compile Include="game\client\renderer\QuadRenderer.cs" />
+    <Compile Include="game\client\renderer\shadowmap\ShadowMapRenderer.cs" />
     <Compile Include="game\client\renderer\texture\TextureManager.cs" />
     <Compile Include="game\client\renderer\voxel\VoxelRendererData.cs" />
     <Compile Include="game\client\camera\Camera.cs" />
     <Compile Include="game\client\renderer\voxel\VoxelRenderer.cs" />
     <Compile Include="game\client\input\InputHandler.cs" />
+    <Compile Include="game\client\renderer\world\SkyRenderer.cs" />
+    <Compile Include="game\client\settings\AudioSettings.cs" />
+    <Compile Include="game\client\settings\ControlsSettings.cs" />
+    <Compile Include="game\client\settings\Settings.cs" />
     <Compile Include="game\client\settings\GameSettings.cs" />
+    <Compile Include="game\client\settings\VideoSettings.cs" />
     <Compile Include="game\client\sound\SoundManager.cs" />
     <Compile Include="game\client\utils\BlockColorizer.cs" />
     <Compile Include="game\client\utils\GuiUtils.cs" />
+    <Compile Include="game\client\utils\NetworkUtils.cs" />
     <Compile Include="game\client\utils\RenderUtils.cs" />
     <Compile Include="game\client\world\chunk\ChunkLoaderClient.cs" />
     <Compile Include="game\client\world\WorldClient.cs" />
@@ -170,15 +222,20 @@
     <Compile Include="game\client\renderer\world\WorldRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework">
-      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Downloads\MonoGame\MonoGame\MonoGame.Framework\bin\Windows\AnyCPU\Debug\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="game\Content\EXP Table.txt" />
     <Content Include="game\Content\Project Beginning Date.txt" />
     <Content Include="game\Content\To Do List.txt" />
@@ -202,10 +259,13 @@
       <Project>{2bef1a57-83df-46a3-b181-ed01644bea04}</Project>
       <Name>AncientLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MagicaVoxelContentExtension\MagicaVoxelContentExtension.csproj">
+      <Project>{10c29740-1d12-4e3e-97a1-6b077115a80e}</Project>
+      <Name>MagicaVoxelContentExtension</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <!--<Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />-->
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -7,31 +7,28 @@ using ancient.game.world;
 using ancientlib.game.entity.ai;
 using Microsoft.Xna.Framework;
 using ancientlib.game.init;
+using ancientlib.game.entity.model;
 
 namespace ancientlib.game.entity
 {
     public class EntityTortoise : EntityMount
     {
-        private static EntityModelState DEFAULT = new EntityModelState("tortoise", 1.4f, 1.1f, 1.4f);
-        private static EntityModelState SLEEPING = new EntityModelState("tortoise_sleeping", 1.4f, 0.9F, 1.4f);
-
         public EntityTortoise(World world) : base(world)
         {
             this.maxHealth = 100000;
             this.health = maxHealth;
             this.runningSpeed = 1.25F;
 
-            this.expReward = 3;
+            this.expReward = 300;
 
             this.aiManager.AddTask(new EntityAIMount(this, 0));
             this.aiManager.AddTask(new EntityAIFollowOwner(this, 1, 4, 32));
-            this.aiManager.AddTask(new EntityAIRunAround(this, 2));
+           // this.aiManager.AddTask(new EntityAIRunAround(this, 2));
             this.aiManager.AddTask(new EntityAILookAtPlayer(this, 3, 12));
-            this.aiManager.AddTask(new EntityAIWander(this, 4));
+          //  this.aiManager.AddTask(new EntityAIWander(this, 4));
             this.aiManager.AddTask(new EntityAISeemIdle(this, 4));
 
             this.food = Items.carrot;
-            SetModelState(DEFAULT);
         }
 
         protected override void DropItems()
@@ -42,7 +39,19 @@ namespace ancientlib.game.entity
 
         public override Vector3 GetMountOffset()
         {
-            return new Vector3(0, owner.GetHeight(), 0);
+            float y = 0;
+
+            if (animationTicks != 0)
+            {
+                if (animationIndex == 1)
+                    y = -1;
+                else if (animationIndex == 3)
+                    y = 1;
+
+                y *= GetModelScale().Y / 2;
+            }
+
+            return new Vector3(0, ridingEntity.GetHeight() + y, 0);
         }
 
         public override float GetBaseSpeed()
@@ -60,9 +69,14 @@ namespace ancientlib.game.entity
             return new Vector3(0.05F, 0.05F, 0.05F);
         }
 
-        protected override EntityModelState GetDefaultModelState()
+        public override EntityModelCollection GetModelCollection()
         {
-            return DEFAULT;
+            return EntityModelCollection.tortoise;
+        }
+
+        public override string GetEntityName()
+        {
+            return "tortoise";
         }
     }
 }

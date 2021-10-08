@@ -1,5 +1,7 @@
 ﻿using ancient.game.entity;
+using ancient.game.entity.player;
 using ancientlib.game.entity;
+using ancientlib.game.entity.player;
 using ancientlib.game.network.packet.server.entity;
 using ancientlib.game.utils;
 using System;
@@ -18,10 +20,15 @@ namespace ancientlib.game.world.entity
 
         protected AttackInfo attackInfo;
 
+        private float lastHeadYaw;
+        private float lastHeadPitch;
+
         public NetEntityLiving(Entity entity) : base(entity)
         {
             this.living = (EntityLiving)entity;
             this.lastHealth = living.GetHealth();
+            this.lastHeadYaw = living.GetHeadYaw();
+            this.lastHeadPitch = living.GetHeadPitch();
         }
 
         public override void Update()
@@ -32,6 +39,8 @@ namespace ancientlib.game.world.entity
                 UpdateAttackInfo();
             else
                 UpdateHealth();
+
+            UpdateHeadRotation();
         }
 
         private void UpdateHealth()
@@ -58,6 +67,22 @@ namespace ancientlib.game.world.entity
         private bool ShouldSendDamage()
         {
             return this.attackInfo != null;
+        }
+
+        private void UpdateHeadRotation()
+        {
+            if (ShouldSendHeadRotation())
+            {
+                world.BroadcastPacket(new PacketEntityHeadRotation(living), living is EntityPlayer ? (EntityPlayer)living : null);
+
+                this.lastHeadYaw = living.GetHeadYaw();
+                this.lastHeadPitch = living.GetHeadPitch();
+            }
+        }
+
+        private bool ShouldSendHeadRotation()
+        {
+            return this.lastHeadYaw != living.GetHeadYaw() || this.lastHeadPitch != living.GetHeadPitch();
         }
     }
 }

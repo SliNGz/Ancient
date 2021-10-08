@@ -54,32 +54,17 @@ namespace ancientlib.game.classes
 
             Random rand = player.GetWorld().rand;
 
-            damage = GetRandomDamage(rand, damage, 0.07F);
+            damage = AttackUtils.GetRandomDamage(rand, damage, 0.07F);
 
             bool isCritical = false;
 
-            if (ShouldApplyCriticalHit(rand, player.GetCriticalHitChance()))
+            if (AttackUtils.ShouldApplyCriticalHit(rand, player.GetCriticalHitChance()))
             {
-                damage = GetCriticalHitDamage(rand, damage, player.GetCriticalHitPercentage());
+                damage = AttackUtils.GetCriticalHitDamage(rand, damage, player.GetCriticalHitPercentage());
                 isCritical = true;
             }
 
             return new AttackInfo(player, damage).SetCritical(isCritical);
-        }
-
-        public static int GetRandomDamage(Random rand, int damage, float deviation)
-        {
-            return damage + (int)(damage * (-deviation + rand.NextDouble() / (0.5 / deviation)));
-        }
-
-        public static int GetCriticalHitDamage(Random rand, int damage, float percentage)
-        {
-            return (int)(damage * (1 + rand.NextDouble() * percentage));
-        }
-
-        public static bool ShouldApplyCriticalHit(Random rand, float chance)
-        {
-            return rand.NextDouble() < chance;
         }
     }
 }
